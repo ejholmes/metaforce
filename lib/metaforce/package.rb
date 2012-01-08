@@ -1,70 +1,10 @@
+require 'nokogiri'
+
 module Metaforce
   class Package
-    def initialize
-      # Map component type => folder
-      @component_type_map = {
-        :action_override => "objects",
-        :analytics_snapshot => "analyticsnapshots",
-        :apex_class => "classes",
-        :article_type => "objects",
-        :apex_component => "components",
-        :apex_page => "pages",
-        :apex_trigger => "triggers",
-        :business_process => "objects",
-        :custom_application => "applications",
-        :custom_field => "objects",
-        :custom_labels => "labels",
-        :custom_object => "objects",
-        :custom_object_translation => "objectTranslations",
-        :custom_page_web_link => "weblinks",
-        :custom_site => "sites",
-        :custom_tab => "tabs",
-        :dashboard => "dashboards",
-        :data_category_group => "datacategorygroups",
-        :document => "document",
-        :email_template => "email",
-        :entitlement_template => "entitlementTemplates",
-        :field_set => "objects",
-        :home_page_component => "homePageComponents",
-        :layout => "layouts",
-        :letterhead => "letterhead",
-        :list_view => "objects",
-        :named_filter => "objects",
-        :permission_set => "permissionsets",
-        :portal => "portals",
-        :profile => "profiles",
-        :record_type => "objects",
-        :remote_site_setting => "remoteSiteSettings",
-        :report => "reports",
-        :report_type => "reportTypes",
-        :scontroler => "scontrols",
-        :sharing_reason => "objects",
-        :sharing_recalculation => "objects",
-        :static_resource => "staticResources",
-        :translations => "translations",
-        :validation_rule => "objects",
-        :weblink => "objects",
-        :workflow => "workflows"
-      }
-    end
+    SFDC_API_VERSION = "23.0"
 
-    # Pass in an array of files to convert to a package.xml file
-    #
-    # Ignores any files that end in .xml
-    #
-    # example format for files
-    # [
-    #   "classes/TestController.cls",
-    #   "classes/TestClass.cls",
-    #   "components/SiteLogin.component"
-    # ]
-    def parse(files, options=nil)
-      
-    end
-
-    # Pass in a hash of components to convert to a packge.xml file
-    #
-    # example format for components
+    # example format
     # {
     #   :apex_class => [
     #     "TestController",
@@ -74,8 +14,197 @@ module Metaforce
     #     "SiteLogin"
     #   ]
     # }
-    def build(components)
+    def initialize(components)
+      @components = components
+      # Map component type => folder
+      @component_type_map = {
+        :action_override => {
+          :name => "ActionOverride",
+          :folder => "objects"
+        },
+        :analytics_snapshot => {
+          :name => "AnalyticsSnapshot",
+          :folder => "analyticsnapshots"
+        },
+        :apex_class => {
+          :name => "ApexClass",
+          :folder => "classes"
+        },
+        :article_type => {
+          :name => "ArticleType",
+          :folder => "objects"
+        },
+        :apex_component => {
+          :name => "ApexComponent",
+          :folder => "components"
+        },
+        :apex_page => {
+          :name => "ApexPage",
+          :folder => "pages"
+        },
+        :apex_trigger => {
+          :name => "ApexTrigger",
+          :folder => "triggers"
+        },
+        :business_process => {
+          :name => "BusinessProcess",
+          :folder => "objects"
+        },
+        :custom_application => {
+          :name => "CustomApplication",
+          :folder => "applications"
+        },
+        :custom_field => {
+          :name => "CustomField",
+          :folder => "objects"
+        },
+        :custom_labels => {
+          :name => "CustomLabels",
+          :folder => "labels"
+        },
+        :custom_object => {
+          :name => "CustomObject",
+          :folder => "objects"
+        },
+        :custom_object_translation => {
+          :name => "CustomObjectTranslation",
+          :folder => "objectTranslations"
+        },
+        :custom_page_web_link => {
+          :name => "CustomPageWebLink",
+          :folder => "weblinks"
+        },
+        :custom_site => {
+          :name => "CustomSite",
+          :folder => "sites"
+        },
+        :custom_tab => {
+          :name => "CustomTab",
+          :folder => "tabs"
+        },
+        :dashboard => {
+          :name => "Dashboard",
+          :folder => "dashboards"
+        },
+        :data_category_group => {
+          :name => "DataCategoryGroup",
+          :folder => "datacategorygroups"
+        },
+        :document => {
+          :name => "Document",
+          :folder => "document"
+        },
+        :email_template => {
+          :name => "EmailTemplate",
+          :folder => "email"
+        },
+        :entitlement_template => {
+          :name => "EntitlementTemplate",
+          :folder => "entitlementTemplates"
+        },
+        :field_set => {
+          :name => "FieldSet",
+          :folder => "objects"
+        },
+        :home_page_component => {
+          :name => "HomePageComponent",
+          :folder => "homePageComponents"
+        },
+        :layout => {
+          :name => "Layout",
+          :folder => "layouts"
+        },
+        :letterhead => {
+          :name => "Letterhead",
+          :folder => "letterhead"
+        },
+        :list_view => {
+          :name => "ListView",
+          :folder => "objects"
+        },
+        :named_filter => {
+          :name => "NamedFilter",
+          :folder => "objects"
+        },
+        :permission_set => {
+          :name => "PermissionSet",
+          :folder => "permissionsets"
+        },
+        :portal => {
+          :name => "Portal",
+          :folder => "portals"
+        },
+        :profile => {
+          :name => "Profile",
+          :folder => "profiles"
+        },
+        :record_type => {
+          :name => "RecordType",
+          :folder => "objects"
+        },
+        :remote_site_setting => {
+          :name => "RemoteSiteSetting",
+          :folder => "remoteSiteSettings"
+        },
+        :report => {
+          :name => "Report",
+          :folder => "reports"
+        },
+        :report_type => {
+          :name => "ReportType",
+          :folder => "reportTypes"
+        },
+        :scontroler => {
+          :name => "Scontroler",
+          :folder => "scontrols"
+        },
+        :sharing_reason => {
+          :name => "SharingReason",
+          :folder => "objects"
+        },
+        :sharing_recalculation => {
+          :name => "SharingRecalculation",
+          :folder => "objects"
+        },
+        :static_resource => {
+          :name => "StaticResource",
+          :folder => "staticResources"
+        },
+        :translations => {
+          :name => "Translations",
+          :folder => "translations"
+        },
+        :validation_rule => {
+          :name => "ValidationRule",
+          :folder => "objects"
+        },
+        :weblink => {
+          :name => "Weblink",
+          :folder => "objects"
+        },
+        :workflow => {
+          :name => "Workflow",
+          :folder => "workflows"
+        }
+      }
+    end
 
+    # Returns a string containing a package.xml file
+    def to_xml
+      xml_builder = Nokogiri::XML::Builder.new do |xml|
+        xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
+          @components.each do |name, files|
+            xml.types {
+              files.each do |file|
+                xml.members file
+              end
+              xml.name @component_type_map[name][:name]
+            }
+          end
+          xml.version SFDC_API_VERSION
+        }
+      end
+      xml_builder.to_xml
     end
   end
 end
