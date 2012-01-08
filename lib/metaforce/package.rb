@@ -210,10 +210,10 @@ module Metaforce
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
         xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
-          @components.each do |key, files|
+          @components.each do |key, members|
             xml.types {
-              files.each do |file|
-                xml.members file
+              members.each do |member|
+                xml.members member
               end
               xml.name component_name(key)
             }
