@@ -14,7 +14,7 @@ module Metaforce
     #     "SiteLogin"
     #   ]
     # }
-    def initialize(components)
+    def initialize(components={})
       @components = components
       # Map component type => folder
       @component_type_map = {
@@ -199,6 +199,13 @@ module Metaforce
       @component_type_map[key][:folder]
     end
 
+    # Returns a key for the component name
+    def component_key(name)
+      @component_type_map.each do |key, component|
+        return key if component[:name] == name
+      end
+    end
+
     # Returns a string containing a package.xml file
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
@@ -217,8 +224,21 @@ module Metaforce
       xml_builder.to_xml
     end
 
+    # Parses a package.xml file
     def parse(file)
-      
+      document = Nokogiri::XML(file).remove_namespaces!
+      document.xpath('//types').each do |type|
+        name = type.xpath('//name').first.content
+        key = component_key(name);
+        type.xpath('//members').each do |member|
+          if @components[key].class == Array
+            @components[key].push(member.content)
+          else
+            @components[key] = [member.content]
+          end
+        end
+      end
+      @components
     end
   end
 end
