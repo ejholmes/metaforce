@@ -216,5 +216,9 @@ module Metaforce
       end
       xml_builder.to_xml
     end
+
+    def parse(file)
+      
+    end
   end
 end
