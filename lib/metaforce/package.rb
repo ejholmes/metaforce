@@ -224,6 +224,10 @@ module Metaforce
       xml_builder.to_xml
     end
 
+    def to_hash
+      @components
+    end
+
     # Parses a package.xml file
     def parse(file)
       document = Nokogiri::XML(file).remove_namespaces!
@@ -238,7 +242,7 @@ module Metaforce
           end
         end
       end
-      @components
+      self
     end
   end
 end

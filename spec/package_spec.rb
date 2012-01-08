@@ -32,7 +32,7 @@ describe Metaforce::Package do
   context "Parse" do
     it "returns a hash" do
       package = Metaforce::Package.new
-      response = package.parse(test_xml)
+      response = package.parse(test_xml).to_hash
       response.should eq(test_hash)
     end
   end
