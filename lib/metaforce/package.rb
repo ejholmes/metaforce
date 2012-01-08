@@ -189,16 +189,26 @@ module Metaforce
       }
     end
 
+    # Returns the components name
+    def component_name(key)
+      @component_type_map[key][:name]
+    end
+
+    # Returns the components folder
+    def component_folder(key)
+      @component_type_map[key][:folder])
+    end
+
     # Returns a string containing a package.xml file
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
         xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
-          @components.each do |name, files|
+          @components.each do |key, files|
             xml.types {
               files.each do |file|
                 xml.members file
               end
-              xml.name @component_type_map[name][:name]
+              xml.name component_name(key)
             }
           end
           xml.version SFDC_API_VERSION
