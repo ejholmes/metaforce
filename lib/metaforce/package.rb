@@ -228,9 +228,9 @@ module Metaforce
     def parse(file)
       document = Nokogiri::XML(file).remove_namespaces!
       document.xpath('//types').each do |type|
-        name = type.xpath('//name').first.content
+        name = type.xpath('name').first.content
         key = component_key(name);
-        type.xpath('//members').each do |member|
+        type.xpath('members').each do |member|
           if @components[key].class == Array
             @components[key].push(member.content)
           else
