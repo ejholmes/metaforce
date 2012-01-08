@@ -1,5 +1,5 @@
-require "metaforce/version"
+require 'metaforce/version'
+require 'metaforce/package'
 
 module Metaforce
-  # Your code goes here...
 end
