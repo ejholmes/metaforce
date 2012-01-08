@@ -196,7 +196,7 @@ module Metaforce
 
     # Returns the components folder
     def component_folder(key)
-      @component_type_map[key][:folder])
+      @component_type_map[key][:folder]
     end
 
     # Returns a string containing a package.xml file
