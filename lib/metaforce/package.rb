@@ -15,7 +15,6 @@ module Metaforce
     #   ]
     # }
     def initialize(components={})
-      @components = components
       # Map component type => folder
       @component_type_map = {
         :action_override => {
@@ -187,6 +186,12 @@ module Metaforce
           :folder => "workflows"
         }
       }
+      if components.class == Hash
+        @components = components
+      elsif components.class == String
+        @components = {}
+        self.parse(components)
+      end
     end
 
     # Returns the components name
