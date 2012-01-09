@@ -56,17 +56,24 @@ module Metaforce
 
     # Does something
     def only(files)
+      filtered_components = {}
       files.each do |file|
         folder = file.gsub(/\/.*/, '')
         file.gsub!(/.*\//, '').gsub!(/\..*/, '')
         @components.each_key do |type|
-          @components[type].each do |member|
-            unless member == file && component_folder(type) == folder
-              self.remove(type, member)
+          if component_folder(type) == folder
+            unless @components[type].index(file).nil?
+              if filtered_components.class == Array
+                filtered_components[type].push(file)
+              else
+                filtered_components[type] = [file]
+              end
             end
           end
         end
       end
+      @components = filtered_components
+      self
     end
 
     # Returns the components name
