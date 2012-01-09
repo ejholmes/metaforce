@@ -26,7 +26,12 @@ OUTPUT
       changes.destructive.to_hash.should eq(@destructive)
     end
     it "does something" do
-      # changes = Metaforce::Git.diff('master', 'HEAD', File.open(File.join(File.dirname(__FILE__), 'fixtures/package.xml'), 'r').read)
+      Dir.chdir File.join(File.dirname(__FILE__), 'fixtures/sample')
+      changes = Metaforce::Git.diff('HEAD~1', 'HEAD', File.open(File.join(File.dirname(__FILE__), 'fixtures/package.xml'), 'r').read)
+      @package = {
+        :static_resource => ['Assets']
+      }
+      changes.package.to_hash.should eq(@package);
     end
   end
 end

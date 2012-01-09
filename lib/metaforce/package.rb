@@ -61,7 +61,7 @@ module Metaforce
         folder = parts[0]
         file = parts[1].gsub(/.*\//, '').gsub(/\..*/, '')
         components.each_key do |type|
-          if component_folder(type) == folder
+          if component_folder(type) =~ /#{folder}/i
             unless components[type].index(file).nil?
               self.add(type, file);
             end

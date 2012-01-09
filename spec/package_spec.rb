@@ -117,6 +117,16 @@ describe Metaforce::Package do
         }
         response.should eq(@package_hash)
       end
+      it "ignores case of folder" do
+        package = Metaforce::Package.new(@package_hash)
+        package.only(['src/Classes/TestClass.cls', 'src/Components/Component.component'])
+        response = package.to_hash
+        @package_hash = {
+          :apex_class => ['TestClass'],
+          :apex_component => ['Component']
+        }
+        response.should eq(@package_hash)
+      end
     end
   end
   context "when given a string" do
