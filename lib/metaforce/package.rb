@@ -30,6 +30,7 @@ module Metaforce
         @components[type] = [] if @components[type].nil?
         members = [members] if members.class == String
         members.each do |member|
+          member = member.gsub(/.*\//, '').gsub(/\..*/, '');
           @components[type].push(member)
         end
       end
@@ -41,6 +42,7 @@ module Metaforce
       unless members.nil?
         members = [members] if members.class == String
         members.each do |member|
+          member = member.gsub(/.*\//, '').gsub(/\..*/, '');
           @components[type].delete(member)
         end
       end

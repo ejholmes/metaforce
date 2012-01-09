@@ -41,6 +41,17 @@ describe Metaforce::Package do
         }
         response.should eq(@package_hash)
       end
+      it "strips directories and extensions" do
+        package = Metaforce::Package.new(@package_hash)
+        package.add(:apex_class, 'src/classes/AdditionalClass.cls')
+        response = package.to_hash
+        @package_hash = {
+          :apex_class => ['TestClass', 'AnotherClass', 'AdditionalClass'],
+          :apex_component => ['Component'],
+          :static_resource => ['Assets']
+        }
+        response.should eq(@package_hash)
+      end
     end
     context "remove components" do
       it "can remove components" do
@@ -59,6 +70,17 @@ describe Metaforce::Package do
         package.remove(:apex_class, ['TestClass', 'AnotherClass'])
         response = package.to_hash
         @package_hash = {
+          :apex_component => ['Component'],
+          :static_resource => ['Assets']
+        }
+        response.should eq(@package_hash)
+      end
+      it "strips directories and extensions" do
+        package = Metaforce::Package.new(@package_hash)
+        package.remove(:apex_class, 'src/classes/TestClass.cls')
+        response = package.to_hash
+        @package_hash = {
+          :apex_class => ['AnotherClass'],
           :apex_component => ['Component'],
           :static_resource => ['Assets']
         }
