@@ -6,9 +6,15 @@ Usage
 -----
 Parse a package.xml file and add a component:
 
-    package = Metaforce::Package.new(File.open('package.xml').read)
+    package = Metaforce::Package.new(File.open('package.xml', 'r').read)
     package.add(:apex_class, 'ApexClassController')
 
 Remove a component:
 
     package.remove(:apex_class, 'ApexClassController')
+
+Save back out to a file:
+
+    File.open('package.xml', 'w') do |file|
+      file.write(package.to_xml)
+    end
