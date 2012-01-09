@@ -107,16 +107,16 @@ describe Metaforce::Package do
         }
         response.should eq(@package_hash)
       end
-      # it "strips any leading directories" do
-        # package = Metaforce::Package.new(@package_hash)
-        # package.only(['src/classes/TestClass.cls', 'src/components/Component.component'])
-        # response = package.to_hash
-        # @package_hash = {
-          # :apex_class => ['TestClass'],
-          # :apex_component => ['Component']
-        # }
-        # response.should eq(@package_hash)
-      # end
+      it "strips any leading directories" do
+        package = Metaforce::Package.new(@package_hash)
+        package.only(['src/classes/TestClass.cls', 'src/components/Component.component'])
+        response = package.to_hash
+        @package_hash = {
+          :apex_class => ['TestClass'],
+          :apex_component => ['Component']
+        }
+        response.should eq(@package_hash)
+      end
     end
   end
   context "when given a string" do
