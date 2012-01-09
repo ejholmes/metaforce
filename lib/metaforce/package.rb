@@ -27,7 +27,7 @@ module Metaforce
     # Adds components to the package
     def add(type, members=nil)
       unless members.nil?
-        @components[type] == [] if @components[type].nil?
+        @components[type] = [] if @components[type].nil?
         if members.class == String
           @components[type].push(members)
         elsif members.class == Array
@@ -56,23 +56,19 @@ module Metaforce
 
     # Filters the components based on a list of files
     def only(files)
-      filtered_components = {}
+      components = @components
+      @components = {}
       files.each do |file|
         folder = file.gsub(/\/.*/, '')
         file.gsub!(/.*\//, '').gsub!(/\..*/, '')
-        @components.each_key do |type|
+        components.each_key do |type|
           if component_folder(type) == folder
-            unless @components[type].index(file).nil?
-              if filtered_components.class == Array
-                filtered_components[type].push(file)
-              else
-                filtered_components[type] = [file]
-              end
+            unless components[type].index(file).nil?
+              self.add(type, file);
             end
           end
         end
       end
-      @components = filtered_components
       self
     end
 
