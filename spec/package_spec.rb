@@ -61,6 +61,24 @@ describe Metaforce::Package do
       }
       response.should eq(@package_hash)
     end
+    it "filters the components based on a list of files" do
+      package = Metaforce::Package.new(@package_hash)
+      package.only(['classes/TestClass'])
+      response = package.to_hash
+      @package_hash = {
+        :apex_class => ["TestClass"]
+      }
+      response.should eq(@package_hash)
+    end
+    it "filters the components based on a list of files and ignores file extensions" do
+      package = Metaforce::Package.new(@package_hash)
+      package.only(['classes/TestClass.cls'])
+      response = package.to_hash
+      @package_hash = {
+        :apex_class => ["TestClass"]
+      }
+      response.should eq(@package_hash)
+    end
   end
   context "when given a string" do
     it "parses the xml content" do

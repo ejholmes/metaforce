@@ -54,6 +54,21 @@ module Metaforce
       end
     end
 
+    # Does something
+    def only(files)
+      files.each do |file|
+        folder = file.gsub(/\/.*/, '')
+        file.gsub!(/.*\//, '').gsub!(/\..*/, '')
+        @components.each_key do |type|
+          @components[type].each do |member|
+            unless member == file && component_folder(type) == folder
+              self.remove(type, member)
+            end
+          end
+        end
+      end
+    end
+
     # Returns the components name
     def component_name(key)
       COMPONENT_TYPE_MAP[key][:name]
