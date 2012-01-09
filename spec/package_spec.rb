@@ -40,6 +40,27 @@ describe Metaforce::Package do
       }
       response.should eq(@package_hash)
     end
+    it "can remove components" do
+      package = Metaforce::Package.new(@package_hash)
+      package.remove(:apex_class, 'TestClass')
+      response = package.to_hash
+      @package_hash = {
+        :apex_class => ['AnotherClass'],
+        :apex_component => ['Component'],
+        :static_resource => ['Assets']
+      }
+      response.should eq(@package_hash)
+    end
+    it "can remove components in an array" do
+      package = Metaforce::Package.new(@package_hash)
+      package.remove(:apex_class, ['TestClass', 'AnotherClass'])
+      response = package.to_hash
+      @package_hash = {
+        :apex_component => ['Component'],
+        :static_resource => ['Assets']
+      }
+      response.should eq(@package_hash)
+    end
   end
   context "when given a string" do
     it "parses the xml content" do

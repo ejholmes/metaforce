@@ -208,6 +208,22 @@ module Metaforce
       end
     end
 
+    # Removes components from the package
+    def remove(type, members=nil)
+      unless members.nil?
+        if members.class == String
+          @components[type].delete(members)
+        elsif members.class == Array
+          members.each do |member|
+            @components[type].delete(member)
+          end
+        end
+      end
+      if @components[type].empty?
+        @components.delete(type)
+      end
+    end
+
     # Returns the components name
     def component_name(key)
       @component_type_map[key][:name]
