@@ -36,6 +36,7 @@ module Metaforce
           end
         end
       end
+      self
     end
 
     # Removes components from the package
@@ -52,6 +53,7 @@ module Metaforce
       if @components[type].empty?
         @components.delete(type)
       end
+      self
     end
 
     # Filters the components based on a list of files
