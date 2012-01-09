@@ -28,12 +28,9 @@ module Metaforce
     def add(type, members=nil)
       unless members.nil?
         @components[type] = [] if @components[type].nil?
-        if members.class == String
-          @components[type].push(members)
-        elsif members.class == Array
-          members.each do |member|
-            @components[type].push(member)
-          end
+        members = [members] if members.class == String
+        members.each do |member|
+          @components[type].push(member)
         end
       end
       self
@@ -42,12 +39,9 @@ module Metaforce
     # Removes components from the package
     def remove(type, members=nil)
       unless members.nil?
-        if members.class == String
-          @components[type].delete(members)
-        elsif members.class == Array
-          members.each do |member|
-            @components[type].delete(member)
-          end
+        members = [members] if members.class == String
+        members.each do |member|
+          @components[type].delete(member)
         end
       end
       if @components[type].empty?
