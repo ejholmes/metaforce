@@ -194,6 +194,20 @@ module Metaforce
       end
     end
 
+    # Adds components to the package
+    def add(type, members=nil)
+      unless members.nil?
+        @components[type] == [] if @components[type].nil?
+        if members.class == String
+          @components[type].push(members)
+        elsif members.class == Array
+          members.each do |member|
+            @components[type].push(member)
+          end
+        end
+      end
+    end
+
     # Returns the components name
     def component_name(key)
       @component_type_map[key][:name]
