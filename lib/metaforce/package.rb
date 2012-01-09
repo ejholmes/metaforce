@@ -57,8 +57,9 @@ module Metaforce
       components = @components
       @components = {}
       files.each do |file|
-        folder = file.gsub(/\/.*/, '')
-        file.gsub!(/.*\//, '').gsub!(/\..*/, '')
+        parts = file.split('/').last(2)
+        folder = parts[0]
+        file = parts[1].gsub(/.*\//, '').gsub(/\..*/, '')
         components.each_key do |type|
           if component_folder(type) == folder
             unless components[type].index(file).nil?
