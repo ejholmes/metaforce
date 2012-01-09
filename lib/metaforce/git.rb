@@ -13,6 +13,13 @@ module Metaforce
       @destructive = Package.new(base)
     end
 
+    def self.diff(old, new, base)
+      changes = Git.new(base)
+      git_output = `git diff --name-status #{old} #{new}`
+      changes.diff(git_output)
+      changes
+    end
+
     # Takes a string and generates a package.xml and destructiveChanges.xml
     # file
     def diff(git_output)
