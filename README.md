@@ -11,7 +11,7 @@ Parse a package.xml file and add a component:
 
 Remove a component:
 
-    package.remove(:apex_class, 'ApexClassController')
+    package.remove(:apex_class, 'src/classes/ApexClassController.cls')
 
 Save back out to a file:
 
