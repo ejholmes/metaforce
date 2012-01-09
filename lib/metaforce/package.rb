@@ -54,7 +54,7 @@ module Metaforce
       end
     end
 
-    # Does something
+    # Filters the components based on a list of files
     def only(files)
       filtered_components = {}
       files.each do |file|
