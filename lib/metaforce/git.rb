@@ -5,6 +5,9 @@ module Metaforce
     attr_reader :package
     attr_reader :destructive
 
+    GIT_ADD = /[AM]/
+    GIT_REMOVE = /[D]/
+
     def initialize(base)
       @package = Package.new(base)
       @destructive = Package.new(base)
@@ -16,16 +19,14 @@ module Metaforce
       lines = git_output.split("\n")
       destructive = []
       package = []
-
       lines.each do |line|
         parts = line.split(" ")
-        if parts[0] == "A" || parts[0] == "M"
+        if parts[0] =~ GIT_ADD
           package.push(parts[1])
-        elsif parts[0] == "D"
+        elsif parts[0] =~ GIT_REMOVE
           destructive.push(parts[1])
         end
       end
-
       @package.only(package)
       @destructive.only(destructive)
     end
