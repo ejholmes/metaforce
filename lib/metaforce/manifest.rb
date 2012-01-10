@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 module Metaforce
-  class Package
+  class Manifest
     SFDC_API_VERSION = "23.0"
 
     # example format

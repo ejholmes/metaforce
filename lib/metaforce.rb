@@ -1,5 +1,5 @@
 require 'metaforce/version'
-require 'metaforce/package'
+require 'metaforce/manifest'
 
 module Metaforce
 end

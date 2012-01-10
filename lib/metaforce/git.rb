@@ -1,4 +1,4 @@
-require 'metaforce/package'
+require 'metaforce/manifest'
 
 module Metaforce
   class Git
@@ -9,8 +9,8 @@ module Metaforce
     GIT_REMOVE = /[D]/
 
     def initialize(base)
-      @package = Package.new(base)
-      @destructive = Package.new(base)
+      @package = Manifest.new(base)
+      @destructive = Manifest.new(base)
     end
 
     def self.diff(old, new, base)
