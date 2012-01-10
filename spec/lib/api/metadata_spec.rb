@@ -1,5 +1,5 @@
 require "metaforce/api/metadata"
 require "mocha"
 
-describe Metaforce::Metadata do
+describe Metaforce::Metadata::Client do
 end
