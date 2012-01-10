@@ -2,9 +2,11 @@ require "metaforce/api/services"
 require "mocha"
 
 describe Metaforce::Services::Client do
-  it "logs a user in" do
-    services = Metaforce::Services::Client.new
-    services.expects(:login).with('user', 'password', 'token').returns('laksdlk')
-    services.login('user', 'password', 'token').should eq('laksdlk')
+  Savon.log = false
+  context "login" do
+    it "raises an error with invalid credentials" do
+      services = Metaforce::Services::Client.new
+      expect { services.login('user', 'password', 'token') }.to raise_error
+    end
   end
 end
