@@ -1,26 +1,19 @@
 Metaforce
 =========
-Metaforce is a Ruby gem for creating, reading and modifying package.xml files for the force.com metadata API.
+Metaforce is a Ruby gem for interecting with the [Salesforce Metadata API](http://www.salesforce.com/us/developer/docs/api_meta/index.htm).
+The goal of this project is to make the Migration Tool obsolete.
 
 Usage
 -----
-Parse a package.xml file and add a component:
 
 ``` ruby
-package = Metaforce::Manifest.new(File.open('package.xml', 'r').read)
-package.add(:apex_class, 'ApexClassController')
-```
+client = Metaforce::Metadata::Client.new('username', 'password', 'security token')
 
-Remove a component:
+client.deploy do |package|
+  package.root 
+end
 
-``` ruby
-package.remove(:apex_class, 'src/classes/ApexClassController.cls')
-```
-
-Save back out to a file:
-
-``` ruby
-File.open('package.xml', 'w') do |file|
-  file.write(package.to_xml)
+client.retrieve do |package|
+  
 end
 ```
