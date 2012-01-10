@@ -1,5 +1,5 @@
+require File.expand_path('../../../spec_helper', __FILE__)
 require "metaforce/api/metadata"
-require "mocha"
 
 describe Metaforce::Metadata::Client do
 end

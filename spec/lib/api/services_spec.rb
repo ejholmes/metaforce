@@ -1,5 +1,5 @@
+require File.expand_path('../../../spec_helper', __FILE__)
 require "metaforce/api/services"
-require "mocha"
 
 describe Metaforce::Services::Client do
   Savon.log = false
