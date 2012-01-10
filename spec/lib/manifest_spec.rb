@@ -1,5 +1,4 @@
 require "metaforce/manifest"
-require "nokogiri"
 
 describe Metaforce::Manifest do
   before(:all) do
