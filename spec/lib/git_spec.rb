@@ -2,7 +2,7 @@ require "metaforce/git"
 
 describe Metaforce::Git do
   before(:all) do
-    @package_xml = File.open(File.join(File.dirname(__FILE__), 'fixtures/package.xml'), 'r').read
+    @package_xml = File.open(File.join(File.dirname(__FILE__), '../fixtures/package.xml'), 'r').read
   end
   before(:each) do
     @git_output = <<-OUTPUT
