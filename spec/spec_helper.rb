@@ -7,4 +7,4 @@ RSpec.configure do |config|
 end
 
 Savon.log = false
-Savon::Spec::Fixture.path = File.expand_path('fixtures/requests', __FILE__)
+Savon::Spec::Fixture.path = File.join(File.dirname(__FILE__), 'fixtures/requests')
