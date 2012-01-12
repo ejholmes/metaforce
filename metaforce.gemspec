@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "nokogiri"
   s.add_dependency "savon"
+  s.add_dependency "rubyzip"
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "mocha"

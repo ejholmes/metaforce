@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://soap.sforce.com/2006/04/metadata">
+  <soapenv:Body>
+    <checkStatusResponse>
+      <result>
+        <done>false</done>
+        <id>04sU0000000WNWoIAo</id>
+        <numberComponentErrors>0</numberComponentErrors>
+        <numberComponentsDeployed>0</numberComponentsDeployed>
+        <numberComponentsTotal>1</numberComponentsTotal>
+        <numberTestErrors>0</numberTestErrors>
+        <numberTestsCompleted>0</numberTestsCompleted>
+        <numberTestsTotal>0</numberTestsTotal>
+        <state>Completed</state>
+        <stateDetailLastModifiedDate>2012-01-12T06:42:54.000Z</stateDetailLastModifiedDate>
+      </result>
+    </checkStatusResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
