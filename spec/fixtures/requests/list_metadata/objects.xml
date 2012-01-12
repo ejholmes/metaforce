@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://soap.sforce.com/2006/04/metadata">
+  <soapenv:Body>
+    <listMetadataResponse>
+      <result>
+        <createdById>005U0000000EGpcIAG</createdById>
+        <createdByName>Foo Bar</createdByName>
+        <createdDate>1970-01-01T00:00:00.000Z</createdDate>
+        <fileName>objects/ContractContactRole.object</fileName>
+        <fullName>ContractContactRole</fullName>
+        <id/>
+        <lastModifiedById>005U0000000EGpcIAG</lastModifiedById>
+        <lastModifiedByName>Foo Bar</lastModifiedByName>
+        <lastModifiedDate>1970-01-01T00:00:00.000Z</lastModifiedDate>
+        <namespacePrefix/>
+        <type>CustomObject</type>
+      </result>
+      <result>
+        <createdById>005U0000000EGpcIAG</createdById>
+        <createdByName>Foo Bar</createdByName>
+        <createdDate>1970-01-01T00:00:00.000Z</createdDate>
+        <fileName>objects/Site.object</fileName>
+        <fullName>Site</fullName>
+        <id/>
+        <lastModifiedById>005U0000000EGpcIAG</lastModifiedById>
+        <lastModifiedByName>Foo Bar</lastModifiedByName>
+        <lastModifiedDate>1970-01-01T00:00:00.000Z</lastModifiedDate>
+        <namespacePrefix/>
+        <type>CustomObject</type>
+      </result>
+    </listMetadataResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
