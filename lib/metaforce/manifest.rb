@@ -16,9 +16,9 @@ module Metaforce
     # }
     def initialize(components={})
       # Map component type => folder
-      if components.class == Hash
+      if components.is_a?(Hash)
         @components = components
-      elsif components.class == String
+      elsif components.is_a?(String)
         @components = {}
         self.parse(components)
       end
@@ -28,7 +28,7 @@ module Metaforce
     def add(type, members=nil)
       unless members.nil?
         @components[type] = [] if @components[type].nil?
-        members = [members] if members.class == String
+        members = [members] if members.is_a?(String)
         members.each do |member|
           member = member.gsub(/.*\//, '').gsub(/\..*/, '');
           @components[type].push(member)
@@ -40,7 +40,7 @@ module Metaforce
     # Removes components from the package
     def remove(type, members=nil)
       unless members.nil?
-        members = [members] if members.class == String
+        members = [members] if members.is_a?(String)
         members.each do |member|
           member = member.gsub(/.*\//, '').gsub(/\..*/, '');
           @components[type].delete(member)
@@ -117,7 +117,7 @@ module Metaforce
         name = type.xpath('name').first.content
         key = component_key(name);
         type.xpath('members').each do |member|
-          if @components[key].class == Array
+          if @components[key].is_a?(Array)
             @components[key].push(member.content)
           else
             @components[key] = [member.content]

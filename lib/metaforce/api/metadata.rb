@@ -28,7 +28,7 @@ module Metaforce
       #   { :type => "ApexComponent" }
       # ]
       def list(queries=[])
-        unless queries.class == Array
+        unless queries.is_a?(Array)
           queries = [ queries ]
         end
         response = @client.request(:list_metadata) do |soap|
@@ -50,7 +50,7 @@ module Metaforce
 
       # Checks the status of an async result
       def status(ids)
-        unless ids.class == Array
+        unless ids.is_a?(Array)
           ids = [ ids ]
         end
         response = @client.request(:check_status) do |soap|
