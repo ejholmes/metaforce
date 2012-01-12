@@ -7,13 +7,19 @@ Usage
 -----
 
 ``` ruby
-client = Metaforce::Metadata::Client.new('username', 'password', 'security token')
+client = Metaforce::Metadata::Client.new :username => 'username',
+    :password => 'password',
+    :security_token => 'security token')
 
-client.deploy do |package|
-  package.root 
-end
+client.describe
+# => {:metadata_objects=>[{:child_xml_names=>"CustomLabel", :directory_name=>"labels" ...
 
-client.retrieve do |package|
-  
-end
+client.list(:type => "CustomObject")
+# => [{:created_by_id=>"005U0000000EGpcIAG", :created_by_name=>"Eric Holmes", ...
+
+deployment = client.deploy(File.expand_path("../src"))
+# => "04sU0000000WNWoIAO"
+
+client.is_done?(deployment)
+# => true
 ```
