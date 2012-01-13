@@ -1,5 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
-require "metaforce/manifest"
+require "spec_helper"
 
 describe Metaforce::Manifest do
   before(:all) do
