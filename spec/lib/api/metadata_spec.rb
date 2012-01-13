@@ -15,7 +15,7 @@ describe Metaforce::Metadata::Client do
 
       it "returns an array" do
         savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:objects)
-        client.list(:type => "ApexClass").class.should eq(Array)
+        client.list(:type => "ApexClass").should be_an(Array)
       end
 
     end
@@ -26,7 +26,7 @@ describe Metaforce::Metadata::Client do
 
       it "returns a hash" do
         savon.expects(:describe_metadata).returns(:success)
-        client.describe.class.should eq(Hash)
+        client.describe.should be_a(Hash)
       end
 
     end
@@ -42,17 +42,21 @@ describe Metaforce::Metadata::Client do
     end
     context "when given an id of a result that has completed" do
 
-      it "the :done key contains true" do
+      it "returns a hash and the :done key contains true" do
         savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-        client.status("04sU0000000WNWoIAO")[:done].should eq(true)
+        status = client.status("04sU0000000WNWoIAO")
+        status.should be_a(Hash)
+        status[:done].should eq(true)
       end
 
     end
     context "when given an id of a result that has not completed" do
 
-      it "the :done key contains false" do
+      it "returns a hash and the :done key contains false" do
         savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAo" ]).returns(:not_done)
-        client.status("04sU0000000WNWoIAo")[:done].should eq(false)
+        status = client.status("04sU0000000WNWoIAo")
+        status.should be_a(Hash)
+        status[:done].should eq(false)
       end
 
     end
@@ -77,10 +81,20 @@ describe Metaforce::Metadata::Client do
     end
   end
 
-  context "deploy" do
-    # it "deploys" do
-      # client = Metaforce::Metadata::Client.new(:username => 'valid', :password => 'password')
-      # savon.expects(:deploy).with(:zip_file => "base64").returns(:in_progress)
-    # end
+  describe ".deploy" do
+
+    before(:all) do
+      Metaforce::Metadata::Client.any_instance.stubs(:create_deploy_file).returns('')
+    end
+    
+    context "when given a directory to deploy" do
+
+      it "deploys the directory and returns the id of the result" do
+        savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
+        id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__))
+        id.should eq("04sU0000000WNWoIAO")
+      end
+
+    end
   end
 end

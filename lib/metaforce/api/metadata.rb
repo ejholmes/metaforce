@@ -70,22 +70,34 @@ module Metaforce
       # Deploys dir to the organisation
       def deploy(dir, options={})
         filename = File.join(File.dirname(dir), DEPLOY_ZIP)
+        zip_contents = create_deploy_file(filename, dir)
+
+        response = @client.request(:deploy) do |soap|
+          soap.header = @header
+          soap.body = {
+            :zip_file => zip_contents,
+            :deploy_options => options
+          }
+        end
+        response[:deploy_response][:result][:id]
+      end
+
+    private
+    
+      # Creates the deploy file, reads in the contents and returns the base64
+      # encoded data
+      def create_deploy_file(filename, dir)
         File.delete(filename) if File.exists?(filename)
         Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zip|
           Dir["#{dir}/**/**"].each do |file|
             zip.add(file.sub(dir + '/', ''), file)
           end
         end
-
-        response = @client.request(:deploy) do |soap|
-          soap.header = @header
-          soap.body = {
-            :zip_file => Base64.encode64(File.open(filename, "rb").read),
-            :deploy_options => options
-          }
-        end
-        response[:deploy_response][:result][:id]
+        contents = Base64.encode64(File.open(filename, "rb").read)
+        File.delete(filename)
+        contents
       end
+
     end
   end
 end
