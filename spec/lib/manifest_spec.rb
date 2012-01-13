@@ -1,9 +1,11 @@
 require "spec_helper"
 
 describe Metaforce::Manifest do
+
   before(:all) do
     @package_xml = File.open(File.join(File.dirname(__FILE__), '../fixtures/package.xml'), 'r').read
   end
+
   before(:each) do
     @package_hash = {
       :apex_class => ['TestClass', 'AnotherClass'],
@@ -11,26 +13,32 @@ describe Metaforce::Manifest do
       :static_resource => ['Assets']
     }
   end
+
   describe ".new" do
     context "when given a hash" do
+      describe ".to_xml" do
 
-      it "returns a string containing xml" do
-        package = Metaforce::Manifest.new(@package_hash)
-        response = package.to_xml
-        response.should eq(@package_xml)
+        it "returns a string containing xml" do
+          package = Metaforce::Manifest.new(@package_hash)
+          response = package.to_xml
+          response.should eq(@package_xml)
+        end
+
       end
-
     end
     context "when given a string" do
+      describe ".to_hash" do
 
-      it "parses the xml content" do
-        package = Metaforce::Manifest.new(@package_xml)
-        response = package.to_hash
-        response.should eq(@package_hash)
+        it "returns the xml content as a hash" do
+          package = Metaforce::Manifest.new(@package_xml)
+          response = package.to_hash
+          response.should eq(@package_hash)
+        end
+
       end
-
     end
   end
+
   describe ".add" do
 
     it "can add additional components" do
@@ -70,6 +78,7 @@ describe Metaforce::Manifest do
     end
 
   end
+
   describe ".remove" do
 
     it "can remove components" do
@@ -108,6 +117,7 @@ describe Metaforce::Manifest do
     end
 
   end
+
   describe ".only" do
 
     it "filters the components based on a list of files" do
