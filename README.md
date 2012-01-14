@@ -12,10 +12,10 @@ client = Metaforce::Metadata::Client.new :username => 'username',
     :security_token => 'security token')
 
 client.describe
-# => {:metadata_objects=>[{:child_xml_names=>"CustomLabel", :directory_name=>"labels" ...
+# => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
 
 client.list(:type => "CustomObject")
-# => [{:created_by_id=>"005U0000000EGpcIAG", :created_by_name=>"Eric Holmes", ...
+# => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
 deployment = client.deploy(File.expand_path("../src"))
 # => "04sU0000000WNWoIAO"
