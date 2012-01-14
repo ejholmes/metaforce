@@ -1,4 +1,5 @@
 require "spec_helper"
+require "tempfile"
 
 describe Metaforce::Metadata::Client do
 
@@ -96,5 +97,17 @@ describe Metaforce::Metadata::Client do
       end
 
     end
+
+    context "when given a file" do
+
+      it "deploys the file and returns the id of the result" do
+        path = Tempfile.new('zipfile').tap { |f| f.write('h'); f.close }.path
+        savon.expects(:deploy).with(:zip_file => "aA==\n", :deploy_options => {}).returns(:in_progress)
+        id = client.deploy(File.open(path))
+        id.should eq("04sU0000000WNWoIAO")
+      end
+
+    end
+    
   end
 end

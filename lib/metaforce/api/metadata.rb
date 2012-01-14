@@ -69,8 +69,12 @@ module Metaforce
 
       # Deploys dir to the organisation
       def deploy(dir, options={})
-        filename = File.join(File.dirname(dir), DEPLOY_ZIP)
-        zip_contents = create_deploy_file(filename, dir)
+        if dir.is_a?(String)
+          filename = File.join(File.dirname(dir), DEPLOY_ZIP)
+          zip_contents = create_deploy_file(filename, dir)
+        elsif dir.is_a?(File)
+          zip_contents = Base64.encode64(dir.read)
+        end
 
         response = @client.request(:deploy) do |soap|
           soap.header = @header
