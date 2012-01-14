@@ -5,7 +5,7 @@ module Metaforce
     end
 
     def configure
-      yield @configuration
+      yield configuration
     end
   end
 
