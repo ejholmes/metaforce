@@ -5,15 +5,15 @@ module Metaforce
     end
 
     def configure
-      yield configuration
+      yield @configuration
     end
   end
 
   class Configuration
-    attr_accessor :sfdc_api_version
+    attr_accessor :api_version
 
-    def initializer
-      @sfdc_api_version = "23.0"
+    def initialize
+      @api_version = "23.0"
     end
   end
 end

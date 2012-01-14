@@ -10,7 +10,7 @@ module Metaforce
 
       def initialize(options={})
         @session = Services::Client.new(options).session
-        @client = Savon::Client.new File.expand_path("../../../../wsdl/23.0/metadata.xml", __FILE__) do |wsdl|
+        @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/metadata.xml", __FILE__) do |wsdl|
           wsdl.endpoint = @session[:metadata_server_url]
         end
         @header = {
