@@ -16,7 +16,9 @@ module Metaforce
 
       def login(username, password, security_token=nil)
         password = "#{password}#{security_token}" unless security_token.nil?
-        client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__)
+        client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
+          wsdl.endpoint = wsdl.endpoint.to_s.sub(/login/, 'test') if Metaforce.configuration.test
+        end
         response = client.request(:login) do
           soap.body = {
             :username => username,

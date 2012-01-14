@@ -14,9 +14,11 @@ module Metaforce
     attr_accessor :username
     attr_accessor :password
     attr_accessor :security_token
+    attr_accessor :test
 
     def initialize
       @api_version = "23.0"
+      @test = false
     end
   end
 end
