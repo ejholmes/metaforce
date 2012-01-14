@@ -92,19 +92,6 @@ module Metaforce
         response[:deploy_response][:result][:id]
       end
 
-      def retrieve_unpackaged(package)
-        options = {
-          :api_version => Metaforce.configuration.api_version,
-          :single_package => true,
-          :unpackaged => package
-        }
-        self.retrieve(options)
-      end
-
-      def retrieve(options={})
-        
-      end
-
     private
     
       # Creates the deploy file, reads in the contents and returns the base64
