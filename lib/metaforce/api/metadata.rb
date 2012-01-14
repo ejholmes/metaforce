@@ -51,17 +51,21 @@ module Metaforce
       end
 
       # Checks the status of an async result
-      def status(ids)
-        unless ids.is_a?(Array)
-          ids = [ ids ]
-        end
-        response = @client.request(:check_status) do |soap|
+      #
+      # If type is :retrieve or :deploy, it returns the RetrieveResult or
+      # DeployResult, respectively
+      def status(ids, type=nil)
+        request = "check_status"
+        request = "check_#{type.to_s}_status" unless type.nil?
+        ids = [ ids ] unless ids.is_a?(Array)
+
+        response = @client.request(request.to_sym) do |soap|
           soap.header = @header
           soap.body = {
             :ids => ids
           }
         end
-        response.body[:check_status_response][:result]
+        response.body["#{request}_response".to_sym][:result]
       end
 
       # Returns true if the deployment with id id is done, false otherwise
@@ -104,7 +108,7 @@ module Metaforce
           end
         end
         contents = Base64.encode64(File.open(filename, "rb").read)
-        File.delete(filename)
+        # File.delete(filename)
         contents
       end
 

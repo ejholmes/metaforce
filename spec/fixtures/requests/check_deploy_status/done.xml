@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://soap.sforce.com/2006/04/metadata">
+  <soapenv:Body>
+    <checkDeployStatusResponse>
+      <result>
+        <id>04sU0000000WRCXIA4</id>
+        <messages>
+          <changed>true</changed>
+          <created>true</created>
+          <deleted>false</deleted>
+          <fileName>src/classes/TestClass.cls</fileName>
+          <fullName>TestClass</fullName>
+          <id>01pU0000000pDrtIAE</id>
+          <success>true</success>
+        </messages>
+        <messages>
+          <changed>true</changed>
+          <created>false</created>
+          <deleted>false</deleted>
+          <fileName>src/package.xml</fileName>
+          <fullName>package.xml</fullName>
+          <success>true</success>
+        </messages>
+        <runTestResult>
+          <numFailures>0</numFailures>
+          <numTestsRun>0</numTestsRun>
+          <totalTime>-1.0</totalTime>
+        </runTestResult>
+        <success>true</success>
+      </result>
+    </checkDeployStatusResponse>
+  </soapenv:Body>
+</soapenv:Envelope>

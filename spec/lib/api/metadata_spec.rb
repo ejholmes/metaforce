@@ -61,6 +61,15 @@ describe Metaforce::Metadata::Client do
       end
 
     end
+    context "when given and id of a deploy that has completed" do
+
+      it "returns a hash" do
+        savon.expects(:check_deploy_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
+        status = client.status("04sU0000000WNWoIAO", :deploy)
+        status.should be_a(Hash)
+      end
+
+    end
   end
 
   describe ".is_done?" do
@@ -92,7 +101,7 @@ describe Metaforce::Metadata::Client do
 
       it "deploys the directory and returns the id of the result" do
         savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
-        id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__))
+        id = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
         id.should eq("04sU0000000WNWoIAO")
       end
 
@@ -125,5 +134,13 @@ describe Metaforce::Metadata::Client do
       }.to_not raise_error
     end
     
+  end
+
+  describe ".retrieve" do
+
+    it "does something" do
+      client
+    end
+
   end
 end
