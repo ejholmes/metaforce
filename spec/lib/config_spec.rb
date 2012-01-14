@@ -37,6 +37,16 @@ describe Metaforce do
                             :metadata_server_url => "https://na12-api.salesforce.com/services/Soap/m/23.0/00DU0000000Albh" })
       end
 
+      it "allows you to set the credentials via the configure block" do
+        Metaforce.configure do |config|
+          config.api_version = "23.0"
+          config.username = "valid"
+          config.password = "password"
+        end
+        savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
+        expect { Metaforce::Metadata::Client.new }.to_not raise_error
+      end
+
     end
 
   end
