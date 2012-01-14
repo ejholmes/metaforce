@@ -5,7 +5,12 @@ module Metaforce
     class Client
       attr_reader :session
 
-      def initialize(options={})
+      def initialize(options=nil)
+        options = {
+          :username => Metaforce.configuration.username,
+          :password => Metaforce.configuration.password,
+          :security_token => Metaforce.configuration.security_token
+        } if options.nil?
         @session = self.login(options[:username], options[:password], options[:security_token])
       end
 

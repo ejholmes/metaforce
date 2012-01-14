@@ -11,6 +11,9 @@ module Metaforce
 
   class Configuration
     attr_accessor :api_version
+    attr_accessor :username
+    attr_accessor :password
+    attr_accessor :security_token
 
     def initialize
       @api_version = "23.0"
