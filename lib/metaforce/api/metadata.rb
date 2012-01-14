@@ -1,6 +1,7 @@
 require 'savon'
 require 'zip/zip'
 require 'base64'
+require 'ostruct'
 
 module Metaforce
   module Metadata
@@ -69,6 +70,8 @@ module Metaforce
 
       # Deploys dir to the organisation
       def deploy(dir, options={})
+        options = OpenStruct.new options
+
         if dir.is_a?(String)
           filename = File.join(File.dirname(dir), DEPLOY_ZIP)
           zip_contents = create_deploy_file(filename, dir)
@@ -76,11 +79,13 @@ module Metaforce
           zip_contents = Base64.encode64(dir.read)
         end
 
+        yield options if block_given?
+
         response = @client.request(:deploy) do |soap|
           soap.header = @header
           soap.body = {
             :zip_file => zip_contents,
-            :deploy_options => options
+            :deploy_options => options.marshal_dump
           }
         end
         response[:deploy_response][:result][:id]

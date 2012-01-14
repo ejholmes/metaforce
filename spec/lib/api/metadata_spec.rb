@@ -84,7 +84,7 @@ describe Metaforce::Metadata::Client do
 
   describe ".deploy" do
 
-    before(:all) do
+    before(:each) do
       Metaforce::Metadata::Client.any_instance.stubs(:create_deploy_file).returns('')
     end
     
@@ -93,6 +93,14 @@ describe Metaforce::Metadata::Client do
       it "deploys the directory and returns the id of the result" do
         savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
         id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__))
+        id.should eq("04sU0000000WNWoIAO")
+      end
+
+      it "allows deploy options to be configured via a block" do
+        savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
+        id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__)) do |options|
+          options.run_all_tests = true
+        end
         id.should eq("04sU0000000WNWoIAO")
       end
 
