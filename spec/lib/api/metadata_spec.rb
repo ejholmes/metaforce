@@ -96,6 +96,12 @@ describe Metaforce::Metadata::Client do
         id.should eq("04sU0000000WNWoIAO")
       end
 
+      it "allows deploy options to be configured via a hash" do
+        savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
+        id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__), { :run_all_tests => true })
+        id.should eq("04sU0000000WNWoIAO")
+      end
+
       it "allows deploy options to be configured via a block" do
         savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
         id = client.deploy(File.expand_path('../../../fixtures/sample/src', __FILE__)) do |options|
