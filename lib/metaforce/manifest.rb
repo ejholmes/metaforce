@@ -110,6 +110,18 @@ module Metaforce
       @components
     end
 
+    def to_package
+      components = []
+      @components.each do |type, members|
+        name = component_name(type)
+        components.push({
+          :members => members,
+          :name => name
+        })
+      end
+      components
+    end
+
     # Parses a package.xml file
     def parse(file)
       document = Nokogiri::XML(file).remove_namespaces!

@@ -164,4 +164,18 @@ describe Metaforce::Manifest do
     end
 
   end
+
+  describe ".to_package" do
+
+    it "returns a in package format" do
+        package = Metaforce::Manifest.new(@package_hash)
+        response = package.to_package
+        response.should eq([
+          { :members => ["TestClass", "AnotherClass"], :name => "ApexClass" },
+          { :members => ["Component"], :name => "ApexComponent" },
+          { :members => ["Assets"], :name => "StaticResource" }
+        ])
+    end
+
+  end
 end
