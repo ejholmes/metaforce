@@ -93,7 +93,7 @@ module Metaforce
             :deploy_options => options.marshal_dump
           }
         end
-        response[:deploy_response][:result][:id]
+        Transaction.new response[:deploy_response][:result][:id], self, :deploy
       end
 
     private
@@ -108,7 +108,7 @@ module Metaforce
           end
         end
         contents = Base64.encode64(File.open(filename, "rb").read)
-        # File.delete(filename)
+        File.delete(filename)
         contents
       end
 

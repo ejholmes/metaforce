@@ -99,10 +99,22 @@ describe Metaforce::Metadata::Client do
     
     context "when given a directory to deploy" do
 
-      it "deploys the directory and returns the id of the result" do
+      it "deploys the directory and returns a transaction" do
         savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
-        id = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
-        id.should eq("04sU0000000WNWoIAO")
+        deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
+        deployment.should be_a(Metaforce::Transaction)
+        deployment.id.should eq("04sU0000000WNWoIAO")
+      end
+
+      context "the transaction" do
+
+        it "allows you to check if the transaction has completed" do
+          savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
+          deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
+          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
+          deployment.done?.should eq(true)
+        end
+
       end
 
     end
@@ -134,13 +146,5 @@ describe Metaforce::Metadata::Client do
       }.to_not raise_error
     end
     
-  end
-
-  describe ".retrieve" do
-
-    it "does something" do
-      client
-    end
-
   end
 end
