@@ -12,7 +12,8 @@ module Metaforce
     end
 
     def done?
-      @client.done?(@id)
+      @done = @client.done?(@id) unless @done
+      @done
     end
     alias :complete? :done?
     alias :completed? :done?

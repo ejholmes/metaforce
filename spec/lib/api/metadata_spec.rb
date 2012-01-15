@@ -106,21 +106,6 @@ describe Metaforce::Metadata::Client do
         deployment.id.should eq("04sU0000000WNWoIAO")
       end
 
-      context "the transaction" do
-
-        it "allows you to check if the transaction has completed" do
-          savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
-          deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
-          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-          deployment.done?.should eq(true)
-          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-          deployment.complete?.should eq(true)
-          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-          deployment.completed?.should eq(true)
-        end
-
-      end
-
     end
 
     # context "when given a file" do
