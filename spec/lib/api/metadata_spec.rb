@@ -113,6 +113,10 @@ describe Metaforce::Metadata::Client do
           deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
           savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
           deployment.done?.should eq(true)
+          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
+          deployment.complete?.should eq(true)
+          savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
+          deployment.completed?.should eq(true)
         end
 
       end

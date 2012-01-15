@@ -12,6 +12,8 @@ module Metaforce
     def done?
       @client.is_done?(@id)
     end
+    alias :complete? :done?
+    alias :completed? :done?
 
     def result
       @client.status(@id, type)
