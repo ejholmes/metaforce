@@ -23,7 +23,6 @@ deployment = client.deploy(File.expand_path("../src"))
 deployment.done?
 # => false
 
-deployment.wait_until_done
-deployment.result
+deployment.result(:wait_until_done => true)
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
 ```
