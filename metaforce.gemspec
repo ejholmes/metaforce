@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Eric J. Holmes"]
   s.email       = ["eric@ejholmes.net"]
   s.homepage    = "https://github.com/ejholmes/metaforce"
-  s.summary     = %q{A ruby library for creating sfdc metadata files}
-  s.description = %q{A ruby library for creating sfdc metadata files}
+  s.summary     = %q{A Ruby gem for interacting with the Salesforce Metadata API}
+  s.description = %q{A Ruby gem for interacting with the Salesforce Metadata API}
 
   s.rubyforge_project = "metaforce"
 
