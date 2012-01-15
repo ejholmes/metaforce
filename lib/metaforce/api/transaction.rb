@@ -18,6 +18,15 @@ module Metaforce
     end
     alias :complete? :done?
     alias :completed? :done?
+    
+    # Enters a loop until .done? returns true
+    def wait_until_done
+      wait_time = 1
+      until self.done?
+        sleep(wait_time)
+        wait_time *= 2
+      end
+    end
 
     # Returns the deploy or retrieve result
     def result
