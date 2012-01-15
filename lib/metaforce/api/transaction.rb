@@ -11,6 +11,7 @@ module Metaforce
       @type = type
     end
 
+    # Returns true if the transaction has completed, false otherwise
     def done?
       @done = @client.done?(@id) unless @done
       @done
@@ -18,8 +19,11 @@ module Metaforce
     alias :complete? :done?
     alias :completed? :done?
 
+    # Returns the deploy or retrieve result
     def result
-      @client.status(@id, @type)
+      raise "Request is not complete! Be sure to call .done? first!" unless @done
+      @result = @client.status(@id, @type) if @result.nil?
+      @result
     end
   end
 end
