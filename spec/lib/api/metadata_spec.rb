@@ -72,12 +72,12 @@ describe Metaforce::Metadata::Client do
     end
   end
 
-  describe ".is_done?" do
+  describe ".done?" do
     context "when given an id of a result that has completed" do
 
       it "returns true" do
         savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-        client.is_done?("04sU0000000WNWoIAO").should eq(true)
+        client.done?("04sU0000000WNWoIAO").should eq(true)
       end
 
     end
@@ -85,7 +85,7 @@ describe Metaforce::Metadata::Client do
 
       it "returns false" do
         savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAo" ]).returns(:not_done)
-        client.is_done?("04sU0000000WNWoIAo").should eq(false)
+        client.done?("04sU0000000WNWoIAo").should eq(false)
       end
 
     end

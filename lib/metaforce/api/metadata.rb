@@ -69,7 +69,7 @@ module Metaforce
       end
 
       # Returns true if the deployment with id id is done, false otherwise
-      def is_done?(id)
+      def done?(id)
         self.status(id)[:done]
       end
 
