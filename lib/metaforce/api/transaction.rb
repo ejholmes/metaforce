@@ -21,10 +21,15 @@ module Metaforce
     
     # Enters a loop until .done? returns true
     def wait_until_done
+      max_wait = 30
       wait_time = 1
       until self.done?
         sleep(wait_time)
-        wait_time *= 2
+        if wait_time < 30
+          wait_time *= 2
+        else
+          wait_time = max_wait
+        end
       end
     end
 
