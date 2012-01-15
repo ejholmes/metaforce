@@ -1,4 +1,6 @@
 module Metaforce
+
+  # Convenience class for deployment/retrieval results
   class Transaction
     attr_reader :id
     attr_reader :type
