@@ -21,5 +21,11 @@ deployment = client.deploy(File.expand_path("../src"))
 # => #<Transaction:0x00000102779bf8 id="04sU0000000WNWoIAO" type=:deploy> 
 
 deployment.done?
-# => true
+# => false
+
+until deployment.done?
+end
+
+deployment.result
+# => { :id => "04sU0000000WRFgIAO", :messages => [{ :changed => true ... :success => true }
 ```
