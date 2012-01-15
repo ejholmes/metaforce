@@ -16,7 +16,7 @@ module Metaforce
     alias :completed? :done?
 
     def result
-      @client.status(@id, type)
+      @client.status(@id, @type)
     end
   end
 end
