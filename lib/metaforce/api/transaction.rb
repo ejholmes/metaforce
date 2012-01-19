@@ -5,7 +5,7 @@ module Metaforce
     attr_reader :id
     attr_reader :type
 
-    def initialize(id, client, type)
+    def initialize(client, id, type)
       @id = id
       @client = client
       @type = type
