@@ -27,6 +27,14 @@ module Metaforce
     alias :complete? :done?
     alias :completed? :done?
     
+    # Returns the deploy or retrieve result
+    def result(options={})
+      self.wait_until_done if options[:wait_until_done]
+      raise "Request is not complete! Be sure to call .done? first!" unless @done
+      @result = @client.status(@id, @type) if @result.nil?
+      @result
+    end
+
     # Enters a loop until .done? returns true
     def wait_until_done
       max_wait = 30
@@ -41,12 +49,5 @@ module Metaforce
       end
     end
 
-    # Returns the deploy or retrieve result
-    def result(options={})
-      self.wait_until_done if options[:wait_until_done]
-      raise "Request is not complete! Be sure to call .done? first!" unless @done
-      @result = @client.status(@id, @type) if @result.nil?
-      @result
-    end
   end
 end
