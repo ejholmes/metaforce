@@ -93,7 +93,7 @@ module Metaforce
             :deploy_options => options.marshal_dump
           }
         end
-        Transaction.new self, response[:deploy_response][:result][:id], :deploy
+        Transaction.deployment self, response[:deploy_response][:result][:id]
       end
 
     private

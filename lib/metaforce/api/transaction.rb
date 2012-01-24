@@ -11,6 +11,14 @@ module Metaforce
       @type = type
     end
 
+    def self.deployment(client, id)
+      self.new client, id, :deploy
+    end
+
+    def self.retrieval(client, id)
+      self.new client, id, :retrieve
+    end
+
     # Returns true if the transaction has completed, false otherwise
     def done?
       @done = @client.done?(@id) unless @done
