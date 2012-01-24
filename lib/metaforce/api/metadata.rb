@@ -96,6 +96,26 @@ module Metaforce
         Transaction.deployment self, response[:deploy_response][:result][:id]
       end
 
+      # Performs a retrieve
+      def retrieve(options={})
+        response = @client.request(:retrieve) do |soap|
+          soap.header = @header
+          soap.body = options
+        end
+        Transaction.retrieval self, response[:retrieve_response][:result][:id]
+      end
+
+      # Retrieves files specified in the manifest file (package.xml)
+      def retrieve_unpackaged(manifest)
+        retrieve({
+          :api_version => Metaforce.configuration.api_version,
+          :single_package => true,
+          :unpackaged => {
+            :types => manifest.to_package
+          }
+        })
+      end
+
     private
     
       # Creates the deploy file, reads in the contents and returns the base64

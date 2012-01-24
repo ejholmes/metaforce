@@ -136,4 +136,12 @@ describe Metaforce::Metadata::Client do
     end
     
   end
+
+  describe ".retrieve" do
+
+    describe ".retrieve_unpackaged" do
+
+    end
+
+  end
 end
