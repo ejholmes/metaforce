@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = Metaforce::VERSION
   s.authors     = ["Eric J. Holmes"]
   s.email       = ["eric@ejholmes.net"]
-  s.homepage    = ""
-  s.summary     = %q{A ruby library for creating sfdc metadata files}
-  s.description = %q{A ruby library for creating sfdc metadata files}
+  s.homepage    = "https://github.com/ejholmes/metaforce"
+  s.summary     = %q{A Ruby gem for interacting with the Salesforce Metadata API}
+  s.description = %q{A Ruby gem for interacting with the Salesforce Metadata API}
 
   s.rubyforge_project = "metaforce"
 
@@ -18,7 +18,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  # specify any dependencies here; for example:
-  s.add_development_dependency "rspec"
   s.add_dependency "nokogiri"
+  s.add_dependency "savon"
+  s.add_dependency "rubyzip"
+
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "mocha"
+  s.add_development_dependency "savon_spec"
 end

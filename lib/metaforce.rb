@@ -1,5 +1,4 @@
 require 'metaforce/version'
+require 'metaforce/config'
 require 'metaforce/manifest'
-
-module Metaforce
-end
+require 'metaforce/api'

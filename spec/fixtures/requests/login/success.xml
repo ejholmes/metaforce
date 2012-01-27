@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <loginResponse>
+      <result>
+        <metadataServerUrl>https://na12-api.salesforce.com/services/Soap/m/23.0/00DU0000000Albh</metadataServerUrl>
+        <passwordExpired>false</passwordExpired>
+        <sandbox>false</sandbox>
+        <serverUrl>https://na12-api.salesforce.com/services/Soap/u/23.0/00DU0000000Ilbh</serverUrl>
+        <sessionId>00DU0000000Ilbh!AQoAQHVcube9Z6CRlbR9Eg8ZxpJlrJ6X8QDbnokfyVZItFKzJsLHIRGiqhzJkYsNYRkd3UVA9.s82sbjEbZGUqP3mG6TP_P8</sessionId>
+        <userId>005U0000000FGpcIAG</userId>
+        <userInfo>
+          <accessibilityMode>false</accessibilityMode>
+          <currencySymbol>$</currencySymbol>
+          <orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit>
+          <orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode>
+          <orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments>
+          <orgHasPersonAccounts>false</orgHasPersonAccounts>
+          <organizationId>00DU0000000AlbhMAC</organizationId>
+          <organizationMultiCurrency>false</organizationMultiCurrency>
+          <organizationName>Foo Org</organizationName>
+          <profileId>00eU0000000LiuNIAQ</profileId>
+          <roleId>00EU0000000x4OtMAK</roleId>
+          <sessionSecondsValid>7200</sessionSecondsValid>
+          <userDefaultCurrencyIsoCode xsi:nil="true"/>
+          <userEmail>foo@bar.com</userEmail>
+          <userFullName>Foo Bar</userFullName>
+          <userId>005U0000000EApcIAG</userId>
+          <userLanguage>en_US</userLanguage>
+          <userLocale>en_US</userLocale>
+          <userName>foo@bar.com</userName>
+          <userTimeZone>America/Los_Angeles</userTimeZone>
+          <userType>Standard</userType>
+          <userUiSkin>Theme3</userUiSkin>
+        </userInfo>
+      </result>
+    </loginResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
