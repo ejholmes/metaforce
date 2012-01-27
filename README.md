@@ -2,8 +2,8 @@
 Metaforce is a Ruby gem for interacting with the [Salesforce Metadata API](http://www.salesforce.com/us/developer/docs/api_meta/index.htm).
 The goal of this project is to make the [Migration Tool](http://www.salesforce.com/us/developer/docs/apexcode/Content/apex_deploying_ant.htm) obsolete, favoring Rake over Ant.
 
-Metaforce is in active development and is currently in alpha status. Don't use
-it to deploy code to production instances. You've been warned!
+**Metaforce is in active development and is currently in alpha status. Don't use
+it to deploy code to production instances. You've been warned!**
 
 ## Installation
 ```bash
