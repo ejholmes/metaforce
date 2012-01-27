@@ -24,6 +24,15 @@ deployment.result(:wait_until_done => true)
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
 ```
 
+## Roadmap
+This gem is far from being feature complete. Here's a list of things that still
+need to be done.
+
+* Implement .retrieve for retrieving metadata.
+* Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
+* Implement some helper methods for diffing metadata.
+* And some other stuff that I haven't quite thought of yet...
+
 ## License
 Copyright (C) 2012  Eric Holmes
 
