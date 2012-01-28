@@ -15,6 +15,7 @@ module Metaforce
         @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/metadata.xml", __FILE__) do |wsdl|
           wsdl.endpoint = @session[:metadata_server_url]
         end
+        @client.http.auth.ssl.verify_mode = :none
         @header = {
             "ins0:SessionHeader" => {
               "ins0:sessionId" => @session[:session_id]
@@ -100,7 +101,9 @@ module Metaforce
       def retrieve(options={})
         response = @client.request(:retrieve) do |soap|
           soap.header = @header
-          soap.body = options
+          soap.body = {
+            :retrieve_request => options
+          }
         end
         Transaction.retrieval self, response[:retrieve_response][:result][:id]
       end

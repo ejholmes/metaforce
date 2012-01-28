@@ -1,3 +1,5 @@
+require 'base64'
+
 module Metaforce
 
   # Convenience class for deployment/retrieval results
@@ -26,6 +28,12 @@ module Metaforce
     end
     alias :complete? :done?
     alias :completed? :done?
+
+    # Returns the zip file from a retrieval
+    def zip_file
+      raise "Request was not a retrieval" if @type != :retrieve
+      Base64.decode64(@result[:zip_file])
+    end
     
     # Returns the deploy or retrieve result
     def result(options={})
