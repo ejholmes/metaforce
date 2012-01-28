@@ -41,6 +41,11 @@ need to be done.
 * Implement some helper methods for diffing metadata.
 * And some other stuff that I haven't quite thought of yet...
 
+## Contributing
+If you'd like to contribute code, please for the repository and implement your
+feature on a new branch, then send me a pull request with a detailed
+description. Please provide applicable rspec specs.
+
 ## License
 Copyright (C) 2012  Eric Holmes
 
