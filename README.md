@@ -42,7 +42,7 @@ need to be done.
 * And some other stuff that I haven't quite thought of yet...
 
 ## Contributing
-If you'd like to contribute code, please for the repository and implement your
+If you'd like to contribute code, please fork the repository and implement your
 feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
