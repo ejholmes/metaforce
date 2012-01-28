@@ -22,7 +22,7 @@ client.describe
 client.list(:type => "CustomObject")
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
-deployment = client.deploy(File.expand_path("../src"))
+deployment = client.deploy(File.dirname(__FILE__))
 # => #<Metaforce::Transaction:0x00000102779bf8 @id="04sU0000000WNWoIAO" @type=:deploy> 
 
 deployment.done?
