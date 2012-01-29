@@ -41,6 +41,7 @@ need to be done.
 * Implement .retrieve for retrieving metadata.
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
+* Implement a DSL.
 * And some other stuff that I haven't quite thought of yet...
 
 ## Contributing
@@ -50,8 +51,6 @@ description. Please provide applicable rspec specs.
 
 ## Version History
 **head**
-
-* Ability to retrieve metadata from an organization.
 
 **0.2.0.alpha** (January 28, 2012)
 
