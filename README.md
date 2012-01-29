@@ -38,7 +38,7 @@ deployment.result(:wait_until_done => true)
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
 
-* Implement .retrieve for retrieving metadata.
+* <del>Implement .retrieve for retrieving metadata.</del>
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
 * Implement a DSL.
@@ -51,6 +51,8 @@ description. Please provide applicable rspec specs.
 
 ## Version History
 **head**
+
+* Ability to retrieve metadata from an organization.
 
 **0.2.0.alpha** (January 28, 2012)
 
