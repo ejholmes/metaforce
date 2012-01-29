@@ -38,7 +38,7 @@ module Metaforce
     # Returns the deploy or retrieve result
     def result(options={})
       self.wait_until_done if options[:wait_until_done]
-      raise "Request is not complete! Be sure to call .done? first!" unless @done
+      raise "Request has not completed." unless @done
       @result = @client.status(@id, @type) if @result.nil?
       @result
     end
