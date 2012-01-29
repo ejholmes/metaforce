@@ -62,10 +62,29 @@ describe Metaforce::DSL::Metadata do
       it "retrieves the components" do
         login valid_credentials
         expect {
-          retrieve manifest do |result|
+          retrieve manifest do |result, zip|
             result.should be_a(Hash)
+            zip.should be_a(String)
           end
         }.to_not raise_error
+      end
+
+      context "and :to is specified" do
+
+        before(:each) do
+          self.stubs(:unzip).returns('')
+        end
+
+        it "retrieves the components and unzips them to the directory" do
+          login valid_credentials
+          expect {
+            retrieve manifest, :to => "test_retrieve" do |result, zip|
+              result.should be_a(Hash)
+              zip.should be_a(String)
+            end
+          }.to_not raise_error
+        end
+
       end
 
     end
