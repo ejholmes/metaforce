@@ -28,7 +28,7 @@ describe Metaforce::DSL::Metadata do
 
     before(:each) do
       Metaforce::Metadata::Client.any_instance.stubs(:create_deploy_file).returns('')
-      savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
+      savon.expects(:login).with(valid_credentials).returns(:success)
       savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
       savon.expects(:check_deploy_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
@@ -51,7 +51,7 @@ describe Metaforce::DSL::Metadata do
 
   describe ".retrieve" do
     before(:each) do
-      savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
+      savon.expects(:login).with(valid_credentials).returns(:success)
       savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
       savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
