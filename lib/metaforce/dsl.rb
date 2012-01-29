@@ -5,14 +5,17 @@ module Metaforce
         @client = Metaforce::Metadata::Client.new options
       end
 
-      def deploy(dir)
-        deployment = @client.deploy dir
+      def deploy(dir, options={})
+        deployment = @client.deploy dir, options
         result = deployment.result :wait_until_done => true
-        raise "Deployment failed" if !result[:success]
+        raise "Deploy failed." if !result[:success]
         yield result if block_given?
       end
       
-      def retrieve
+      def retrieve(manifest)
+        retrieval = @client.retrieve_unpackaged manifest
+        result = retrieval.result :wait_until_done => true
+        yield result if block_given?
       end
     end
   end
