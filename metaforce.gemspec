@@ -18,11 +18,12 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency "nokogiri"
-  s.add_dependency "savon"
-  s.add_dependency "rubyzip"
+  s.add_dependency "nokogiri", "~> 1.5.0"
+  s.add_dependency "savon", "~> 0.9.7"
+  s.add_dependency "rubyzip", "~> 0.9.5"
 
+  s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
   s.add_development_dependency "mocha"
-  s.add_development_dependency "savon_spec"
+  s.add_development_dependency "savon_spec", "~> 0.1.6"
 end
