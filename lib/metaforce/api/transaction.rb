@@ -1,3 +1,5 @@
+require 'base64'
+
 module Metaforce
 
   # Convenience class for deployment/retrieval results
@@ -26,11 +28,17 @@ module Metaforce
     end
     alias :complete? :done?
     alias :completed? :done?
+
+    # Returns the zip file from a retrieval
+    def zip_file
+      raise "Request was not a retrieve." if @type != :retrieve
+      Base64.decode64(@result[:zip_file])
+    end
     
     # Returns the deploy or retrieve result
     def result(options={})
       self.wait_until_done if options[:wait_until_done]
-      raise "Request is not complete! Be sure to call .done? first!" unless @done
+      raise "Request has not completed." unless @done
       @result = @client.status(@id, @type) if @result.nil?
       @result
     end

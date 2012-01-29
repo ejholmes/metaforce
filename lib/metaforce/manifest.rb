@@ -4,16 +4,38 @@ module Metaforce
   class Manifest
     SFDC_API_VERSION = "23.0"
 
-    # example format
-    # {
-    #   :apex_class => [
-    #     "TestController",
-    #     "TestClass"
-    #   ],
-    #   :apex_component => [
-    #     "SiteLogin"
-    #   ]
-    # }
+    # Initializes a new instance of a manifest (package.xml) file.
+    # 
+    # It can either take a hash:
+    #   {
+    #     :apex_class => [
+    #       "TestController",
+    #       "TestClass"
+    #     ],
+    #     :apex_component => [
+    #       "SiteLogin"
+    #     ]
+    #   }
+    #
+    # Or an xml string containing the contents of a packge.xml file:
+    #  <?xml version="1.0"?>
+    #  <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    #    <types>
+    #      <members>TestClass</members>
+    #      <members>AnotherClass</members>
+    #      <name>ApexClass</name>
+    #    </types>
+    #    <types>
+    #      <members>Component</members>
+    #      <name>ApexComponent</name>
+    #    </types>
+    #    <types>
+    #      <members>Assets</members>
+    #      <name>StaticResource</name>
+    #    </types>
+    #    <version>23.0</version>
+    #  </Package>
+    # 
     def initialize(components={})
       # Map component type => folder
       if components.is_a?(Hash)
@@ -25,6 +47,8 @@ module Metaforce
     end
 
     # Adds components to the package
+    #
+    #  manifest.add :apex_class, 'SomeClass'
     def add(type, members=nil)
       unless members.nil?
         @components[type] = [] if @components[type].nil?
@@ -38,6 +62,8 @@ module Metaforce
     end
 
     # Removes components from the package
+    #
+    #  manifest.remove :apex_class, 'SomeClass'
     def remove(type, members=nil)
       unless members.nil?
         members = [members] if members.is_a?(String)
@@ -53,6 +79,8 @@ module Metaforce
     end
 
     # Filters the components based on a list of files
+    #
+    #  manifest.only(['classes/SomeClass'])
     def only(files)
       components = @components
       @components = {}
@@ -72,23 +100,41 @@ module Metaforce
     end
 
     # Returns the components name
-    def component_name(key)
+    def component_name(key) # :nodoc:
       COMPONENT_TYPE_MAP[key][:name]
     end
 
     # Returns the components folder
-    def component_folder(key)
+    def component_folder(key) # :nodoc:
       COMPONENT_TYPE_MAP[key][:folder]
     end
 
     # Returns a key for the component name
-    def component_key(name)
+    def component_key(name) # :nodoc:
       COMPONENT_TYPE_MAP.each do |key, component|
         return key if component[:name] == name
       end
     end
 
     # Returns a string containing a package.xml file
+    #
+    #  <?xml version="1.0"?>
+    #  <Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    #    <types>
+    #      <members>TestClass</members>
+    #      <members>AnotherClass</members>
+    #      <name>ApexClass</name>
+    #    </types>
+    #    <types>
+    #      <members>Component</members>
+    #      <name>ApexComponent</name>
+    #    </types>
+    #    <types>
+    #      <members>Assets</members>
+    #      <name>StaticResource</name>
+    #    </types>
+    #    <version>23.0</version>
+    #  </Package>
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
         xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
@@ -106,10 +152,22 @@ module Metaforce
       xml_builder.to_xml
     end
 
+    # Returns the underlying hash structure
+    #
+    #   {
+    #     :apex_class => [
+    #       "TestController",
+    #       "TestClass"
+    #     ],
+    #     :apex_component => [
+    #       "SiteLogin"
+    #     ]
+    #   }
     def to_hash
       @components
     end
 
+    # Used internall my Metaforce::Metadata::Client
     def to_package
       components = []
       @components.each do |type, members|

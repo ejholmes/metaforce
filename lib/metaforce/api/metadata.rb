@@ -7,14 +7,22 @@ require 'ostruct'
 module Metaforce
   module Metadata
     class Client
-      DEPLOY_ZIP = 'deploy.zip'
-      RETRIEVE_ZIP = 'retrieve.zip'
+      DEPLOY_ZIP = 'deploy.zip' # :nodoc:
+      RETRIEVE_ZIP = 'retrieve.zip' # :nodoc:
 
+      # Performs a login and sets the session_id and metadata_server_url.
+      # _options_ should be hash containing the :username, :password and
+      # :security_token keys.
+      #
+      #  Metaforce::Metadata::Client.new :username => "username",
+      #    :password => "password",
+      #    :security_token => "security token"
       def initialize(options=nil)
         @session = Services::Client.new(options).session
         @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/metadata.xml", __FILE__) do |wsdl|
           wsdl.endpoint = @session[:metadata_server_url]
         end
+        @client.http.auth.ssl.verify_mode = :none
         @header = {
             "ins0:SessionHeader" => {
               "ins0:sessionId" => @session[:session_id]
@@ -24,11 +32,10 @@ module Metaforce
 
       # Specify an array of component types to list
       #
-      # example:
-      # [
-      #   { :type => "ApexClass" },
-      #   { :type => "ApexComponent" }
-      # ]
+      #   [
+      #     { :type => "ApexClass" },
+      #     { :type => "ApexComponent" }
+      #   ]
       def list(queries=[])
         unless queries.is_a?(Array)
           queries = [ queries ]
@@ -94,6 +101,27 @@ module Metaforce
           }
         end
         Transaction.deployment self, response[:deploy_response][:result][:id]
+      end
+
+      # Performs a retrieve
+      def retrieve(options={})
+        response = @client.request(:retrieve) do |soap|
+          soap.header = @header
+          soap.body = {
+            :retrieve_request => options
+          }
+        end
+        Transaction.retrieval self, response[:retrieve_response][:result][:id]
+      end
+
+      # Retrieves files specified in the manifest file (package.xml)
+      def retrieve_unpackaged(manifest)
+        retrieve(:api_version => Metaforce.configuration.api_version,
+          :single_package => true,
+          :unpackaged => {
+            :types => manifest.to_package
+          }
+        )
       end
 
     private
