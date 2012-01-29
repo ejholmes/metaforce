@@ -35,7 +35,7 @@ deployment.result(:wait_until_done => true)
 ```
 
 ## DSL
-Metaforce includes a lightweight DSL to make deployments and retrieve's easier
+Metaforce includes a lightweight DSL to make deployments and retrieve's easier.
 
 ```ruby
 require "metaforce/dsl"
