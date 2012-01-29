@@ -48,8 +48,7 @@ deploy File.dirname(__FILE__) do |result|
     puts result
 end
 
-package = Metaforce::Manifest.new File.open(File.expand_path("../src/package.xml", __FILE__)).read
-retrieve package |result, zip|
+retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
     puts "Successful retrieve!"
     puts result
     File.open("retrieve.zip", "wb") do |file|
@@ -57,7 +56,7 @@ retrieve package |result, zip|
     end
 end
 
-retrieve package, :to => "remote_metadata"
+retrieve File.expand_path("../src/package.xml", __FILE__), :to => "remote_metadata"
 ```
 
 ## Roadmap
