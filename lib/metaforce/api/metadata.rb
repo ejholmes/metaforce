@@ -7,9 +7,16 @@ require 'ostruct'
 module Metaforce
   module Metadata
     class Client
-      DEPLOY_ZIP = 'deploy.zip'
-      RETRIEVE_ZIP = 'retrieve.zip'
+      DEPLOY_ZIP = 'deploy.zip' # :nodoc:
+      RETRIEVE_ZIP = 'retrieve.zip' # :nodoc:
 
+      # Performs a login and sets the session_id and metadata_server_url.
+      # _options_ should be hash containing the :username, :password and
+      # :security_token keys.
+      #
+      #  Metaforce::Metadata::Client.new :username => "username",
+      #    :password => "password",
+      #    :security_token => "security token"
       def initialize(options=nil)
         @session = Services::Client.new(options).session
         @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/metadata.xml", __FILE__) do |wsdl|
@@ -25,11 +32,10 @@ module Metaforce
 
       # Specify an array of component types to list
       #
-      # example:
-      # [
-      #   { :type => "ApexClass" },
-      #   { :type => "ApexComponent" }
-      # ]
+      #   [
+      #     { :type => "ApexClass" },
+      #     { :type => "ApexComponent" }
+      #   ]
       def list(queries=[])
         unless queries.is_a?(Array)
           queries = [ queries ]
@@ -110,13 +116,12 @@ module Metaforce
 
       # Retrieves files specified in the manifest file (package.xml)
       def retrieve_unpackaged(manifest)
-        retrieve({
-          :api_version => Metaforce.configuration.api_version,
+        retrieve(:api_version => Metaforce.configuration.api_version,
           :single_package => true,
           :unpackaged => {
             :types => manifest.to_package
           }
-        })
+        )
       end
 
     private

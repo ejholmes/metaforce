@@ -31,7 +31,7 @@ module Metaforce
 
     # Returns the zip file from a retrieval
     def zip_file
-      raise "Request was not a retrieval" if @type != :retrieve
+      raise "Request was not a retrieve." if @type != :retrieve
       Base64.decode64(@result[:zip_file])
     end
     
