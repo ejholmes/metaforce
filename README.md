@@ -48,6 +48,19 @@ If you'd like to contribute code, please fork the repository and implement your
 feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
+## Version History
+**head**
+
+* Ability to retrieve metadata from an organization.
+
+**0.2.0.alpha** (January 28, 2012)
+
+* Gem now supports interacting with the metadata api.
+
+**0.1.0.alpha** (January 10, 2012)
+
+* Ability to parse and modify package.xml files easily.
+
 ## License
 Copyright (C) 2012  Eric Holmes
 
