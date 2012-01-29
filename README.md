@@ -34,6 +34,32 @@ deployment.result(:wait_until_done => true)
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
 ```
 
+## DSL
+Metaforce includes a lightweight DSL to make deployments and retrieve's easier.
+
+```ruby
+require "metaforce/dsl"
+include Metaforce::DSL::Metadata
+
+login :username => 'username', :password => 'password', :security_token => 'security token'
+
+deploy File.dirname(__FILE__) do |result|
+    puts "Successful deployment!"
+    puts result
+end
+
+package = Metaforce::Manifest.new File.open(File.expand_path("../src/package.xml", __FILE__)).read
+retrieve package |result, zip|
+    puts "Successful retrieve!"
+    puts result
+    File.open("retrieve.zip", "wb") do |file|
+      file.write(zip)
+    end
+end
+
+retrieve package, :to => "remote_metadata"
+```
+
 ## Roadmap
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
@@ -41,7 +67,7 @@ need to be done.
 * <del>Implement .retrieve for retrieving metadata.</del>
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
-* Implement a DSL.
+* <del>Implement a DSL.</del>
 * And some other stuff that I haven't quite thought of yet...
 
 ## Contributing
@@ -53,6 +79,7 @@ description. Please provide applicable rspec specs.
 **head**
 
 * Ability to retrieve metadata from an organization.
+* Added a DSL.
 
 **0.2.0.alpha** (January 28, 2012)
 
