@@ -15,7 +15,8 @@ module Metaforce
       def retrieve(manifest)
         retrieval = @client.retrieve_unpackaged manifest
         result = retrieval.result :wait_until_done => true
-        yield result if block_given?
+        zip = retrieval.zip_file
+        yield result, zip if block_given?
       end
     end
   end

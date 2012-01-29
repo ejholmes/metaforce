@@ -48,8 +48,8 @@ deploy File.dirname(__FILE__) do |result|
     puts result
 end
 
-components = Metaforce::Manifest.new File.open(File.expand_path("../src/package.xml", __FILE__)).read
-retrieve components |result|
+package = Metaforce::Manifest.new File.open(File.expand_path("../src/package.xml", __FILE__)).read
+retrieve package |result|
     puts "Successful retrieve!"
     puts result
 end
