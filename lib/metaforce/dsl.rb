@@ -1,8 +1,8 @@
 module Metaforce
-  module Metadata
-    module DSL
+  module DSL
+    module Metadata
       def login(options)
-        @client = Client.new options
+        @client = Metaforce::Metadata::Client.new options
       end
 
       def deploy(dir)
