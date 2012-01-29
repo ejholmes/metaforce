@@ -116,10 +116,15 @@ module Metaforce
 
       # Retrieves files specified in the manifest file (package.xml)
       def retrieve_unpackaged(manifest)
+        if manifest.is_a?(Metaforce::Manifest)
+          package = manifest.to_package
+        elsif manifest.is_a?(String)
+          package = Metaforce::Manifest.new(File.open(manifest).read).to_package
+        end
         retrieve(:api_version => Metaforce.configuration.api_version,
           :single_package => true,
           :unpackaged => {
-            :types => manifest.to_package
+            :types => package
           }
         )
       end
