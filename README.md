@@ -56,7 +56,7 @@ retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
     end
 end
 
-retrieve File.expand_path("../src/package.xml", __FILE__), :to => "remote_metadata"
+retrieve File.expand_path("../src/package.xml", __FILE__), :to => "directory"
 ```
 
 ## Roadmap
