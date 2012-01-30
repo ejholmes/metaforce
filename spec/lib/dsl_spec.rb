@@ -72,7 +72,7 @@ describe Metaforce::DSL::Metadata do
       context "and :to is specified" do
 
         before(:each) do
-          self.stubs(:unzip).returns('')
+          Metaforce::Transaction.any_instance.stubs(:unzip).returns('')
         end
 
         it "retrieves the components and unzips them to the directory" do

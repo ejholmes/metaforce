@@ -34,6 +34,23 @@ module Metaforce
       raise "Request was not a retrieve." if @type != :retrieve
       Base64.decode64(@result[:zip_file])
     end
+
+    # Unzips the returned zip file to _destination_
+    def unzip(destination)
+      zip = zip_file
+      file = Tempfile.new("retrieve")
+      file.write(zip)
+      path = file.path
+      file.close
+
+      Zip::ZipFile.open(path) do |zip|
+        zip.each do |f|
+          path = File.join(destination, f.name)
+          FileUtils.mkdir_p(File.dirname(path))
+          zip.extract(f, path)
+        end
+      end
+    end
     
     # Returns the deploy or retrieve result
     def result(options={})
