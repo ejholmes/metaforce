@@ -19,11 +19,18 @@ module Metaforce
         yield result if block_given?
       end
       
-      # Retrieve the metadata specified in the manifest file. If _options_
-      # contains a key _:to_, the resulting zip file that is retrieved is
-      # unzipped to the directory specified.
+      # Retrieve the metadata specified in the manifest file. If manifest is a
+      # Hash, the underlying .retrieve method is used instead of
+      # .retrieve_unpackaged.
+      #
+      # If _options_ # contains a key _:to_, the resulting zip
+      # file that is retrieved is unzipped to the directory specified.
       def retrieve(manifest, options={})
-        retrieval = @client.retrieve_unpackaged(manifest)
+        if manifest.is_a?(Hash)
+          retrieval = @client.retrieve(manifest)
+        else
+          retrieval = @client.retrieve_unpackaged(manifest)
+        end
         result = retrieval.result(:wait_until_done => true)
         zip_contents = retrieval.zip_file
         retrieval.unzip(options[:to]) if options.has_key?(:to)
