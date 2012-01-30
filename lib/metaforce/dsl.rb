@@ -5,9 +5,10 @@ module Metaforce
   module DSL
     module Metadata
 
-      # Logs and and creates a new instance of Metaforce::Metadata::Client
+      # Logs in and creates a new instance of Metaforce::Metadata::Client
       def login(options)
         @client = Metaforce::Metadata::Client.new options
+        yield if block_given?
       end
 
       # Deploy the contents of _dir_ to the target organization

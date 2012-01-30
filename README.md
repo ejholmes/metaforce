@@ -41,22 +41,23 @@ Metaforce includes a lightweight DSL to make deployments and retrieve's easier.
 require "metaforce/dsl"
 include Metaforce::DSL::Metadata
 
-login :username => 'username', :password => 'password', :security_token => 'security token'
+login :username => 'username', :password => 'password', :security_token => 'security token' do
 
-deploy File.dirname(__FILE__) do |result|
-    puts "Successful deployment!"
-    puts result
+  deploy File.dirname(__FILE__) do |result|
+      puts "Successful deployment!"
+      puts result
+  end
+
+  retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
+      puts "Successful retrieve!"
+      puts result
+      File.open("retrieve.zip", "wb") do |file|
+        file.write(zip)
+      end
+  end
+
+  retrieve File.expand_path("../src/package.xml", __FILE__), :to => "directory"
 end
-
-retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
-    puts "Successful retrieve!"
-    puts result
-    File.open("retrieve.zip", "wb") do |file|
-      file.write(zip)
-    end
-end
-
-retrieve File.expand_path("../src/package.xml", __FILE__), :to => "directory"
 ```
 
 ## Roadmap
