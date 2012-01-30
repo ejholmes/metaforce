@@ -80,10 +80,12 @@ module Metaforce
         self.status(id)[:done]
       end
 
-      # Deploys dir to the organisation
-      def deploy(dir, options={})
-        options = OpenStruct.new options
-
+      # Deploys _dir_ to the organisation
+      #
+      # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_deploy.htm#deploy_options
+      # for a list of _deploy_options_. Options should be convereted from
+      # camelCase to an :underscored_symbol.
+      def deploy(dir, deploy_options={})
         if dir.is_a?(String)
           filename = File.join(File.dirname(dir), DEPLOY_ZIP)
           zip_contents = create_deploy_file(filename, dir)
@@ -91,24 +93,26 @@ module Metaforce
           zip_contents = Base64.encode64(dir.read)
         end
 
-        yield options if block_given?
-
         response = @client.request(:deploy) do |soap|
           soap.header = @header
           soap.body = {
             :zip_file => zip_contents,
-            :deploy_options => options.marshal_dump
+            :deploy_options => deploy_options
           }
         end
         Transaction.deployment self, response[:deploy_response][:result][:id]
       end
 
       # Performs a retrieve
-      def retrieve(options={})
+      #
+      # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm
+      # for a list of _retrieve_request_ options. Options should be convereted from
+      # camelCase to an :underscored_symbol.
+      def retrieve(retrieve_request={})
         response = @client.request(:retrieve) do |soap|
           soap.header = @header
           soap.body = {
-            :retrieve_request => options
+            :retrieve_request => retrieve_request
           }
         end
         Transaction.retrieval self, response[:retrieve_response][:result][:id]
@@ -121,12 +125,14 @@ module Metaforce
         elsif manifest.is_a?(String)
           package = Metaforce::Manifest.new(File.open(manifest).read).to_package
         end
-        retrieve(:api_version => Metaforce.configuration.api_version,
+        retrieve_request = { 
+          :api_version => Metaforce.configuration.api_version,
           :single_package => true,
           :unpackaged => {
             :types => package
           }
-        )
+        }
+        retrieve(retrieve_request)
       end
 
     private

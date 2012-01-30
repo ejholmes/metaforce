@@ -108,17 +108,6 @@ describe Metaforce::Metadata::Client do
 
     end
 
-    # context "when given a file" do
-
-      # it "deploys the file and returns the id of the result" do
-        # path = Tempfile.new('zipfile').tap { |f| f.write('h'); f.close }.path
-        # savon.expects(:deploy).with(:zip_file => "aA==\n", :deploy_options => {}).returns(:in_progress)
-        # id = client.deploy(File.open(path))
-        # id.should eq("04sU0000000WNWoIAO")
-      # end
-
-    # end
-
     it "allows deploy options to be configured via a hash" do
       savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
       expect {
@@ -126,15 +115,6 @@ describe Metaforce::Metadata::Client do
       }.to_not raise_error
     end
 
-    it "allows deploy options to be configured via a block" do
-      savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
-      expect {
-        client.deploy('') do |options|
-          options.run_all_tests = true
-        end
-      }.to_not raise_error
-    end
-    
   end
 
   describe ".retrieve" do
