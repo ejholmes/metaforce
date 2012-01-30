@@ -119,7 +119,9 @@ module Metaforce
       end
 
       # Retrieves files specified in the manifest file (package.xml)
-      def retrieve_unpackaged(manifest)
+      #
+      # Specificy any extra _retrieve_request_ options in _extra_.
+      def retrieve_unpackaged(manifest, extra=nil)
         if manifest.is_a?(Metaforce::Manifest)
           package = manifest.to_package
         elsif manifest.is_a?(String)
@@ -132,6 +134,7 @@ module Metaforce
             :types => package
           }
         }
+        retrieve_request.merge!(extra) if extra.is_a?(Hash)
         retrieve(retrieve_request)
       end
 

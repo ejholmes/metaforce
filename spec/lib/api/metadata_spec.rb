@@ -125,13 +125,12 @@ describe Metaforce::Metadata::Client do
 
     describe ".retrieve_unpackaged" do
 
-      before(:each) do
-        savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
-        savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
-        savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
-      end
-
       context "when given a manifest file" do
+        before(:each) do
+          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
+          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
+          savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
+        end
 
         it "returns a valid retrieve result" do
           retrieval = client.retrieve_unpackaged(manifest)
@@ -143,12 +142,30 @@ describe Metaforce::Metadata::Client do
       end
 
       context "when given the path to a manifest file" do
+        before(:each) do
+          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
+          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
+          savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
+        end
 
         it "returns a valid retrieve result" do
           retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__))
           retrieval.done?
           result = retrieval.result
           result.should be_a(Hash)
+        end
+
+      end
+
+      context "when given extra retrieve options" do
+        before(:each) do
+          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package }, :extra => true }).returns(:in_progress)
+        end
+
+        it "merges the options" do
+          expect {
+            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), { :extra => true })
+          }.to_not raise_error
         end
 
       end
