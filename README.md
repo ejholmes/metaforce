@@ -9,7 +9,7 @@ it to deploy code to production instances. You've been warned!**
 
 ## Installation
 ```bash
-gem install metaforce --pre
+gem install metaforce -v '0.3.0.alpha'
 ```
 
 ## Usage
