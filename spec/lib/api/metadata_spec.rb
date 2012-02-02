@@ -30,6 +30,30 @@ describe Metaforce::Metadata::Client do
         client.describe.should be_a(Hash)
       end
 
+      it "caches the response" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe.should be_a(Hash)
+        expect { client.describe }.to_not raise_error
+      end
+
+    end
+  end
+
+  describe ".describe!" do
+    context "when given valid information" do
+
+      it "returns a hash" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe!.should be_a(Hash)
+      end
+
+      it "doesn't cache the response" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe!.should be_a(Hash)
+        savon.expects(:describe_metadata).returns(:success)
+        expect { client.describe! }.to_not raise_error
+      end
+
     end
   end
 

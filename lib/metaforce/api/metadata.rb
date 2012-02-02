@@ -49,8 +49,13 @@ module Metaforce
         response.body[:list_metadata_response][:result]
       end
 
-      # Describe the organization's metadata
+      # Describe the organization's metadata and cache the response
       def describe
+        @describe ||= describe!
+      end
+
+      # Describe the organization's metadata
+      def describe!
         response = @client.request(:describe_metadata) do |soap|
           soap.header = @header
         end
