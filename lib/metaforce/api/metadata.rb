@@ -59,7 +59,7 @@ module Metaforce
         response = @client.request(:describe_metadata) do |soap|
           soap.header = @header
         end
-        response.body[:describe_metadata_response][:result]
+        @describe = response.body[:describe_metadata_response][:result]
       end
 
       # Checks the status of an async result
