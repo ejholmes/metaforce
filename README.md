@@ -80,7 +80,7 @@ description. Please provide applicable rspec specs.
 **HEAD**
 
 * The `describe` method now caches the results to minimize latency. `describe!`
-  cane be used to force a refresh.
+  can be used to force a refresh.
 
 **0.3.0.alpha** (January 29, 2012)
 
