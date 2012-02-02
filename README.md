@@ -77,6 +77,11 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* The `describe` method now caches the results to minimize latency. `describe!`
+  cane be used to force a refresh.
+
 **0.3.0.alpha** (January 29, 2012)
 
 * Ability to retrieve metadata from an organization.
