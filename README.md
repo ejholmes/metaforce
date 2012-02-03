@@ -79,6 +79,7 @@ description. Please provide applicable rspec specs.
 ## Version History
 **HEAD**
 
+* Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
 * The `describe` method now caches the results to minimize latency. `describe!`
   can be used to force a refresh.
 
