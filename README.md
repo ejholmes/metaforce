@@ -1,8 +1,9 @@
-# Metaforce
-![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)
+# Metaforce [![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)](https://secure.travis-ci.org/ejholmes/metaforce)
 
 Metaforce is a Ruby gem for interacting with the [Salesforce Metadata API](http://www.salesforce.com/us/developer/docs/api_meta/index.htm).
 The goal of this project is to make the [Migration Tool](http://www.salesforce.com/us/developer/docs/apexcode/Content/apex_deploying_ant.htm) obsolete, favoring Rake over Ant.
+
+[Documentation](http://rubydoc.info/gems/metaforce/frames)
 
 ## Installation
 ```bash
