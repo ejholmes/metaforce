@@ -4,24 +4,33 @@ module Metaforce
 
   # Convenience class for deployment/retrieval results
   class Transaction
+    # The Salesforce ID for this task
     attr_reader :id
+    # The type of transaction (e.g. _:deploy_, _:retrieve_)
     attr_reader :type
 
     def initialize(client, id, type)
-      @id = id
+      @id     = id
       @client = client
-      @type = type
+      @type   = type
     end
 
+    # Creates a new transaction and sets type to +:deploy+.
     def self.deployment(client, id)
       self.new client, id, :deploy
     end
 
+    # Creates a new transaction and sets type to +:retrieve+.
     def self.retrieval(client, id)
       self.new client, id, :retrieve
     end
 
-    # Returns true if the transaction has completed, false otherwise
+    # Wrapper for <tt>Client.status</tt>.
+    def status
+      @status = @client.status(@id)
+    end
+
+    # Wrapper for <tt>Client.done?</tt>.
     def done?
       @done = @client.done?(@id) unless @done
       @done
@@ -29,13 +38,13 @@ module Metaforce
     alias :complete? :done?
     alias :completed? :done?
 
-    # Returns the zip file from a retrieval
+    # Returns the decoded content of the returned zip file.
     def zip_file
       raise "Request was not a retrieve." if @type != :retrieve
       Base64.decode64(@result[:zip_file])
     end
 
-    # Unzips the returned zip file to _destination_
+    # Unzips the returned zip file to +destination+.
     def unzip(destination)
       zip = zip_file
       file = Tempfile.new("retrieve")

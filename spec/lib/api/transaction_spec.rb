@@ -30,6 +30,17 @@ describe Metaforce::Transaction do
 
   end
 
+  describe ".status" do
+
+    it "returns the status" do
+      savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
+      deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
+      savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
+      deployment.status.should be_a(Hash)
+    end
+    
+  end
+
   describe ".result" do
 
     it "raises an error if .done? hasn't been called" do
