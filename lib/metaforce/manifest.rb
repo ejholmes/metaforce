@@ -1,4 +1,5 @@
 require 'nokogiri'
+require 'metaforce/types'
 
 module Metaforce
   class Manifest
@@ -101,17 +102,17 @@ module Metaforce
 
     # Returns the components name
     def component_name(key) # :nodoc:
-      COMPONENT_TYPE_MAP[key][:name]
+      METADATA_TYPES[key][:name]
     end
 
     # Returns the components folder
     def component_folder(key) # :nodoc:
-      COMPONENT_TYPE_MAP[key][:folder]
+      METADATA_TYPES[key][:folder]
     end
 
     # Returns a key for the component name
     def component_key(name) # :nodoc:
-      COMPONENT_TYPE_MAP.each do |key, component|
+      METADATA_TYPES.each do |key, component|
         return key if component[:name] == name
       end
     end
@@ -172,10 +173,7 @@ module Metaforce
       components = []
       @components.each do |type, members|
         name = component_name(type)
-        components.push({
-          :members => members,
-          :name => name
-        })
+        components.push :members => members, :name => name
       end
       components
     end
@@ -197,175 +195,5 @@ module Metaforce
       self
     end
 
-    COMPONENT_TYPE_MAP = {
-      :action_override => {
-        :name => "ActionOverride",
-        :folder => "objects"
-      },
-      :analytics_snapshot => {
-        :name => "AnalyticsSnapshot",
-        :folder => "analyticsnapshots"
-      },
-      :apex_class => {
-        :name => "ApexClass",
-        :folder => "classes"
-      },
-      :article_type => {
-        :name => "ArticleType",
-        :folder => "objects"
-      },
-      :apex_component => {
-        :name => "ApexComponent",
-        :folder => "components"
-      },
-      :apex_page => {
-        :name => "ApexPage",
-        :folder => "pages"
-      },
-      :apex_trigger => {
-        :name => "ApexTrigger",
-        :folder => "triggers"
-      },
-      :business_process => {
-        :name => "BusinessProcess",
-        :folder => "objects"
-      },
-      :custom_application => {
-        :name => "CustomApplication",
-        :folder => "applications"
-      },
-      :custom_field => {
-        :name => "CustomField",
-        :folder => "objects"
-      },
-      :custom_labels => {
-        :name => "CustomLabels",
-        :folder => "labels"
-      },
-      :custom_object => {
-        :name => "CustomObject",
-        :folder => "objects"
-      },
-      :custom_object_translation => {
-        :name => "CustomObjectTranslation",
-        :folder => "objectTranslations"
-      },
-      :custom_page_web_link => {
-        :name => "CustomPageWebLink",
-        :folder => "weblinks"
-      },
-      :custom_site => {
-        :name => "CustomSite",
-        :folder => "sites"
-      },
-      :custom_tab => {
-        :name => "CustomTab",
-        :folder => "tabs"
-      },
-      :dashboard => {
-        :name => "Dashboard",
-        :folder => "dashboards"
-      },
-      :data_category_group => {
-        :name => "DataCategoryGroup",
-        :folder => "datacategorygroups"
-      },
-      :document => {
-        :name => "Document",
-        :folder => "document"
-      },
-      :email_template => {
-        :name => "EmailTemplate",
-        :folder => "email"
-      },
-      :entitlement_template => {
-        :name => "EntitlementTemplate",
-        :folder => "entitlementTemplates"
-      },
-      :field_set => {
-        :name => "FieldSet",
-        :folder => "objects"
-      },
-      :home_page_component => {
-        :name => "HomePageComponent",
-        :folder => "homePageComponents"
-      },
-      :layout => {
-        :name => "Layout",
-        :folder => "layouts"
-      },
-      :letterhead => {
-        :name => "Letterhead",
-        :folder => "letterhead"
-      },
-      :list_view => {
-        :name => "ListView",
-        :folder => "objects"
-      },
-      :named_filter => {
-        :name => "NamedFilter",
-        :folder => "objects"
-      },
-      :permission_set => {
-        :name => "PermissionSet",
-        :folder => "permissionsets"
-      },
-      :portal => {
-        :name => "Portal",
-        :folder => "portals"
-      },
-      :profile => {
-        :name => "Profile",
-        :folder => "profiles"
-      },
-      :record_type => {
-        :name => "RecordType",
-        :folder => "objects"
-      },
-      :remote_site_setting => {
-        :name => "RemoteSiteSetting",
-        :folder => "remoteSiteSettings"
-      },
-      :report => {
-        :name => "Report",
-        :folder => "reports"
-      },
-      :report_type => {
-        :name => "ReportType",
-        :folder => "reportTypes"
-      },
-      :scontroler => {
-        :name => "Scontroler",
-        :folder => "scontrols"
-      },
-      :sharing_reason => {
-        :name => "SharingReason",
-        :folder => "objects"
-      },
-      :sharing_recalculation => {
-        :name => "SharingRecalculation",
-        :folder => "objects"
-      },
-      :static_resource => {
-        :name => "StaticResource",
-        :folder => "staticResources"
-      },
-      :translations => {
-        :name => "Translations",
-        :folder => "translations"
-      },
-      :validation_rule => {
-        :name => "ValidationRule",
-        :folder => "objects"
-      },
-      :weblink => {
-        :name => "Weblink",
-        :folder => "objects"
-      },
-      :workflow => {
-        :name => "Workflow",
-        :folder => "workflows"
-      }
-    }
   end
 end
