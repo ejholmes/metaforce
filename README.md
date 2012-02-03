@@ -4,12 +4,9 @@
 Metaforce is a Ruby gem for interacting with the [Salesforce Metadata API](http://www.salesforce.com/us/developer/docs/api_meta/index.htm).
 The goal of this project is to make the [Migration Tool](http://www.salesforce.com/us/developer/docs/apexcode/Content/apex_deploying_ant.htm) obsolete, favoring Rake over Ant.
 
-**Metaforce is in active development and is currently in alpha status. Don't use
-it to deploy code to production instances. You've been warned!**
-
 ## Installation
 ```bash
-gem install metaforce --pre
+gem install metaforce
 ```
 
 ## Usage
@@ -77,7 +74,7 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.3.1** (February 3, 2012)
 
 * Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
 * The `describe` method now caches the results to minimize latency. `describe!`
