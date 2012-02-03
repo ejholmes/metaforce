@@ -12,13 +12,17 @@ describe Metaforce::Metadata::Client do
   end
   
   describe ".list" do
-    context "when given valid information" do
 
-      it "returns an array" do
-        savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:objects)
-        client.list(:type => "ApexClass").should be_an(Array)
-      end
+    it "returns an array" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:objects)
+      client.list(:type => "ApexClass").should be_an(Array)
+    end
 
+  end
+
+  it "should respond to dynamically defined list methods" do
+    Metaforce::METADATA_TYPES.each do |type, value|
+      client.respond_to?("list_#{value[:plural]}").should eq(true)
     end
   end
 
@@ -28,6 +32,30 @@ describe Metaforce::Metadata::Client do
       it "returns a hash" do
         savon.expects(:describe_metadata).returns(:success)
         client.describe.should be_a(Hash)
+      end
+
+      it "caches the response" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe.should be_a(Hash)
+        expect { client.describe }.to_not raise_error
+      end
+
+    end
+  end
+
+  describe ".describe!" do
+    context "when given valid information" do
+
+      it "returns a hash" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe!.should be_a(Hash)
+      end
+
+      it "doesn't cache the response" do
+        savon.expects(:describe_metadata).returns(:success)
+        client.describe!.should be_a(Hash)
+        savon.expects(:describe_metadata).returns(:success)
+        expect { client.describe! }.to_not raise_error
       end
 
     end

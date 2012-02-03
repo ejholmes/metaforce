@@ -49,12 +49,29 @@ module Metaforce
         response.body[:list_metadata_response][:result]
       end
 
-      # Describe the organization's metadata
+      # Defines some helper methods for listing metadata types
+      #
+      # Example
+      #  
+      #   client.list_apex_classes
+      #   client.list_custom_objects
+      METADATA_TYPES.each do |type, value|
+        define_method("list_#{value[:plural]}".to_sym) do
+          list :type => value[:name]
+        end
+      end
+
+      # Describe the organization's metadata and cache the response
       def describe
+        @describe ||= describe!
+      end
+
+      # Describe the organization's metadata
+      def describe!
         response = @client.request(:describe_metadata) do |soap|
           soap.header = @header
         end
-        response.body[:describe_metadata_response][:result]
+        @describe = response.body[:describe_metadata_response][:result]
       end
 
       # Checks the status of an async result

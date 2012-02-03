@@ -4,12 +4,9 @@
 Metaforce is a Ruby gem for interacting with the [Salesforce Metadata API](http://www.salesforce.com/us/developer/docs/api_meta/index.htm).
 The goal of this project is to make the [Migration Tool](http://www.salesforce.com/us/developer/docs/apexcode/Content/apex_deploying_ant.htm) obsolete, favoring Rake over Ant.
 
-**Metaforce is in active development and is currently in alpha status. Don't use
-it to deploy code to production instances. You've been warned!**
-
 ## Installation
 ```bash
-gem install metaforce --pre
+gem install metaforce
 ```
 
 ## Usage
@@ -64,9 +61,10 @@ end
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
 
-* <del>Implement .retrieve for retrieving metadata.</del>
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
+* Ability to deploy directly from a git repository.
+* <del>Implement .retrieve for retrieving metadata.</del>
 * <del>Implement a DSL.</del>
 * And some other stuff that I haven't quite thought of yet...
 
@@ -76,6 +74,12 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**0.3.1** (February 3, 2012)
+
+* Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
+* The `describe` method now caches the results to minimize latency. `describe!`
+  can be used to force a refresh.
+
 **0.3.0.alpha** (January 29, 2012)
 
 * Ability to retrieve metadata from an organization.
