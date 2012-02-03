@@ -75,6 +75,11 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* Improved documentation.
+* Added `.status` method to Transaction class.
+
 **0.3.1** (February 3, 2012)
 
 * Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
