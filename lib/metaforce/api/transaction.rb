@@ -9,9 +9,9 @@ module Metaforce
     # The type of transaction (e.g. _:deploy_, _:retrieve_)
     attr_reader :type
 
-    def initialize(client, id, type)
-      @id     = id
+    def initialize(client, id, type=nil)
       @client = client
+      @id     = id
       @type   = type
     end
 
@@ -40,7 +40,7 @@ module Metaforce
 
     # Returns the decoded content of the returned zip file.
     def zip_file
-      raise "Request was not a retrieve." if @type != :retrieve
+      raise "Request was not a retrieve." unless @type == :retrieve
       Base64.decode64(@result[:zip_file])
     end
 
