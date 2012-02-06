@@ -62,9 +62,9 @@ end
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
 
-* Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
 * Ability to deploy directly from a git repository.
+* <del>Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.</del>
 * <del>Implement .retrieve for retrieving metadata.</del>
 * <del>Implement a DSL.</del>
 * And some other stuff that I haven't quite thought of yet...
@@ -75,6 +75,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* Implemented `Metaforce::Metadata::Client.create`.
+
 **0.3.4** (February 9, 2012)
 
 * Add rake tasks.
