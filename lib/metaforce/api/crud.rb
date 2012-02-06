@@ -8,7 +8,7 @@ module Metaforce
           soap.header = @header
           soap.body = {
             :metadata => metadata,
-            :attributes! => { :metadata => { "xsi:type" => type.to_s } }
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
           }
         end
         response
