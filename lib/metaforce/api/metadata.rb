@@ -81,14 +81,15 @@ module Metaforce
       #   # List the names of all metedata types
       #   client.describe[:metadata_objects].collect { |t| t[:xml_name] }
       #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
-      def describe
-        @describe ||= describe!
+      def describe(version=nil)
+        @describe ||= describe!(version)
       end
 
       # See +describe+
-      def describe!
+      def describe!(version=nil)
         response = @client.request(:describe_metadata) do |soap|
           soap.header = @header
+          soap.body = { :api_version => version } unless version.nil?
         end
         @describe = response.body[:describe_metadata_response][:result]
       end
