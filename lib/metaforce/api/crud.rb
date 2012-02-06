@@ -11,7 +11,7 @@ module Metaforce
             :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
           }
         end
-        response
+        response.body[:create_response][:result]
       end
 
     end
