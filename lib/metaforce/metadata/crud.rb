@@ -48,13 +48,13 @@ module Metaforce
       Metaforce::Metadata::Types.all.each do |type, value|
         define_method("create_#{type}".to_sym) do |metadata|
           create(type, metadata)
-        end
+        end unless method_defined?("create_#{type}".to_sym)
         define_method("update_#{type}".to_sym) do |metadata|
           update(type, metadata)
-        end
+        end unless method_defined?("update_#{type}".to_sym)
         define_method("delete_#{type}".to_sym) do |metadata|
           delete(type, metadata)
-        end
+        end unless method_defined?("delete_#{type}".to_sym)
       end
 
     private
