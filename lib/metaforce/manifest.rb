@@ -3,7 +3,6 @@ require 'metaforce/types'
 
 module Metaforce
   class Manifest
-    SFDC_API_VERSION = "23.0"
 
     # Initializes a new instance of a manifest (package.xml) file.
     # 
@@ -130,7 +129,7 @@ module Metaforce
               xml.name Metaforce::Metadata::Types.name(key)
             }
           end
-          xml.version SFDC_API_VERSION
+          xml.version Metaforce.configuration.api_version
         }
       end
       xml_builder.to_xml
