@@ -14,13 +14,13 @@ describe Metaforce::Metadata::Client do
 
     it "returns a transaction" do
       savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
-      response = client.create("ApexComponent", { :full_name => 'component', :label => 'test' })
+      response = client.create(:apex_component, { :full_name => 'component', :label => 'test' })
       response.should be_a(Metaforce::Transaction)
     end
 
     it "base64 encodes any content" do
       savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test', :content => "dGVzdA==\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
-      response = client.create("ApexComponent", { :full_name => 'component', :label => 'test', :content => 'test' })
+      response = client.create(:apex_component, { :full_name => 'component', :label => 'test', :content => 'test' })
     end
 
     it "responds to dynamically built methods" do

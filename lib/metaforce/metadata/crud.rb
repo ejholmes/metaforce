@@ -5,6 +5,7 @@ module Metaforce
     class Client
 
       def create(type, metadata={})
+        type = Metaforce::Metadata::Types.name(type)
         metadata = [metadata] unless metadata.is_a?(Array)
         metadata = encode_content(metadata)
         response = @client.request(:create) do |soap|
@@ -18,6 +19,7 @@ module Metaforce
       end
 
       def delete(type, metadata={})
+        type = Metaforce::Metadata::Types.key(type)
         metadata = [metadata] unless metadata.is_a?(Array)
         response = @client.request(:delete) do |soap|
           soap.header = @header
@@ -31,10 +33,10 @@ module Metaforce
 
       Metaforce::Metadata::Types.all.each do |type, value|
         define_method("create_#{type}".to_sym) do |metadata|
-          create(value[:name], metadata)
+          create(type, metadata)
         end
         define_method("delete_#{type}".to_sym) do |metadata|
-          delete(value[:name], metadata)
+          delete(type, metadata)
         end
       end
 
