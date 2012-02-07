@@ -66,6 +66,7 @@ module Metaforce
       self.wait_until_done if options[:wait_until_done]
       raise "Request has not completed." unless @done
       @result = @client.status(@id, @type) if @result.nil?
+      raise SalesforceError, @result[:message] if @result[:state] == "Error"
       @result
     end
 

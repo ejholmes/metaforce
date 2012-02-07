@@ -1,5 +1,6 @@
 require 'metaforce/version'
 require 'metaforce/config'
+require 'metaforce/error'
 require 'metaforce/manifest'
 require 'metaforce/services'
 require 'metaforce/metadata'

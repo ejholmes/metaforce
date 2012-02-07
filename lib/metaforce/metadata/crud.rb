@@ -18,8 +18,22 @@ module Metaforce
         Transaction.new self, response.body[:create_response][:result][:id]
       end
 
+      def update(type, metadata={})
+        type = Metaforce::Metadata::Types.name(type)
+        metadata = [metadata] unless metadata.is_a?(Array)
+        metadata = encode_content(metadata)
+        response = @client.request(:update) do |soap|
+          soap.header = @header
+          soap.body = {
+            :metadata => metadata,
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
+          }
+        end
+        Transaction.new self, response.body[:update_response][:result][:id]
+      end
+
       def delete(type, metadata={})
-        type = Metaforce::Metadata::Types.key(type)
+        type = Metaforce::Metadata::Types.name(type)
         metadata = [metadata] unless metadata.is_a?(Array)
         response = @client.request(:delete) do |soap|
           soap.header = @header
@@ -34,6 +48,9 @@ module Metaforce
       Metaforce::Metadata::Types.all.each do |type, value|
         define_method("create_#{type}".to_sym) do |metadata|
           create(type, metadata)
+        end
+        define_method("update_#{type}".to_sym) do |metadata|
+          update(type, metadata)
         end
         define_method("delete_#{type}".to_sym) do |metadata|
           delete(type, metadata)
