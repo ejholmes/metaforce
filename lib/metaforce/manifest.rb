@@ -90,7 +90,7 @@ module Metaforce
         folder = parts[0]
         file = parts[1].gsub(/.*\//, '').gsub(/\..*/, '')
         components.each_key do |type|
-          if component_folder(type) =~ /#{folder}/i
+          if Metaforce::Metadata::Types.folder(type) =~ /#{folder}/i
             unless components[type].index(file).nil?
               self.add(type, file);
             end
@@ -98,23 +98,6 @@ module Metaforce
         end
       end
       self
-    end
-
-    # Returns the components name
-    def component_name(key) # :nodoc:
-      METADATA_TYPES[key][:name]
-    end
-
-    # Returns the components folder
-    def component_folder(key) # :nodoc:
-      METADATA_TYPES[key][:folder]
-    end
-
-    # Returns a key for the component name
-    def component_key(name) # :nodoc:
-      METADATA_TYPES.each do |key, component|
-        return key if component[:name] == name
-      end
     end
 
     # Returns a string containing a package.xml file
@@ -144,7 +127,7 @@ module Metaforce
               members.each do |member|
                 xml.members member
               end
-              xml.name component_name(key)
+              xml.name Metaforce::Metadata::Types.name(key)
             }
           end
           xml.version SFDC_API_VERSION
@@ -172,7 +155,7 @@ module Metaforce
     def to_package
       components = []
       @components.each do |type, members|
-        name = component_name(type)
+        name = Metaforce::Metadata::Types.name(type)
         components.push :members => members, :name => name
       end
       components
@@ -183,7 +166,7 @@ module Metaforce
       document = Nokogiri::XML(file).remove_namespaces!
       document.xpath('//types').each do |type|
         name = type.xpath('name').first.content
-        key = component_key(name);
+        key = Metaforce::Metadata::Types.key(name);
         type.xpath('members').each do |member|
           if @components[key].is_a?(Array)
             @components[key].push(member.content)

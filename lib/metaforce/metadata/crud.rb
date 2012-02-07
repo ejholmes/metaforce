@@ -17,9 +17,24 @@ module Metaforce
         Transaction.new self, response.body[:create_response][:result][:id]
       end
 
-      METADATA_TYPES.each do |type, value|
+      def delete(type, metadata={})
+        metadata = [metadata] unless metadata.is_a?(Array)
+        response = @client.request(:delete) do |soap|
+          soap.header = @header
+          soap.body = {
+            :metadata => metadata,
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
+          }
+        end
+        Transaction.new self, response.body[:delete_response][:result][:id]
+      end
+
+      Metaforce::Metadata::Types.all.each do |type, value|
         define_method("create_#{type}".to_sym) do |metadata|
           create(value[:name], metadata)
+        end
+        define_method("delete_#{type}".to_sym) do |metadata|
+          delete(value[:name], metadata)
         end
       end
 
