@@ -75,7 +75,7 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.3.3** (February 9, 2012)
 
 * Added a logger for logging requests.
 * Allow api version to be set when calling `Metaforce::Metadata::Client.describe`.
