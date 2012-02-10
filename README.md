@@ -75,7 +75,7 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.3.4** (February 9, 2012)
 
 * Add rake tasks.
 
