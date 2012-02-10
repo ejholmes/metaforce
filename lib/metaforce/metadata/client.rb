@@ -81,14 +81,15 @@ module Metaforce
       #   # List the names of all metedata types
       #   client.describe[:metadata_objects].collect { |t| t[:xml_name] }
       #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
-      def describe
-        @describe ||= describe!
+      def describe(version=nil)
+        @describe ||= describe!(version)
       end
 
       # See +describe+
-      def describe!
+      def describe!(version=nil)
         response = @client.request(:describe_metadata) do |soap|
           soap.header = @header
+          soap.body = { :api_version => version } unless version.nil?
         end
         @describe = response.body[:describe_metadata_response][:result]
       end
@@ -104,6 +105,8 @@ module Metaforce
         request = "check_status"
         request = "check_#{type.to_s}_status" unless type.nil?
         ids = [ ids ] unless ids.is_a?(Array)
+
+        Metaforce.log("Polling server for status on #{ids.join(', ')}")
 
         response = @client.request(request.to_sym) do |soap|
           soap.header = @header
@@ -148,6 +151,8 @@ module Metaforce
           zip_contents = Base64.encode64(dir.read)
         end
 
+        Metaforce.log('Executing deploy')
+
         response = @client.request(:deploy) do |soap|
           soap.header = @header
           soap.body = {
@@ -164,6 +169,8 @@ module Metaforce
       # for a list of _retrieve_request_ options. Options should be convereted from
       # camelCase to an :underscored_symbol.
       def retrieve(retrieve_request={})
+        Metaforce.log('Executing retrieve')
+
         response = @client.request(:retrieve) do |soap|
           soap.header = @header
           soap.body = {

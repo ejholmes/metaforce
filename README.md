@@ -75,6 +75,11 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**0.3.3** (February 9, 2012)
+
+* Added a logger for logging requests.
+* Allow api version to be set when calling `Metaforce::Metadata::Client.describe`.
+
 **0.3.2** (February 3, 2012)
 
 * Improved documentation.
@@ -83,7 +88,7 @@ description. Please provide applicable rspec specs.
 **0.3.1** (February 3, 2012)
 
 * Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
-* The `describe` method now caches the results to minimize latency. `describe!`
+* The `Metaforce::Metadata::Client.describe` method now caches the results to minimize latency. `describe!`
   can be used to force a refresh.
 
 **0.3.0.alpha** (January 29, 2012)
