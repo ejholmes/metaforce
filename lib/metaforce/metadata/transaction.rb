@@ -56,7 +56,7 @@ module Metaforce
         zip.each do |f|
           path = File.join(destination, f.name)
           FileUtils.mkdir_p(File.dirname(path))
-          zip.extract(f, path)
+          zip.extract(f, path) { true }
         end
       end
     end
