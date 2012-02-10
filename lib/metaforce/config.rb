@@ -1,5 +1,7 @@
 module Metaforce
   class << self
+    attr_writer :log
+
     # Returns the current Configuration
     #
     #    Metaforce.configuration.username = "username"
@@ -17,6 +19,15 @@ module Metaforce
     def configure
       yield configuration
     end
+
+    def log?
+      @log ||= false
+    end
+
+    def log(message)
+      return unless Metaforce.log?
+      Metaforce.configuration.logger.send :debug, message
+    end
   end
 
   class Configuration
@@ -28,13 +39,19 @@ module Metaforce
     attr_accessor :password
     # The security token to use during login.
     attr_accessor :security_token
-    # Set this to true if you're authentication with a Sandbox instance.
+    # Set this to true if you're authenticating with a Sandbox instance.
     # Defaults to false.
     attr_accessor :test
 
     def initialize
+      Savon.log    = false
+      HTTPI.log    = false
       @api_version = "23.0"
-      @test = false
+      @test        = false
+    end
+
+    def logger
+      @logger ||= ::Logger.new STDOUT
     end
   end
 end
