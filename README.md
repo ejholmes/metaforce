@@ -77,7 +77,8 @@ description. Please provide applicable rspec specs.
 ## Version History
 **HEAD**
 
-* Allow api version to be set when calling `Metaforce::Metadata::Client.describe`
+* Added a logger for logging requests.
+* Allow api version to be set when calling `Metaforce::Metadata::Client.describe`.
 
 **0.3.2** (February 3, 2012)
 
