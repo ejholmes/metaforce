@@ -27,14 +27,10 @@ namespace :metaforce do
 
   desc "Retrieve metadata from the organization to src directory"
   task :retrieve => :login do
-    retrieval = @client.retrieve_unpackaged(File.expand_path('../src/package.xml', __FILE__))
+    retrieval = @client.retrieve_unpackaged(File.expand_path('src/package.xml'))
     result = retrieval.result(:wait_until_done => true)
-    if result[:success]
-      retrieval.unzip(File.expand_path('../src', __FILE__))
-      puts "Successfully retrieved metadata."
-    else
-      puts "An error occurred."
-    end
+    retrieval.unzip(File.expand_path('src'))
+    puts "Successfully retrieved metadata."
   end
 
 end
