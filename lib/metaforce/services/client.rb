@@ -11,6 +11,9 @@ module Metaforce
       # is nil, it will get the username, password and security token from the
       # configuration.
       def initialize(options=nil)
+        # Convert string keys to hashes
+        options.dup.each { |key, value| options[key.to_sym] = value } if options.is_a?(Hash)
+
         options = {
           :username => Metaforce.configuration.username,
           :password => Metaforce.configuration.password,
