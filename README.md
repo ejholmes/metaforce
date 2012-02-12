@@ -62,6 +62,8 @@ end
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
 
+* Implement command line utility that can watch the directory and deploy when a
+  file changes.
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
 * Ability to deploy directly from a git repository.
