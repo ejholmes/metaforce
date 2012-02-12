@@ -1,0 +1,11 @@
+---
+production:
+  username: user
+  password: password
+  security_token: aaaaaaaa
+
+sandbox:
+  username: user
+  password: password
+  security_token: aaaaaaaa
+  test: true
