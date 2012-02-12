@@ -1,14 +1,11 @@
 # Metaforce Rake Tasks
-Including the metaforce rake tasks.
+These are a set of default rake tasks that can be used for deploying/retrieving
+metadata using Rake and Metaforce. The following rake tasks are provided:
 
-Gemfile:
+* metaforce:deploy
+* metaforce:retrieve
 
-```ruby
-gem 'rake'
-gem 'metaforce'
-```
-
-Rakefile
+You can include the rake tasks by adding the following to your Rakefile:
 
 ```ruby
 begin
@@ -21,13 +18,9 @@ rescue LoadError
 end
 ```
 
-## Tasks
-
-**rake metaforce:deploy**
-
 ## metaforce.yml
 Include a metaforce.yml file in the root if you'd rather not type in your
-username, password and security token everytime.
+username, password and security token everytime you deploy or retrieve.
 
 With one environment:
 
@@ -54,6 +47,11 @@ sandbox:
     test: true
 ```
 
+This would deploy using the `sandbox` environment:
+
 `rake metaforce:deploy env="sandbox"`
+
+This would retrieve code using the `production` environment and would unzip the
+contents to "production\_code" rather than the default of "src".
 
 `rake metaforce:retrieve env="production" dir="production_code"`
