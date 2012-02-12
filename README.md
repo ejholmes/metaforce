@@ -77,7 +77,7 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.3.5** (February 11, 2012)
 
 * Allow rake tasks to get credentials from a metaforce.yml file.
 
