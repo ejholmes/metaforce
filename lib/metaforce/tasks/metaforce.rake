@@ -1,10 +1,6 @@
 namespace :metaforce do
   Metaforce.log = true
 
-  task :require do
-    require 'metaforce'
-  end
-
   task :login do
     if File.exists?('metaforce.yml')
       require 'yaml'
