@@ -9,7 +9,7 @@ namespace :metaforce do
     if File.exists?('metaforce.yml')
       require 'yaml'
       config = YAML.load_file('metaforce.yml')
-      env = ENV['env'] || 'developer'
+      env = ENV['env'] || 'default'
       root = config.has_key?(env) ? config[env] : config
       username       = root["username"]
       password       = root["password"]
