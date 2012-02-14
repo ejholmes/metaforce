@@ -139,7 +139,7 @@ describe Metaforce::Metadata::Client do
     it "allows deploy options to be configured via a hash" do
       savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
       expect {
-        client.deploy('', { :run_all_tests => true })
+        client.deploy('', :options => { :run_all_tests => true })
       }.to_not raise_error
     end
 

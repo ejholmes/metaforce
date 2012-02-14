@@ -32,32 +32,6 @@ deployment.result(:wait_until_done => true)
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
 ```
 
-## DSL
-Metaforce includes a lightweight DSL to make deployments and retrieve's easier.
-
-```ruby
-require "metaforce/dsl"
-include Metaforce::DSL::Metadata
-
-login :username => 'username', :password => 'password', :security_token => 'security token' do
-
-  deploy File.dirname(__FILE__) do |result|
-      puts "Successful deployment!"
-      puts result
-  end
-
-  retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
-      puts "Successful retrieve!"
-      puts result
-      File.open("retrieve.zip", "wb") do |file|
-        file.write(zip)
-      end
-  end
-
-  retrieve File.expand_path("../src/package.xml", __FILE__), :to => "directory"
-end
-```
-
 ## Roadmap
 This gem is far from being feature complete. Here's a list of things that still
 need to be done.
@@ -77,6 +51,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* Removed DSL to focus on core functionality.
+
 **0.3.5** (February 11, 2012)
 
 * Allow rake tasks to get credentials from a metaforce.yml file.

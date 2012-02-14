@@ -127,8 +127,12 @@ module Metaforce
         self.status(id)[:done] || false
       end
 
-      # Deploys +dir+ to the organisation.
+      # Deploys +path+ to the organisation. +path+ can either be a path to
+      # a directory or a path to a zip file.
       #
+      # +options+ can contain any of the following keys:
+      #
+      # +options+: 
       # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_deploy.htm#deploy_options
       # for a list of _deploy_options_. Options should be convereted from
       # camelCase to an :underscored_symbol.
@@ -143,12 +147,12 @@ module Metaforce
       #
       #   deploy.status[:state]
       #   #=> "Completed"
-      def deploy(dir, deploy_options={})
-        if dir.is_a?(String)
-          filename = File.join(File.dirname(dir), DEPLOY_ZIP)
-          zip_contents = create_deploy_file(filename, dir)
-        elsif dir.is_a?(File)
-          zip_contents = Base64.encode64(dir.read)
+      def deploy(path, options={})
+        if path.is_a?(String)
+          filename = File.join(File.dirname(path), DEPLOY_ZIP)
+          zip_contents = create_deploy_file(filename, path)
+        elsif path.is_a?(File)
+          zip_contents = Base64.encode64(path.read)
         end
 
         Metaforce.log('Executing deploy')
@@ -157,7 +161,7 @@ module Metaforce
           soap.header = @header
           soap.body = {
             :zip_file => zip_contents,
-            :deploy_options => deploy_options
+            :deploy_options => options[:options] || {}
           }
         end
         Transaction.deployment self, response[:deploy_response][:result][:id]
