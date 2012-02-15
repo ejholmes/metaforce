@@ -171,7 +171,8 @@ module Metaforce
       #
       # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm
       # for a list of _retrieve_request_ options. Options should be convereted from
-      # camelCase to an :underscored_symbol.
+      # camelCase to an :underscored_symbol. _retrieve_request_ options should
+      # be specified under the +:options+ key in options.
       def retrieve(options={})
         Metaforce.log('Executing retrieve')
 

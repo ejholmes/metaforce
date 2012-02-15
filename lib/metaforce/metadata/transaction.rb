@@ -13,6 +13,7 @@ module Metaforce
       @client = client
       @id     = id
       @type   = type
+      wait_until_done if Metaforce.configuration.wait_until_done
     end
 
     # Creates a new transaction and sets type to +:deploy+.
@@ -63,8 +64,6 @@ module Metaforce
     
     # Returns the deploy or retrieve result
     def result(options={})
-      self.wait_until_done if (options[:wait_until_done] || Metaforce.configuration.wait_until_done)
-      raise 'Request has not completed.' unless @done
       @result = @client.status(@id, @type) if @result.nil?
       @result
     end

@@ -43,7 +43,17 @@ module Metaforce
     # Defaults to false.
     attr_accessor :test
     # Causes Metaforce::Transaction.result to loop until the transaction is
-    # complete. Defaults to false.
+    # complete. Defaults to true.
+    #
+    # If you want to do custom polling, set this to false.
+    #
+    # == Example
+    #
+    #   Metaforce.configuration.wait_until_done = false;
+    #
+    #   deploy = client.deploy File.expand_path("myeclipseproj")
+    #   begin; while !deploy.done?
+    #   deploy.result
     attr_accessor :wait_until_done
 
     def initialize
@@ -51,7 +61,7 @@ module Metaforce
       HTTPI.log        = false
       @api_version     = "23.0"
       @test            = false
-      @wait_until_done = false
+      @wait_until_done = true
     end
 
     def logger
