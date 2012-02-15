@@ -172,39 +172,38 @@ module Metaforce
       # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm
       # for a list of _retrieve_request_ options. Options should be convereted from
       # camelCase to an :underscored_symbol.
-      def retrieve(retrieve_request={})
+      def retrieve(options={})
         Metaforce.log('Executing retrieve')
 
         response = @client.request(:retrieve) do |soap|
           soap.header = @header
           soap.body = {
-            :retrieve_request => retrieve_request
+            :retrieve_request => options[:options] || {}
           }
         end
         Transaction.retrieval self, response[:retrieve_response][:result][:id]
       end
 
-      # Retrieves files specified in the manifest file (package.xml). Specificy any extra +retrieve_request+ options in +extra+.
+      # Retrieves files specified in the manifest file (package.xml). Specificy any extra options in +options[:options]+.
       #
       # == Examples
       #
       #   retrieve = client.retrieve_unpackaged File.expand_path("spec/fixtures/sample/src/package.xml")
       #   #=> #<Metaforce::Transaction:0x1159bd0 @id='04sU0000000Wx6KIAS' @type=:retrieve>
-      def retrieve_unpackaged(manifest, extra=nil)
+      def retrieve_unpackaged(manifest, options={})
         if manifest.is_a?(Metaforce::Manifest)
           package = manifest.to_package
         elsif manifest.is_a?(String)
           package = Metaforce::Manifest.new(File.open(manifest).read).to_package
         end
-        retrieve_request = { 
+        options[:options] = {
           :api_version => Metaforce.configuration.api_version,
           :single_package => true,
           :unpackaged => {
             :types => package
           }
-        }
-        retrieve_request.merge!(extra) if extra.is_a?(Hash)
-        retrieve(retrieve_request)
+        }.merge(options[:options] || {})
+        retrieve(options)
       end
 
     private

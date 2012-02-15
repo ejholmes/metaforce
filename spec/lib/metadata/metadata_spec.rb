@@ -192,7 +192,7 @@ describe Metaforce::Metadata::Client do
 
         it "merges the options" do
           expect {
-            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), { :extra => true })
+            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), :options => { :extra => true })
           }.to_not raise_error
         end
 
