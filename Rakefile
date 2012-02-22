@@ -2,7 +2,7 @@ require "bundler/gem_tasks"
 
 task :default => :spec
 
-desc "Run specs"
+desc "Run rspec specs"
 task :spec do
   sh "bundle exec rspec spec"
 end
