@@ -2,7 +2,6 @@ require 'metaforce/manifest'
 require 'savon'
 require 'zip/zip'
 require 'base64'
-require 'ostruct'
 require 'tmpdir'
 
 module Metaforce
