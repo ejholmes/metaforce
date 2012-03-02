@@ -129,6 +129,7 @@ describe Metaforce::Metadata::Client do
 
       it "deploys the directory and returns a transaction" do
         savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
+        savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
         deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
         deployment.should be_a(Metaforce::Transaction)
         deployment.id.should eq("04sU0000000WNWoIAO")
@@ -138,8 +139,9 @@ describe Metaforce::Metadata::Client do
 
     it "allows deploy options to be configured via a hash" do
       savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
+      savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       expect {
-        client.deploy('', { :run_all_tests => true })
+        client.deploy('', :options => { :run_all_tests => true })
       }.to_not raise_error
     end
 
@@ -188,11 +190,12 @@ describe Metaforce::Metadata::Client do
       context "when given extra retrieve options" do
         before(:each) do
           savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package }, :extra => true }).returns(:in_progress)
+          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done);
         end
 
         it "merges the options" do
           expect {
-            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), { :extra => true })
+            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), :options => { :extra => true })
           }.to_not raise_error
         end
 

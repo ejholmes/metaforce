@@ -13,6 +13,7 @@ module Metaforce
       @client = client
       @id     = id
       @type   = type
+      wait_until_done if Metaforce.configuration.wait_until_done
     end
 
     # Creates a new transaction and sets type to +:deploy+.
@@ -41,11 +42,11 @@ module Metaforce
     # Returns the decoded content of the returned zip file.
     def zip_file
       raise 'Request was not a retrieve.' unless @type == :retrieve
-      Base64.decode64(@result[:zip_file])
+      Base64.decode64(result[:zip_file])
     end
 
     # Unzips the returned zip file to +destination+.
-    def unzip(destination)
+    def to(destination)
       zip = zip_file
       file = Tempfile.new('retrieve')
       file.write(zip)
@@ -59,13 +60,13 @@ module Metaforce
           zip.extract(f, path) { true }
         end
       end
+      self
     end
     
     # Returns the deploy or retrieve result
     def result(options={})
-      self.wait_until_done if (options[:wait_until_done] || Metaforce.configuration.wait_until_done)
-      raise 'Request has not completed.' unless @done
       @result = @client.status(@id, @type) if @result.nil?
+      raise SalesforceError, @result[:message] if @result[:state] == "Error"
       @result
     end
 

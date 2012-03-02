@@ -4,6 +4,7 @@ metadata using Rake and Metaforce. The following rake tasks are provided:
 
 * metaforce:deploy
 * metaforce:retrieve
+* metaforce:tests:ci
 
 You can include the rake tasks by adding the following to your Rakefile:
 
@@ -51,7 +52,11 @@ This would deploy using the `sandbox` environment:
 
 `rake metaforce:deploy env="sandbox"`
 
-This would retrieve code using the `production` environment and would unzip the
-contents to "production\_code" rather than the default of "src".
+## Continuous Integration
+The `metaforce:tests:ci` task is provided to make continuous integration with
+something like [Jenkins](http://jenkins-ci.org) easier.
 
-`rake metaforce:retrieve env="production" dir="production_code"`
+By default, the `metaforce:tests:ci` task will use the `ci` environment in
+metaforce.yml, so you should set that up before you use this task.
+
+The task will deploy the metadata and run all tests.
