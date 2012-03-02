@@ -46,7 +46,7 @@ module Metaforce
     end
 
     # Unzips the returned zip file to +destination+.
-    def unzip(destination)
+    def to(destination)
       zip = zip_file
       file = Tempfile.new('retrieve')
       file.write(zip)
