@@ -65,6 +65,7 @@ module Metaforce
     # Returns the deploy or retrieve result
     def result(options={})
       @result = @client.status(@id, @type) if @result.nil?
+      raise SalesforceError, @result[:message] if @result[:state] == "Error"
       @result
     end
 
