@@ -1,6 +1,8 @@
 require 'metaforce'
+require 'term/ansicolor'
 require 'rake'
 require 'rake/tasklib'
+include Term::ANSIColor
 
 module Metaforce
   module Rake
@@ -20,7 +22,9 @@ module Metaforce
 
       def define
         task @name do
-          puts @directory
+          client = Metaforce::Rake.client
+          d = client.deploy(@directory)
+          puts green "Deployed #{File.basename(@directory)} successfully" if d.result[:success]
         end
       end
 
