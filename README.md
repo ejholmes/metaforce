@@ -25,7 +25,7 @@ client.list(:type => "CustomObject")
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
 # Deploy metadata to the organization
-deployment = client.deploy(File.join(File.dirname(__FILE__), 'src'))
+deployment = client.deploy(File.expand_path('path/to/src'))
 # => #<Metaforce::Transaction:0x00000102779bf8 @id="04sU0000000WNWoIAO" @type=:deploy> 
 
 # Get the result
@@ -33,7 +33,7 @@ deployment.result
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
 
 # Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
-client.retrieve(File.expand_path('src/package.xml')).to('retrieved')
+client.retrieve(File.expand_path('path/to/package.xml')).to('retrieved')
 ```
 
 ## Roadmap
