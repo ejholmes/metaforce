@@ -3,7 +3,7 @@ require 'savon'
 require 'zip/zip'
 require 'base64'
 require 'ostruct'
-require 'tempfile'
+require 'tmpdir'
 
 module Metaforce
   module Metadata
@@ -210,19 +210,15 @@ module Metaforce
       # Creates the deploy file, reads in the contents and returns the base64
       # encoded data
       def create_deploy_file(dir)
-        begin
-          path = nil
-          tmpfile = Tempfile.new('deploy.zip').tap { |f| path = f.path }.close!
+        Dir.mktmpdir do |path|
+          path = File.join path, 'deploy.zip'
           Zip::ZipFile.open(path, Zip::ZipFile::CREATE) do |zip|
             Dir["#{dir}/**/**"].each do |file|
               zip.add(file.sub("#{File.dirname(dir)}/", ''), file)
             end
           end
-          contents = Base64.encode64(File.open(path, "rb").read)
-        ensure
-          tmpfile.unlink
+          Base64.encode64(File.open(path, "rb").read)
         end
-        contents
       end
 
     end
