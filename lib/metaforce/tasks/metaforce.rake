@@ -24,7 +24,8 @@ namespace :metaforce do
 
   desc "Deploy current directory to the organization"
   task :deploy => :login do
-    deployment = @client.deploy File.dirname(__FILE__)
+    dir = ENV['dir'] || 'src'
+    deployment = @client.deploy File.join(File.dirname(__FILE__), dir)
     result = deployment.result(:wait_until_done => true)
     if result[:success]
       puts "Successfully deployed metadata."
