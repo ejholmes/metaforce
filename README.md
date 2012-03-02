@@ -53,9 +53,9 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.4.0** (March 2, 2012)
 
-* Minor bug fixes and improvements.
+* Various bug fixes and improvements.
 * Removed DSL to focus on core functionality.
 
 **0.3.5** (February 11, 2012)
