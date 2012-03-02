@@ -3,12 +3,11 @@ require 'savon'
 require 'zip/zip'
 require 'base64'
 require 'ostruct'
+require 'tempfile'
 
 module Metaforce
   module Metadata
     class Client
-      DEPLOY_ZIP = 'deploy.zip' # :nodoc:
-      RETRIEVE_ZIP = 'retrieve.zip' # :nodoc:
 
       # Performs a login and sets the session_id and metadata_server_url.
       #
@@ -149,8 +148,7 @@ module Metaforce
       #   #=> "Completed"
       def deploy(path, options={})
         if path.is_a?(String)
-          filename = File.join(File.dirname(path), DEPLOY_ZIP)
-          zip_contents = create_deploy_file(filename, path)
+          zip_contents = create_deploy_file(path)
         elsif path.is_a?(File)
           zip_contents = Base64.encode64(path.read)
         end
@@ -211,15 +209,19 @@ module Metaforce
     
       # Creates the deploy file, reads in the contents and returns the base64
       # encoded data
-      def create_deploy_file(filename, dir)
-        File.delete(filename) if File.exists?(filename)
-        Zip::ZipFile.open(filename, Zip::ZipFile::CREATE) do |zip|
-          Dir["#{dir}/**/**"].each do |file|
-            zip.add(file.sub(dir + '/', ''), file)
+      def create_deploy_file(dir)
+        begin
+          path = nil
+          tmpfile = Tempfile.new('deploy.zip').tap { |f| path = f.path }.close!
+          Zip::ZipFile.open(path, Zip::ZipFile::CREATE) do |zip|
+            Dir["#{dir}/**/**"].each do |file|
+              zip.add(file.sub("#{File.dirname(dir)}/", ''), file)
+            end
           end
+          contents = Base64.encode64(File.open(path, "rb").read)
+        ensure
+          tmpfile.unlink
         end
-        contents = Base64.encode64(File.open(filename, "rb").read)
-        File.delete(filename)
         contents
       end
 

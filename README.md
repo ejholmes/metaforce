@@ -25,7 +25,7 @@ client.list(:type => "CustomObject")
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
 # Deploy metadata to the organization
-deployment = client.deploy(File.dirname(__FILE__))
+deployment = client.deploy(File.join(File.dirname(__FILE__), 'src'))
 # => #<Metaforce::Transaction:0x00000102779bf8 @id="04sU0000000WNWoIAO" @type=:deploy> 
 
 # Get the result
