@@ -28,7 +28,7 @@ module Metaforce
         task @name do
           client = Metaforce::Rake.client
           r = client.retrieve_unpackaged(@manifest).to(@directory)
-          puts green "Files retrieved sucessfully"
+          puts green "Files retrieved sucessfully to #{@directory}"
         end
       end
 

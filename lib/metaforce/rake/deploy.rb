@@ -24,7 +24,7 @@ module Metaforce
         task @name do
           client = Metaforce::Rake.client
           d = client.deploy(@directory)
-          puts green "Deployed #{File.basename(@directory)} successfully" if d.result[:success]
+          puts green "Deployed #{@directory} successfully" if d.result[:success]
         end
       end
 
