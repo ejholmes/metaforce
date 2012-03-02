@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri", "~> 1.5.0"
   s.add_dependency "savon", "~> 0.9.7"
   s.add_dependency "rubyzip", "~> 0.9.5"
+  s.add_dependency "term-ansicolor"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
