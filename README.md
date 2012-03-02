@@ -44,9 +44,9 @@ need to be done.
   file changes.
 * Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
+* Add rake tasks for painless continuous integration.
 * Ability to deploy directly from a git repository.
 * <del>Implement .retrieve for retrieving metadata.</del>
-* <del>Implement a DSL.</del>
 * And some other stuff that I haven't quite thought of yet...
 
 ## Contributing
