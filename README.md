@@ -16,20 +16,24 @@ client = Metaforce::Metadata::Client.new :username => 'username',
     :password => 'password',
     :security_token => 'security token')
 
+# Describe the metadata on the organization
 client.describe
 # => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
 
+# List all custom objects
 client.list(:type => "CustomObject")
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
+# Deploy metadata to the organization
 deployment = client.deploy(File.dirname(__FILE__))
 # => #<Metaforce::Transaction:0x00000102779bf8 @id="04sU0000000WNWoIAO" @type=:deploy> 
 
-deployment.done?
-# => false
-
-deployment.result(:wait_until_done => true)
+# Get the result
+deployment.result
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
+
+# Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
+client.retrieve(File.expand_path('src/package.xml')).to('retrieved')
 ```
 
 ## Roadmap
