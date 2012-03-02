@@ -42,12 +42,16 @@ module Metaforce
     # Set this to true if you're authenticating with a Sandbox instance.
     # Defaults to false.
     attr_accessor :test
+    # Causes Metaforce::Transaction.result to loop until the transaction is
+    # complete. Defaults to false.
+    attr_accessor :wait_until_done
 
     def initialize
-      Savon.log    = false
-      HTTPI.log    = false
-      @api_version = "23.0"
-      @test        = false
+      Savon.log        = false
+      HTTPI.log        = false
+      @api_version     = "23.0"
+      @test            = false
+      @wait_until_done = false
     end
 
     def logger

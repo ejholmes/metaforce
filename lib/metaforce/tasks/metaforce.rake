@@ -1,14 +1,22 @@
 namespace :metaforce do
   Metaforce.log = true
 
-  task :require do
-    require 'metaforce'
-  end
-
   task :login do
-    print "username: "; username = STDIN.gets.chomp
-    print "password: "; password = STDIN.gets.chomp
-    print "security token: "; security_token = STDIN.gets.chomp
+    if File.exists?('metaforce.yml')
+      require 'yaml'
+      config = YAML.load_file('metaforce.yml')
+      env = ENV['env'] || 'default'
+      root = config.has_key?(env) ? config[env] : config
+      username       = root["username"]
+      password       = root["password"]
+      security_token = root["security_token"] || ''
+      test           = root["test"] || false
+      Metaforce.configuration.test = test
+    else
+      print "username: "; username = STDIN.gets.chomp
+      print "password: "; password = STDIN.gets.chomp
+      print "security token: "; security_token = STDIN.gets.chomp
+    end
     @client = Metaforce::Metadata::Client.new :username => username,
       :password => password,
       :security_token => security_token
@@ -27,10 +35,11 @@ namespace :metaforce do
 
   desc "Retrieve metadata from the organization to src directory"
   task :retrieve => :login do
+    dir = ENV['dir'] || 'src'
     retrieval = @client.retrieve_unpackaged(File.expand_path('src/package.xml'))
     result = retrieval.result(:wait_until_done => true)
-    retrieval.unzip(File.expand_path('src'))
-    puts "Successfully retrieved metadata."
+    retrieval.unzip(File.expand_path(dir))
+    puts "Successfully retrieved metadata to '#{dir}'."
   end
 
 end
