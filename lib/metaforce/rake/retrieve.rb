@@ -25,6 +25,7 @@ module Metaforce
       end
 
       def define
+        desc "Retrieve metadata"
         task @name do
           client = Metaforce::Rake.client
           r = client.retrieve_unpackaged(@manifest).to(@directory)

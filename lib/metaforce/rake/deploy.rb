@@ -21,6 +21,7 @@ module Metaforce
       end
 
       def define
+        desc "Deploy metadata"
         task @name do
           client = Metaforce::Rake.client
           d = client.deploy(@directory)
