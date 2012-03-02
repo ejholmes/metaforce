@@ -42,7 +42,7 @@ module Metaforce
     # Returns the decoded content of the returned zip file.
     def zip_file
       raise 'Request was not a retrieve.' unless @type == :retrieve
-      Base64.decode64(@result[:zip_file])
+      Base64.decode64(result[:zip_file])
     end
 
     # Unzips the returned zip file to +destination+.
@@ -60,6 +60,7 @@ module Metaforce
           zip.extract(f, path) { true }
         end
       end
+      self
     end
     
     # Returns the deploy or retrieve result
