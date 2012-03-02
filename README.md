@@ -57,6 +57,7 @@ description. Please provide applicable rspec specs.
 ## Version History
 **HEAD**
 
+* Minor bug fixes and improvements.
 * Removed DSL to focus on core functionality.
 
 **0.3.5** (February 11, 2012)
