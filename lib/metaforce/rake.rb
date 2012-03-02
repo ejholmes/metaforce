@@ -1,6 +1,7 @@
 require 'yaml'
 require 'metaforce/rake/deploy'
 require 'metaforce/rake/retrieve'
+require 'metaforce/rake/tests'
 
 module Metaforce
   module Rake
