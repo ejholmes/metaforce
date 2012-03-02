@@ -16,46 +16,24 @@ client = Metaforce::Metadata::Client.new :username => 'username',
     :password => 'password',
     :security_token => 'security token')
 
+# Describe the metadata on the organization
 client.describe
 # => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
 
+# List all custom objects
 client.list(:type => "CustomObject")
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
+# Deploy metadata to the organization
 deployment = client.deploy(File.dirname(__FILE__))
 # => #<Metaforce::Transaction:0x00000102779bf8 @id="04sU0000000WNWoIAO" @type=:deploy> 
 
-deployment.done?
-# => false
-
-deployment.result(:wait_until_done => true)
+# Get the result
+deployment.result
 # => { :id => "04sU0000000WNWoIAO", :messages => [{ :changed => true ... :success => true }
-```
 
-## DSL
-Metaforce includes a lightweight DSL to make deployments and retrieve's easier.
-
-```ruby
-require "metaforce/dsl"
-include Metaforce::DSL::Metadata
-
-login :username => 'username', :password => 'password', :security_token => 'security token' do
-
-  deploy File.dirname(__FILE__) do |result|
-      puts "Successful deployment!"
-      puts result
-  end
-
-  retrieve File.expand_path("../src/package.xml", __FILE__) |result, zip|
-      puts "Successful retrieve!"
-      puts result
-      File.open("retrieve.zip", "wb") do |file|
-        file.write(zip)
-      end
-  end
-
-  retrieve File.expand_path("../src/package.xml", __FILE__), :to => "directory"
-end
+# Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
+client.retrieve(File.expand_path('src/package.xml')).to('retrieved')
 ```
 
 ## Roadmap
@@ -77,6 +55,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* Removed DSL to focus on core functionality.
+
 **0.3.5** (February 11, 2012)
 
 * Allow rake tasks to get credentials from a metaforce.yml file.

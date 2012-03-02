@@ -38,7 +38,7 @@ namespace :metaforce do
     dir = ENV['dir'] || 'src'
     retrieval = @client.retrieve_unpackaged(File.expand_path('src/package.xml'))
     result = retrieval.result(:wait_until_done => true)
-    retrieval.unzip(File.expand_path(dir))
+    retrieval.to(File.expand_path(dir))
     puts "Successfully retrieved metadata to '#{dir}'."
   end
 

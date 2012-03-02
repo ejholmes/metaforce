@@ -127,8 +127,12 @@ module Metaforce
         self.status(id)[:done] || false
       end
 
-      # Deploys +dir+ to the organisation.
+      # Deploys +path+ to the organisation. +path+ can either be a path to
+      # a directory or a path to a zip file.
       #
+      # +options+ can contain any of the following keys:
+      #
+      # +options+: 
       # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_deploy.htm#deploy_options
       # for a list of _deploy_options_. Options should be convereted from
       # camelCase to an :underscored_symbol.
@@ -143,12 +147,12 @@ module Metaforce
       #
       #   deploy.status[:state]
       #   #=> "Completed"
-      def deploy(dir, deploy_options={})
-        if dir.is_a?(String)
-          filename = File.join(File.dirname(dir), DEPLOY_ZIP)
-          zip_contents = create_deploy_file(filename, dir)
-        elsif dir.is_a?(File)
-          zip_contents = Base64.encode64(dir.read)
+      def deploy(path, options={})
+        if path.is_a?(String)
+          filename = File.join(File.dirname(path), DEPLOY_ZIP)
+          zip_contents = create_deploy_file(filename, path)
+        elsif path.is_a?(File)
+          zip_contents = Base64.encode64(path.read)
         end
 
         Metaforce.log('Executing deploy')
@@ -157,7 +161,7 @@ module Metaforce
           soap.header = @header
           soap.body = {
             :zip_file => zip_contents,
-            :deploy_options => deploy_options
+            :deploy_options => options[:options] || {}
           }
         end
         Transaction.deployment self, response[:deploy_response][:result][:id]
@@ -167,40 +171,40 @@ module Metaforce
       #
       # See http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm
       # for a list of _retrieve_request_ options. Options should be convereted from
-      # camelCase to an :underscored_symbol.
-      def retrieve(retrieve_request={})
+      # camelCase to an :underscored_symbol. _retrieve_request_ options should
+      # be specified under the +:options+ key in options.
+      def retrieve(options={})
         Metaforce.log('Executing retrieve')
 
         response = @client.request(:retrieve) do |soap|
           soap.header = @header
           soap.body = {
-            :retrieve_request => retrieve_request
+            :retrieve_request => options[:options] || {}
           }
         end
         Transaction.retrieval self, response[:retrieve_response][:result][:id]
       end
 
-      # Retrieves files specified in the manifest file (package.xml). Specificy any extra +retrieve_request+ options in +extra+.
+      # Retrieves files specified in the manifest file (package.xml). Specificy any extra options in +options[:options]+.
       #
       # == Examples
       #
       #   retrieve = client.retrieve_unpackaged File.expand_path("spec/fixtures/sample/src/package.xml")
       #   #=> #<Metaforce::Transaction:0x1159bd0 @id='04sU0000000Wx6KIAS' @type=:retrieve>
-      def retrieve_unpackaged(manifest, extra=nil)
+      def retrieve_unpackaged(manifest, options={})
         if manifest.is_a?(Metaforce::Manifest)
           package = manifest.to_package
         elsif manifest.is_a?(String)
           package = Metaforce::Manifest.new(File.open(manifest).read).to_package
         end
-        retrieve_request = { 
+        options[:options] = {
           :api_version => Metaforce.configuration.api_version,
           :single_package => true,
           :unpackaged => {
             :types => package
           }
-        }
-        retrieve_request.merge!(extra) if extra.is_a?(Hash)
-        retrieve(retrieve_request)
+        }.merge(options[:options] || {})
+        retrieve(options)
       end
 
     private
