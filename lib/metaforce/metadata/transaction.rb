@@ -60,6 +60,7 @@ module Metaforce
           zip.extract(f, path) { true }
         end
       end
+      self
     end
     
     # Returns the deploy or retrieve result
