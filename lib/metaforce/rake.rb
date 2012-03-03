@@ -34,6 +34,7 @@ module Metaforce
           print "username: "; @username = STDIN.gets.chomp
           print "password: "; @password = STDIN.gets.chomp
           print "security token: "; @security_token = STDIN.gets.chomp
+          Metaforce.log = true
         end
       end
 
