@@ -21,7 +21,7 @@ describe Metaforce::Metadata::Client do
   end
 
   it "should respond to dynamically defined list methods" do
-    Metaforce::METADATA_TYPES.each do |type, value|
+    Metaforce::Metadata::Types.all.each do |type, value|
       client.respond_to?("list_#{value[:plural]}").should eq(true)
     end
   end

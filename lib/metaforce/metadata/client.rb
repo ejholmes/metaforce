@@ -64,7 +64,7 @@ module Metaforce
       #   # List the names of all custom objects
       #   client.list_custom_objects.collect { |t| t[:full_name] }
       #   #=> ["Asset", "estore__Ida_Menu_Item__c", "SfoMatchHistoryItem", ... ]
-      METADATA_TYPES.each do |type, value|
+      Metaforce::Metadata::Types.all.each do |type, value|
         define_method("list_#{value[:plural]}".to_sym) do
           list :type => value[:name]
         end
