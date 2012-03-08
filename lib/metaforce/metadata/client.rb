@@ -50,6 +50,7 @@ module Metaforce
             :queries => queries
           }
         end
+        return [] unless response.body[:list_metadata_response]
         response.body[:list_metadata_response][:result]
       end
 
