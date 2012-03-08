@@ -18,10 +18,15 @@ describe Metaforce::Metadata::Client do
       client.list(:type => "ApexClass").should be_an(Array)
     end
 
+    it "returns an empty array when no results are returned" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list(:type => "ApexClass").should be_an(Array)
+    end
+
   end
 
   it "should respond to dynamically defined list methods" do
-    Metaforce::METADATA_TYPES.each do |type, value|
+    Metaforce::Metadata::Types.all.each do |type, value|
       client.respond_to?("list_#{value[:plural]}").should eq(true)
     end
   end

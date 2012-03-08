@@ -53,6 +53,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**0.4.1** (March 8, 2012)
+
+* Bug fixes
+
 **0.4.0** (March 2, 2012)
 
 * Various bug fixes and improvements.
