@@ -43,6 +43,11 @@ module Metaforce
       #   client.list([{ :type => "CustomObject" }, { :type => "ApexComponent" }])
       #   #=> ["ContractContactRole", "Solution", "Invoice_Statements__c", ... ]
       def list(queries=[])
+        if queries.is_a?(Symbol)
+          queries = { :type => Types.name(queries) }
+        elsif queries.is_a?(String)
+          queries = { :type => queries }
+        end
         queries = [ queries ] unless queries.is_a?(Array)
         response = @client.request(:list_metadata) do |soap|
           soap.header = @header

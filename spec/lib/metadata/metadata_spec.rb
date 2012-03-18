@@ -23,6 +23,16 @@ describe Metaforce::Metadata::Client do
       client.list(:type => "ApexClass").should be_an(Array)
     end
 
+    it "accepts a symbol" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list(:apex_class).should be_an(Array)
+    end
+
+    it "accepts a string" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list("ApexClass").should be_an(Array)
+    end
+
   end
 
   it "should respond to dynamically defined list methods" do
