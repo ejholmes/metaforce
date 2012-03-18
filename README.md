@@ -17,8 +17,8 @@ client = Metaforce::Metadata::Client.new :username => 'username',
     :security_token => 'security token')
 
 # Describe the metadata on the organization
-client.describe
-# => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
+client.metadata_objects
+# => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }]
 
 # List all custom objects
 client.list(:custom_object)
