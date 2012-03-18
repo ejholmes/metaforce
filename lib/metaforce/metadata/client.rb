@@ -80,7 +80,7 @@ module Metaforce
       #
       # == Examples
       #
-      #   # List the names of all metedata types
+      #   # List the names of all metadata types
       #   client.describe[:metadata_objects].collect { |t| t[:xml_name] }
       #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
       def describe(version=nil)
@@ -94,6 +94,18 @@ module Metaforce
           soap.body = { :api_version => version } unless version.nil?
         end
         @describe = response.body[:describe_metadata_response][:result]
+      end
+
+      # Lists all metadata objects on the org. Same as
+      # +client.describe[:metadata_objects]
+      #
+      # == Examples
+      #
+      #   # List the names of all metadata types
+      #   client.metadata_objects.collect { |t| t[:xml_name] }
+      #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
+      def metadata_objects(version=nil)
+        describe(version)[:metadata_objects]
       end
 
       # Checks the status of an async result. If type is +:retrieve+ or +:deploy+,

@@ -58,6 +58,13 @@ describe Metaforce::Metadata::Client do
     end
   end
 
+  describe ".metadata_objects" do
+    it "returns the :metadata_objects key from the describe call" do
+      savon.expects(:describe_metadata).returns(:success)
+      client.metadata_objects.should be_a(Array)
+    end
+  end
+
   describe ".describe!" do
     context "when given valid information" do
 
