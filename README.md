@@ -21,7 +21,7 @@ client.describe
 # => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
 
 # List all custom objects
-client.list(:type => "CustomObject")
+client.list(:custom_object)
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
 # Deploy metadata to the organization
