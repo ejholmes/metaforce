@@ -18,6 +18,21 @@ describe Metaforce::Metadata::Client do
       client.list(:type => "ApexClass").should be_an(Array)
     end
 
+    it "returns an empty array when no results are returned" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list(:type => "ApexClass").should be_an(Array)
+    end
+
+    it "accepts a symbol" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list(:apex_class).should be_an(Array)
+    end
+
+    it "accepts a string" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list("ApexClass").should be_an(Array)
+    end
+
   end
 
   it "should respond to dynamically defined list methods" do
@@ -40,6 +55,13 @@ describe Metaforce::Metadata::Client do
         expect { client.describe }.to_not raise_error
       end
 
+    end
+  end
+
+  describe ".metadata_objects" do
+    it "returns the :metadata_objects key from the describe call" do
+      savon.expects(:describe_metadata).returns(:success)
+      client.metadata_objects.should be_a(Array)
     end
   end
 

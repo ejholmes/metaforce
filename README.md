@@ -17,11 +17,11 @@ client = Metaforce::Metadata::Client.new :username => 'username',
     :security_token => 'security token')
 
 # Describe the metadata on the organization
-client.describe
-# => { :metadata_objects => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }
+client.metadata_objects
+# => [{ :child_xml_names => "CustomLabel", :directory_name => "labels" ... }]
 
 # List all custom objects
-client.list(:type => "CustomObject")
+client.list(:custom_object)
 # => [{ :created_by_id => "005U0000000EGpcIAG", :created_by_name => "Eric Holmes", ... }]
 
 # Deploy metadata to the organization
@@ -55,6 +55,10 @@ description. Please provide applicable rspec specs.
 **HEAD**
 
 * Implemented CRUD calls.
+
+**0.4.1** (March 8, 2012)
+
+* Bug fixes
 
 **0.4.0** (March 2, 2012)
 
