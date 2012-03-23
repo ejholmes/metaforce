@@ -4,40 +4,24 @@ module Metaforce
   module Metadata
     module CRUD
 
-      def create(type, metadata={})
-        metadata = [metadata] unless metadata.is_a?(Array)
-        metadata.each_with_index do |m, i|
-          template = Metaforce::Metadata::MetadataFile.template(type)
-          metadata[i] = template.merge(m) if template
+      [:create, :update].each do |method|
+        define_method(method) do |type, metadata={}|
+          metadata = [metadata] unless metadata.is_a?(Array)
+          metadata.each_with_index do |m, i|
+            template = Metaforce::Metadata::MetadataFile.template(type)
+            metadata[i] = template.merge(m) if template
+          end
+          type = type.to_s.camelcase
+          metadata = encode_content(metadata)
+          response = @client.request(method) do |soap|
+            soap.header = @header
+            soap.body = {
+              :metadata => metadata,
+              :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
+            }
+          end
+          Transaction.new self, response.body["#{method}_response".to_sym][:result][:id], method
         end
-        type = type.to_s.camelcase
-        metadata = encode_content(metadata)
-        response = @client.request(:create) do |soap|
-          soap.header = @header
-          soap.body = {
-            :metadata => metadata,
-            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
-          }
-        end
-        Transaction.new self, response.body[:create_response][:result][:id], :create
-      end
-
-      def update(type, metadata={})
-        metadata = [metadata] unless metadata.is_a?(Array)
-        metadata.each_with_index do |m, i|
-          template = Metaforce::Metadata::MetadataFile.template(type)
-          metadata[i] = template.merge(m) if template
-        end
-        type = type.to_s.camelcase
-        metadata = encode_content(metadata)
-        response = @client.request(:update) do |soap|
-          soap.header = @header
-          soap.body = {
-            :metadata => metadata,
-            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
-          }
-        end
-        Transaction.new self, response.body[:update_response][:result][:id], :update
       end
 
       def delete(type, metadata={})
