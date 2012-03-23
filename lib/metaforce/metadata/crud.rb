@@ -5,41 +5,41 @@ module Metaforce
     module CRUD
 
       def create(type, metadata={})
-        type = Metaforce::Metadata::Types.name(type)
+        type = type.to_s.camelcase
         metadata = [metadata] unless metadata.is_a?(Array)
         metadata = encode_content(metadata)
         response = @client.request(:create) do |soap|
           soap.header = @header
           soap.body = {
             :metadata => metadata,
-            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
         Transaction.new self, response.body[:create_response][:result][:id]
       end
 
       def update(type, metadata={})
-        type = Metaforce::Metadata::Types.name(type)
+        type = type.to_s.camelcase
         metadata = [metadata] unless metadata.is_a?(Array)
         metadata = encode_content(metadata)
         response = @client.request(:update) do |soap|
           soap.header = @header
           soap.body = {
             :metadata => metadata,
-            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
         Transaction.new self, response.body[:update_response][:result][:id]
       end
 
       def delete(type, metadata={})
-        type = Metaforce::Metadata::Types.name(type)
+        type = type.to_s.camelcase
         metadata = [metadata] unless metadata.is_a?(Array)
         response = @client.request(:delete) do |soap|
           soap.header = @header
           soap.body = {
             :metadata => metadata,
-            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type.to_s}" } }
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
         Transaction.new self, response.body[:delete_response][:result][:id]
