@@ -82,7 +82,7 @@ description. Please provide applicable rspec specs.
 
 **0.3.1** (February 3, 2012)
 
-* Dynamically defined helper methods for .list (e.g. `client.list_apex_classes`, `client.list_custom_objects`).
+* Dynamically defined helper methods for .list (e.g. `client.list_apex_class`, `client.list_custom_object`).
 * The `Metaforce::Metadata::Client.describe` method now caches the results to minimize latency. `describe!`
   can be used to force a refresh.
 

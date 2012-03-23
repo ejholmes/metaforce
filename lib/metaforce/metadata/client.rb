@@ -207,12 +207,12 @@ module Metaforce
 
       def method_missing(name, *args, &block)
         if name =~ /^list_(.*)$/
-          list("#{$1}".to_sym)
+          list("#{$1}".to_sym) if metadata_objects.any? { |m| m[:xml_name] == $1.camelcase }
         else
           super
         end
       end
-    
+
       # Creates the deploy file, reads in the contents and returns the base64
       # encoded data
       def create_deploy_file(dir)

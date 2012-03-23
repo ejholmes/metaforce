@@ -36,6 +36,7 @@ describe Metaforce::Metadata::Client do
   end
 
   it "should respond to dynamically defined list methods" do
+    savon.expects(:describe_metadata).returns(:success)
     savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
     client.list_apex_class.should be_an(Array)
   end
