@@ -43,6 +43,11 @@ module Metaforce
       #   client.list([{ :type => "CustomObject" }, { :type => "ApexComponent" }])
       #   #=> ["ContractContactRole", "Solution", "Invoice_Statements__c", ... ]
       def list(queries=[])
+        if queries.is_a?(Symbol)
+          queries = { :type => queries.to_s.camelcase }
+        elsif queries.is_a?(String)
+          queries = { :type => queries }
+        end
         queries = [ queries ] unless queries.is_a?(Array)
         response = @client.request(:list_metadata) do |soap|
           soap.header = @header
@@ -54,28 +59,11 @@ module Metaforce
         response.body[:list_metadata_response][:result]
       end
 
-      # Defines some helper methods for listing metadata types
-      #
-      # == Examples
-      #  
-      #   # List the names of all apex classes
-      #   client.list_apex_classes.collect { |t| t[:full_name] }
-      #   #=> ["al__SObjectPaginatorListenerForTesting", "al__IndexOutOfBoundsException", ... ]
-      #
-      #   # List the names of all custom objects
-      #   client.list_custom_objects.collect { |t| t[:full_name] }
-      #   #=> ["Asset", "estore__Ida_Menu_Item__c", "SfoMatchHistoryItem", ... ]
-      Metaforce::Metadata::Types.all.each do |type, value|
-        define_method("list_#{value[:plural]}".to_sym) do
-          list :type => value[:name]
-        end
-      end
-
       # Describe the organization's metadata and cache the response
       #
       # == Examples
       #
-      #   # List the names of all metedata types
+      #   # List the names of all metadata types
       #   client.describe[:metadata_objects].collect { |t| t[:xml_name] }
       #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
       def describe(version=nil)
@@ -89,6 +77,18 @@ module Metaforce
           soap.body = { :api_version => version } unless version.nil?
         end
         @describe = response.body[:describe_metadata_response][:result]
+      end
+
+      # Lists all metadata objects on the org. Same as
+      # +client.describe[:metadata_objects]
+      #
+      # == Examples
+      #
+      #   # List the names of all metadata types
+      #   client.metadata_objects.collect { |t| t[:xml_name] }
+      #   #=> ["CustomLabels", "StaticResource", "Scontrol", "ApexComponent", ... ]
+      def metadata_objects(version=nil)
+        describe(version)[:metadata_objects]
       end
 
       # Checks the status of an async result. If type is +:retrieve+ or +:deploy+,
@@ -204,7 +204,15 @@ module Metaforce
       end
 
     private
-    
+
+      def method_missing(name, *args, &block)
+        if name =~ /^list_(.*)$/ && metadata_objects.any? { |m| m[:xml_name] == $1.camelcase }
+            list("#{$1}".to_sym)
+        else
+          super
+        end
+      end
+
       # Creates the deploy file, reads in the contents and returns the base64
       # encoded data
       def create_deploy_file(dir)

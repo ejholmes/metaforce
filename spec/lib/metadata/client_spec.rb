@@ -23,12 +23,24 @@ describe Metaforce::Metadata::Client do
       client.list(:type => "ApexClass").should be_an(Array)
     end
 
+    it "accepts a symbol" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list(:apex_class).should be_an(Array)
+    end
+
+    it "accepts a string" do
+      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+      client.list("ApexClass").should be_an(Array)
+    end
+
   end
 
   it "should respond to dynamically defined list methods" do
-    Metaforce::Metadata::Types.all.each do |type, value|
-      client.respond_to?("list_#{value[:plural]}").should eq(true)
-    end
+    savon.expects(:describe_metadata).returns(:success)
+    savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+    client.list_apex_class.should be_an(Array)
+
+    expect { client.list_undefined_type }.to raise_error(NoMethodError)
   end
 
   describe ".describe" do
@@ -45,6 +57,13 @@ describe Metaforce::Metadata::Client do
         expect { client.describe }.to_not raise_error
       end
 
+    end
+  end
+
+  describe ".metadata_objects" do
+    it "returns the :metadata_objects key from the describe call" do
+      savon.expects(:describe_metadata).returns(:success)
+      client.metadata_objects.should be_a(Array)
     end
   end
 

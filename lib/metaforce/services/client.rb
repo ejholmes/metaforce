@@ -27,8 +27,10 @@ module Metaforce
         password = "#{password}#{security_token}" unless security_token.nil?
         client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
           wsdl.endpoint = wsdl.endpoint.to_s.sub(/login/, 'test') if Metaforce.configuration.test
+          Metaforce.log("Logging in via #{wsdl.endpoint.to_s}")
         end
         client.http.auth.ssl.verify_mode = :none
+
         response = client.request(:login) do
           soap.body = {
             :username => username,
