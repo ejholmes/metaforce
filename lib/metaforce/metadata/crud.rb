@@ -5,8 +5,12 @@ module Metaforce
     module CRUD
 
       def create(type, metadata={})
-        type = type.to_s.camelcase
         metadata = [metadata] unless metadata.is_a?(Array)
+        metadata.each_with_index do |m, i|
+          template = Metaforce::Metadata::MetadataFile.template(type)
+          metadata[i] = template.merge(m) if template
+        end
+        type = type.to_s.camelcase
         metadata = encode_content(metadata)
         response = @client.request(:create) do |soap|
           soap.header = @header
@@ -19,8 +23,12 @@ module Metaforce
       end
 
       def update(type, metadata={})
-        type = type.to_s.camelcase
         metadata = [metadata] unless metadata.is_a?(Array)
+        metadata.each_with_index do |m, i|
+          template = Metaforce::Metadata::MetadataFile.template(type)
+          metadata[i] = template.merge(m) if template
+        end
+        type = type.to_s.camelcase
         metadata = encode_content(metadata)
         response = @client.request(:update) do |soap|
           soap.header = @header
