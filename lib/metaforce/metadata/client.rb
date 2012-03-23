@@ -206,8 +206,8 @@ module Metaforce
     private
 
       def method_missing(name, *args, &block)
-        if name =~ /^list_(.*)$/
-          list("#{$1}".to_sym) if metadata_objects.any? { |m| m[:xml_name] == $1.camelcase }
+        if name =~ /^list_(.*)$/ && metadata_objects.any? { |m| m[:xml_name] == $1.camelcase }
+            list("#{$1}".to_sym)
         else
           super
         end

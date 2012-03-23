@@ -39,6 +39,8 @@ describe Metaforce::Metadata::Client do
     savon.expects(:describe_metadata).returns(:success)
     savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
     client.list_apex_class.should be_an(Array)
+
+    expect { client.list_undefined_type }.to raise_error(NoMethodError)
   end
 
   describe ".describe" do
