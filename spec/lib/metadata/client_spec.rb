@@ -36,9 +36,11 @@ describe Metaforce::Metadata::Client do
   end
 
   it "should respond to dynamically defined list methods" do
-    Metaforce::Metadata::Types.all.each do |type, value|
-      client.respond_to?("list_#{value[:plural]}").should eq(true)
-    end
+    savon.expects(:describe_metadata).returns(:success)
+    savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
+    client.list_apex_class.should be_an(Array)
+
+    expect { client.list_undefined_type }.to raise_error(NoMethodError)
   end
 
   describe ".describe" do

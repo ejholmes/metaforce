@@ -2,12 +2,12 @@ module Metaforce
   module CoreExtensions
     module String
 
-      def camelCase
+      def lower_camelcase
         str = dup
         str.gsub!(/_[a-z]/) { |a| a.upcase }
         str.gsub!('_', '')
         str
-      end unless method_defined?(:camelCase)
+      end unless method_defined?(:lower_camelcase)
 
       def underscore
         self.gsub(/::/, '/').
@@ -15,7 +15,7 @@ module Metaforce
         gsub(/([a-z\d])([A-Z])/,'\1_\2').
         tr("-", "_").
         downcase
-      end
+      end unless method_defined?(:underscore)
     
     end
   end
