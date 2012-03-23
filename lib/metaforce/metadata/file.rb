@@ -54,12 +54,14 @@ module Metaforce
         :apex_component => {
           :api_version => Metaforce.configuration.api_version,
           :description => '',
-          :label => ''
+          :label => '',
+          :content => "<apex:component>\n</apex:component>"
         },
         :apex_page => {
           :api_version => Metaforce.configuration.api_version,
           :description => '',
-          :label => ''
+          :label => '',
+          :content => "<apex:page>\n</apex:page>"
         },
         :apex_trigger => {
           :api_version => Metaforce.configuration.api_version,

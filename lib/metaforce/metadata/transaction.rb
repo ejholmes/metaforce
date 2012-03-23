@@ -84,5 +84,17 @@ module Metaforce
       end
     end
 
+    BLACK_LIST = [:@client]
+    
+    def to_s
+      public_vars = self.instance_variables.reject { |var|
+        BLACK_LIST.include? var
+      }.map { |var|
+        "#{var}=\"#{instance_variable_get(var)}\""
+      }.join(" ")
+
+      "<##{self.class}:#{self.object_id.to_s(8)} #{public_vars}>"
+    end
+
   end
 end

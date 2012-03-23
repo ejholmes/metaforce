@@ -4,29 +4,74 @@ module Metaforce
   module Metadata
     module CRUD
 
-      [:create, :update, :delete].each do |method|
-        define_method(method) do |type, metadata={}|
-          metadata = [metadata] unless metadata.is_a?(Array)
-          unless method == :delete
-            metadata.each_with_index do |m, i|
-              template = Metaforce::Metadata::MetadataFile.template(type)
-              metadata[i] = template.merge(m) if template
-            end
-            metadata = encode_content(metadata)
-          end
-          type = type.to_s.camelcase
-          response = @client.request(method) do |soap|
-            soap.header = @header
-            soap.body = {
-              :metadata => metadata,
-              :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
-            }
-          end
-          Transaction.new self, response.body["#{method}_response".to_sym][:result][:id], method
+      # Create metadata
+      #
+      # == Examples
+      #
+      #   client.create(:apex_page, :full_name => 'TestPage')
+      def create(type, metadata={})
+        metadata = prepare_metadata(type, metadata)
+        type = type.to_s.camelcase
+        response = @client.request(:create) do |soap|
+          soap.header = @header
+          soap.body = {
+            :metadata => metadata,
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
+          }
         end
+        Transaction.new self, response.body[:create_response][:result][:id]
+      end
+
+      # Update metadata
+      #
+      # == Examples
+      #
+      #   client.update(:apex_page, 'OldPage', :full_name => 'NewPage')
+      def update(type, current_name, metadata={})
+        metadata = prepare_metadata(type, metadata)
+        type = type.to_s.camelcase
+        response = @client.request(:update) do |soap|
+          soap.header = @header
+          soap.body = {
+            :metadata => {
+              :current_name => current_name,
+              :metadata => metadata,
+              :attributes! => { :metadata => { "xsi:type" => "wsdl:#{type}" } }
+            }
+          }
+        end
+        Transaction.new self, response.body[:update_response][:result][:id]
+      end
+
+      # Delete metadata
+      #
+      # == Examples
+      #
+      #   client.delete(:apex_page, :full_name => 'TestPage')
+      def delete(type, metadata={})
+        metadata = [metadata] unless metadata.is_a?(Array)
+        type = type.to_s.camelcase
+        response = @client.request(:delete) do |soap|
+          soap.header = @header
+          soap.body = {
+            :metadata => metadata,
+            :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
+          }
+        end
+        Transaction.new self, response.body[:delete_response][:result][:id]
       end
 
     private
+
+      def prepare_metadata(type, metadata)
+        metadata = [metadata] unless metadata.is_a?(Array)
+        metadata.each_with_index do |m, i|
+          template = Metaforce::Metadata::MetadataFile.template(type)
+          m = template.merge(m) if template
+          metadata[i] = m
+        end
+        metadata = encode_content(metadata)
+      end
 
       def encode_content(metadata)
         metadata.each do |m|
