@@ -23,6 +23,13 @@ describe Metaforce::Metadata::Client do
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       response = client.create(:apex_component, :full_name => 'component', :label => 'test', :content => 'test')
     end
+
+    it "responds to method missing" do
+      savon.expects(:create).with(:metadata => [{:api_version => '23.0', :description => '', :label => 'test', :content => '', :full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
+      savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
+      response = client.create_apex_component(:full_name => 'component', :label => 'test', :content => '')
+      response.should be_a(Metaforce::Transaction)
+    end
   end
 
   describe ".delete" do
@@ -32,6 +39,13 @@ describe Metaforce::Metadata::Client do
       response = client.delete(:apex_component, :full_name => 'component')
       response.should be_a(Metaforce::Transaction)
     end
+
+    it "responds to method missing" do
+      savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
+      savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
+      response = client.delete_apex_component(:full_name => 'component')
+      response.should be_a(Metaforce::Transaction)
+    end
   end
 
   describe ".update" do
@@ -39,6 +53,13 @@ describe Metaforce::Metadata::Client do
       savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:api_version => '23.0', :description => '', :label => 'test', :content => '', :full_name => 'component'}], :attributes! => {:metadata => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       response = client.update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => '')
+      response.should be_a(Metaforce::Transaction)
+    end
+
+    it "responds to method missing" do
+      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:api_version => '23.0', :description => '', :label => 'test', :content => '', :full_name => 'component'}], :attributes! => {:metadata => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
+      savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
+      response = client.update_apex_component('old_component', :full_name => 'component', :label => 'test', :content => '')
       response.should be_a(Metaforce::Transaction)
     end
   end

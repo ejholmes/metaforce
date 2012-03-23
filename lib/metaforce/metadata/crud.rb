@@ -80,6 +80,16 @@ module Metaforce
         metadata
       end
 
+      def method_missing(name, *args, &block)
+        if name =~ /^create_(.*)$/
+          create($1.to_sym, *args)
+        elsif name =~ /^update_(.*)$/
+          update($1.to_sym, *args)
+        elsif name =~ /^delete_(.*)$/
+          delete($1.to_sym, *args)
+        end
+      end
+
     end
   end
 end
