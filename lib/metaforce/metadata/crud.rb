@@ -15,7 +15,7 @@ module Metaforce
             :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
-        Transaction.new self, response.body[:create_response][:result][:id]
+        Transaction.new self, response.body[:create_response][:result][:id], :create
       end
 
       def update(type, metadata={})
@@ -29,7 +29,7 @@ module Metaforce
             :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
-        Transaction.new self, response.body[:update_response][:result][:id]
+        Transaction.new self, response.body[:update_response][:result][:id], :update
       end
 
       def delete(type, metadata={})
@@ -42,7 +42,7 @@ module Metaforce
             :attributes! => { "ins0:metadata" => { "xsi:type" => "wsdl:#{type}" } }
           }
         end
-        Transaction.new self, response.body[:delete_response][:result][:id]
+        Transaction.new self, response.body[:delete_response][:result][:id], :delete
       end
 
     private
