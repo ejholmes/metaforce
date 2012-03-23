@@ -36,14 +36,14 @@ describe Metaforce::Metadata::Client do
     it "returns a transaction" do
       savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-      response = client.delete(:apex_component, :full_name => 'component')
+      response = client.delete(:apex_component, 'component')
       response.should be_a(Metaforce::Transaction)
     end
 
     it "responds to method missing" do
       savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-      response = client.delete_apex_component(:full_name => 'component')
+      response = client.delete_apex_component('component')
       response.should be_a(Metaforce::Transaction)
     end
   end

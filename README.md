@@ -34,6 +34,15 @@ deployment.result
 
 # Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
 client.retrieve(File.expand_path('path/to/package.xml')).to('retrieved')
+
+# Create a Visualforce page
+client.create_apex_page(:full_name => 'TestPage', :label => 'TestPage')
+
+# Update a Visualforce page
+client.update_apex_page('OldName', :full_name => 'NewName')
+
+# Delete a Visualforce page
+client.delete_apex_page('TestPage')
 ```
 
 ## Roadmap

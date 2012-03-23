@@ -48,8 +48,12 @@ module Metaforce
       # == Examples
       #
       #   client.delete(:apex_page, :full_name => 'TestPage')
-      def delete(type, metadata={})
-        metadata = [metadata] unless metadata.is_a?(Array)
+      def delete(type, full_name)
+        full_name = [full_name] unless full_name.is_a?(Array)
+        metadata = []
+        full_name.each do |f|
+          metadata << { :full_name => f }
+        end
         type = type.to_s.camelcase
         response = @client.request(:delete) do |soap|
           soap.header = @header
