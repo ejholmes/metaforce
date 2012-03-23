@@ -61,7 +61,7 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.5.0** (March 23, 2012)
 
 * Implemented CRUD calls.
 
