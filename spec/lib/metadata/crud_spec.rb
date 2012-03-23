@@ -11,7 +11,6 @@ describe Metaforce::Metadata::Client do
   end
   
   describe ".create" do
-
     it "returns a transaction" do
       savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
@@ -24,51 +23,23 @@ describe Metaforce::Metadata::Client do
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       response = client.create(:apex_component, { :full_name => 'component', :label => 'test', :content => 'test' })
     end
-
-    it "responds to dynamically defined methods" do
-      client.respond_to?(:create_apex_class).should eq(true)
-    end
-
-    describe "dynamically built methods" do
-
-      it "works just like .create" do
-        savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
-        savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-        response = client.create_apex_component(:full_name => 'component', :label => 'test')
-        response.should be_a(Metaforce::Transaction)
-      end
-
-    end
-
   end
 
   describe ".delete" do
-
     it "returns a transaction" do
       savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       response = client.delete(:apex_component, { :full_name => 'component'})
       response.should be_a(Metaforce::Transaction)
     end
-
-    it "responds to dynamically defined methods" do
-      client.respond_to?(:delete_apex_class).should eq(true)
-    end
-
   end
 
   describe ".update" do
-
     it "returns a transaction" do
       savon.expects(:update).with(:metadata => [{:full_name => 'component', :label => 'test'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
       savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
       response = client.update(:apex_component, { :full_name => 'component', :label => 'test'})
       response.should be_a(Metaforce::Transaction)
     end
-
-    it "responds to dynamically defined methods" do
-      client.respond_to?(:update_apex_class).should eq(true)
-    end
-
   end
 end

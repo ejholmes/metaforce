@@ -2,7 +2,7 @@ require 'base64'
 
 module Metaforce
   module Metadata
-    class Client
+    module CRUD
 
       def create(type, metadata={})
         type = Metaforce::Metadata::Types.name(type)
@@ -45,18 +45,6 @@ module Metaforce
         Transaction.new self, response.body[:delete_response][:result][:id]
       end
 
-      Metaforce::Metadata::Types.all.each do |type, value|
-        define_method("create_#{type}".to_sym) do |metadata|
-          create(type, metadata)
-        end unless method_defined?("create_#{type}".to_sym)
-        define_method("update_#{type}".to_sym) do |metadata|
-          update(type, metadata)
-        end unless method_defined?("update_#{type}".to_sym)
-        define_method("delete_#{type}".to_sym) do |metadata|
-          delete(type, metadata)
-        end unless method_defined?("delete_#{type}".to_sym)
-      end
-
     private
 
       def encode_content(metadata)
@@ -69,3 +57,5 @@ module Metaforce
     end
   end
 end
+
+Metaforce::Metadata::Client.send :include, Metaforce::Metadata::CRUD
