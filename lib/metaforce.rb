@@ -1,6 +1,6 @@
 require 'metaforce/version'
+require 'metaforce/core_extensions'
 require 'metaforce/config'
-require 'metaforce/core_extensions/string'
 require 'metaforce/error'
 require 'metaforce/manifest'
 require 'metaforce/services'
