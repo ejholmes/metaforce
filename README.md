@@ -34,6 +34,15 @@ deployment.result
 
 # Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
 client.retrieve(File.expand_path('path/to/package.xml')).to('retrieved')
+
+# Create a Visualforce page
+client.create_apex_page(:full_name => 'TestPage', :label => 'TestPage')
+
+# Update a Visualforce page
+client.update_apex_page('OldName', :full_name => 'NewName')
+
+# Delete a Visualforce page
+client.delete_apex_page('TestPage')
 ```
 
 ## Roadmap
@@ -42,7 +51,6 @@ need to be done.
 
 * Implement command line utility that can watch the directory and deploy when a
   file changes.
-* Implement CRUD based calls <http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_crud_based_calls_intro.htm>.
 * Implement some helper methods for diffing metadata.
 * Ability to deploy directly from a git repository.
 * And some other stuff that I haven't quite thought of yet...
@@ -53,6 +61,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
+**HEAD**
+
+* Implemented CRUD calls.
+
 **0.4.1** (March 8, 2012)
 
 * Bug fixes
