@@ -91,6 +91,8 @@ module Metaforce
           update($1.to_sym, *args)
         elsif name =~ /^delete_(.*)$/
           delete($1.to_sym, *args)
+        else
+          super
         end
       end
 
