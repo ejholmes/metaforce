@@ -5,8 +5,8 @@ require "metaforce/version"
 Gem::Specification.new do |s|
   s.name        = "metaforce"
   s.version     = Metaforce::VERSION
-  s.authors     = ["Eric J. Holmes"]
-  s.email       = ["eric@ejholmes.net"]
+  s.authors     = ["Eric J. Holmes", "Kevin J. Poorman"]
+  s.email       = ["eric@ejholmes.net", "Kevinp@madronasg.com"]
   s.homepage    = "https://github.com/ejholmes/metaforce"
   s.summary     = %q{A Ruby gem for interacting with the Salesforce Metadata API}
   s.description = %q{A Ruby gem for interacting with the Salesforce Metadata API}
