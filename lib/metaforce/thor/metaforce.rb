@@ -100,17 +100,18 @@ class MetaForce < Thor
 	######## Clone ############################################################
 	desc "clone", "Pull all MetaData objects from the current org"
 	method_option :reset, :type => :boolean, :aliases => "-r", :required => false, :banner => " Reset stored login information"
-	method_option :manifest, :type => :string, :aliases => "-m", :required => true, :banner => " Path to Manifest.xml", :default => "src/package.xml"
-	method_option :dir, :type => :string, :aliases => "-d", :required => false, :banner => " Download to directory", :default => "retrieved"
+	method_option :dir, :type => :string, :aliases => "-d", :required => true, :banner => " Download to directory", :default => "retrieved"
 	def clone
 		login unless @client
 		login unless options[:reset].nil?
 		raise "failed to create connection!" unless @client
 		result = spinner {
-			@client.retrieve
+			metadata_objects = Hash.new
+			@client.metadata_objects.collect { |t| metadata_objects[t[:xml_name].underscore.to_sym] = ["*"] }
+			md = Metaforce::Manifest.new(metadata_objects)
+			@client.retrieve_unpackaged(md).to(options[:dir])
 		}
-		puts result.inspect
-        say "Files retrieved sucessfully to #{options[:dir]}", color = Thor::Shell::Color::GREEN
+    say "Files retrieved sucessfully to #{options[:dir]}", color = Thor::Shell::Color::GREEN
 	end
 
 end
