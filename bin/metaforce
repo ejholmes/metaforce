@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require './lib/metaforce/thor/metaforce'
+
+MetaForce.new :shell => Thor::Shell::Color.new
+MetaForce.start
