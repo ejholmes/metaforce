@@ -32,10 +32,10 @@ module Metaforce
           :folder => "objects",
           :plural => :action_overrides
         },
-        :analytics_snapshot => {
+        :analytic_snapshot => {
           :name => "AnalyticsSnapshot",
           :folder => "analyticsnapshots",
-          :plural => :analytics_snapshots
+          :plural => :analytic_snapshots
         },
         :apex_class => {
           :name => "ApexClass",
@@ -142,6 +142,11 @@ module Metaforce
           :folder => "homePageComponents",
           :plural => :home_page_components
         },
+        :home_page_layout => {
+          :name => "HomePageLayout",
+          :folder => "HomePageLayouts",
+          :plural => :home_page_layouts
+        }, 
         :layout => {
           :name => "Layout",
           :folder => "layouts",
@@ -197,10 +202,10 @@ module Metaforce
           :folder => "reportTypes",
           :plural => :report_types
         },
-        :scontroler => {
-          :name => "Scontroler",
+        :scontrol => {
+          :name => "scontrol",
           :folder => "scontrols",
-          :plural => :scontrolers
+          :plural => :scontrols
         },
         :sharing_reason => {
           :name => "SharingReason",

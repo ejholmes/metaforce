@@ -178,7 +178,7 @@ module Metaforce
             :retrieve_request => options[:options] || {}
           }
         end
-        Transaction.retrieval self, response[:retrieve_response][:result][:id]
+        Transaction.retrieval(self, response[:retrieve_response][:result][:id])
       end
 
       # Retrieves files specified in the manifest file (package.xml). Specificy any extra options in +options[:options]+.

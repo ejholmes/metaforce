@@ -1,4 +1,6 @@
 source "http://rubygems.org"
+gem 'highline'
+gem 'thor'
 
 # Specify your gem's dependencies in metaforce.gemspec
 gemspec
