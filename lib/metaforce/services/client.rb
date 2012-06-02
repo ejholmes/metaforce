@@ -20,25 +20,66 @@ module Metaforce
           :security_token => Metaforce.configuration.security_token
         } if options.nil?
         @session = self.login(options[:username], options[:password], options[:security_token])
+
+        @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
+          wsdl.endpoint = @session[:services_url]
+        end
+        @client.http.auth.ssl.verify_mode = :none
+        @header = {
+            "ins0:SessionHeader" => {
+              "ins0:sessionId" => @session[:session_id]
+            }
+        }
       end
 
       # Performs a login and sets @session
       def login(username, password, security_token=nil)
         password = "#{password}#{security_token}" unless security_token.nil?
-        client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
+        @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
           wsdl.endpoint = wsdl.endpoint.to_s.sub(/login/, 'test') if Metaforce.configuration.test
           Metaforce.log("Logging in via #{wsdl.endpoint.to_s}")
         end
-        client.http.auth.ssl.verify_mode = :none
+        @client.http.auth.ssl.verify_mode = :none
 
-        response = client.request(:login) do
+        response = @client.request(:login) do
           soap.body = {
             :username => username,
             :password => password
           }
         end
         { :session_id => response.body[:login_response][:result][:session_id],
-          :metadata_server_url =>  response.body[:login_response][:result][:metadata_server_url] }
+          :metadata_server_url =>  response.body[:login_response][:result][:metadata_server_url],
+          :services_url => response.body[:login_response][:result][:server_url] }
+      end
+
+      # Returns the layout metadata for the sobject.
+      # If a +record_type_id+ is passed in, it will only return the layout for
+      # that record type.
+      #
+      # This method is really useful finding out picklist values that are
+      # available for a certain record type
+      #
+      # == Examples
+      #
+      #   @picklists_for_record_type = client.describe_layout('Account', '0123000000100Rn')[:record_type_mappings][:picklists_for_record_type]
+      #
+      #   def picklist_values_for(field)
+      #     picklist_values = @picklists_for_record_type.select { |f| f[:picklist_name] == field }.first[:picklist_values]
+      #     picklist_values.select { |p| p[:active] }.collect { |p| [ p[:label], p[:value] ] }
+      #   end
+      #
+      #   picklist_values_for('some_field__c')
+      #   # => [ ['label1', 'value1'], ['label2', 'value2'] ] 
+      def describe_layout(sobject, record_type_id=nil)
+        body = {
+          'sObjectType' => sobject
+        }
+        body['recordTypeID'] = record_type_id if record_type_id
+        response = @client.request(:describe_layout) do |soap|
+          soap.header = @header
+          soap.body = body
+        end
+        response.body[:describe_layout_response][:result]
       end
     end
   end
