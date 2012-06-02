@@ -4,8 +4,8 @@ module Metaforce
 
       def camelcase
         str = dup
-        str.gsub!(/^[a-z]|\s+[a-z]/) { |a| a.upcase }
-        str.gsub!(/\s/, '')
+        str.gsub!(/^[a-z]|_[a-z]/) { |a| a.upcase }
+        str.gsub!('_', '')
         str
       end unless method_defined?(:camelcase)
 
