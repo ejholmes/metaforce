@@ -2,6 +2,13 @@ module Metaforce
   module CoreExtensions
     module String
 
+      def camelcase
+        str = dup
+        str.gsub!(/^[a-z]|\s+[a-z]/) { |a| a.upcase }
+        str.gsub!(/\s/, '')
+        str
+      end unless method_defined?(:camelcase)
+
       def lower_camelcase
         str = dup
         str.gsub!(/_[a-z]/) { |a| a.upcase }
