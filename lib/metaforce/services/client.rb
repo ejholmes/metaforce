@@ -11,37 +11,33 @@ module Metaforce
       # is nil, it will get the username, password and security token from the
       # configuration.
       def initialize(options=nil)
+        @options = options
         # Convert string keys to hashes
-        options.dup.each { |key, value| options[key.to_sym] = value } if options.is_a?(Hash)
+        @options.dup.each { |key, value| options[key.to_sym] = value } if options.is_a?(Hash)
 
-        options = {
+        @options = {
           :username => Metaforce.configuration.username,
           :password => Metaforce.configuration.password,
           :security_token => Metaforce.configuration.security_token
-        } if options.nil?
-        @session = self.login(options[:username], options[:password], options[:security_token])
+        } if @options.nil?
+        @session = self.login(@options[:username], @options[:password], @options[:security_token])
 
         @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
           wsdl.endpoint = @session[:services_url]
         end
         @client.http.auth.ssl.verify_mode = :none
-        @header = {
-            "ins0:SessionHeader" => {
-              "ins0:sessionId" => @session[:session_id]
-            }
-        }
       end
 
-      # Performs a login and sets @session
+      # Performs a login and retrurns the session
       def login(username, password, security_token=nil)
         password = "#{password}#{security_token}" unless security_token.nil?
-        @client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
+        client = Savon::Client.new File.expand_path("../../../../wsdl/#{Metaforce.configuration.api_version}/partner.xml", __FILE__) do |wsdl|
           wsdl.endpoint = wsdl.endpoint.to_s.sub(/login/, 'test') if Metaforce.configuration.test
           Metaforce.log("Logging in via #{wsdl.endpoint.to_s}")
         end
-        @client.http.auth.ssl.verify_mode = :none
+        client.http.auth.ssl.verify_mode = :none
 
-        response = @client.request(:login) do
+        response = client.request(:login) do
           soap.body = {
             :username => username,
             :password => password
@@ -75,12 +71,32 @@ module Metaforce
           'sObjectType' => sobject
         }
         body['recordTypeID'] = record_type_id if record_type_id
-        response = @client.request(:describe_layout) do |soap|
-          soap.header = @header
+        response = request(:describe_layout) do |soap|
+          soap.header = header
           soap.body = body
         end
         response.body[:describe_layout_response][:result]
       end
+
+    private
+
+      def header
+        {
+          "ins0:SessionHeader" => {
+            "ins0:sessionId" => @session[:session_id]
+          }
+        }
+      end
+
+      def request(*args, &block)
+        begin
+          @client.request(*args, &block)
+        rescue Savon::SOAP::Fault => e
+          @session = self.login(@options[:username], @options[:password], @options[:security_token])
+          @client.request(*args, &block)
+        end
+      end
+
     end
   end
 end
