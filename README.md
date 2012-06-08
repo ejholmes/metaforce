@@ -61,7 +61,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**HEAD**
+**0.5.2**
+* The services client now reauthentications on Savon::SOAP::Fault.
+
+**0.5.1**
 
 * Add thor integration.
 
