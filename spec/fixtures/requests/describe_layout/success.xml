@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <describeLayoutResponse>
+      <result>
+        <layouts>
+        </layouts>
+        <recordTypeMappings>
+        </recordTypeMappings>
+        <recordTypeSelectorRequired>true</recordTypeSelectorRequired>
+      </result>
+    </describeLayoutResponse>
+  </soapenv:Body>
+</soapenv:Envelope>
+

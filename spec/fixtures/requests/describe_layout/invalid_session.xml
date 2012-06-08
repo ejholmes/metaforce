@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sf="urn:fault.partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <soapenv:Body>
+    <soapenv:Fault>
+      <faultcode>sf:INVALID_SESSION_ID</faultcode>
+      <faultstring>INVALID_SESSION_ID: Invalid Session ID found in SessionHeader: Illegal Session</faultstring>
+      <detail>
+        <sf:UnexpectedErrorFault xsi:type="sf:UnexpectedErrorFault">
+          <sf:exceptionCode>INVALID_SESSION_ID</sf:exceptionCode>
+          <sf:exceptionMessage>Invalid Session ID found in SessionHeader: Illegal Session</sf:exceptionMessage>
+        </sf:UnexpectedErrorFault>
+      </detail>
+    </soapenv:Fault>
+  </soapenv:Body>
+</soapenv:Envelope>
