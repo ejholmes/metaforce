@@ -57,7 +57,6 @@ module Metaforce
     attr_accessor :wait_until_done
 
     def initialize
-      Savon.log        = false
       HTTPI.log        = false
       @api_version     = "23.0"
       @test            = false

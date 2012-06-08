@@ -31,4 +31,20 @@ describe Metaforce::Services::Client do
       end
     end
   end
+
+  describe "reauthentication" do
+    let(:client) do
+      savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
+      client = Metaforce::Services::Client.new("username" => 'valid', "password" => 'password')
+    end
+
+    context "when the session expires" do
+      it "reauthenticates the user" do
+        # savon.expects(:describe_layout).with('sObjectType' => 'Account').returns(:invalid_session)
+        # savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
+        # savon.expects(:describe_layout).with('sObjectType' => 'Account').returns(:success)
+        # client.describe_layout('Account').should be_a(Hash)
+      end
+    end
+  end
 end
