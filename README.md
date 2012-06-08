@@ -61,7 +61,10 @@ feature on a new branch, then send me a pull request with a detailed
 description. Please provide applicable rspec specs.
 
 ## Version History
-**0.5.2**
+**0.5.3** (June 8, 2012)
+* Only trigger reauthentication if the response contains `INVALID_SESSION_ID`.
+
+**0.5.2** (June 8, 2012)
 * The services client now reauthentications on Savon::SOAP::Fault.
 
 **0.5.1**
