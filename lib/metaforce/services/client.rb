@@ -92,8 +92,12 @@ module Metaforce
         begin
           @client.request(*args, &block)
         rescue Savon::SOAP::Fault => e
-          @session = self.login(@options[:username], @options[:password], @options[:security_token])
-          @client.request(*args, &block)
+          if e.message =~ /INVALID_SESSION_ID/
+            @session = self.login(@options[:username], @options[:password], @options[:security_token])
+            @client.request(*args, &block)
+          else
+            raise e
+          end
         end
       end
 
