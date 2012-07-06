@@ -35,6 +35,9 @@ deployment.result
 # Retrieve the metadata components specified in package.xml and unzip to the "retrieved" directory
 client.retrieve(File.expand_path('path/to/package.xml')).to('retrieved')
 
+# Specify an alternate encoding
+client.retrieve(File.expand_path('path/to/package.xml')).to('retrieved', 'ascii-8bit')
+
 # Create a Visualforce page
 client.create_apex_page(:full_name => 'TestPage', :label => 'TestPage')
 
