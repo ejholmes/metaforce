@@ -48,7 +48,13 @@ module Metaforce
     # Unzips the returned zip file to +destination+.
     def to(destination, encoding=nil)
       zip = zip_file
-      file = Tempfile.new('retrieve', :encoding => encoding if encoding.present?)
+      
+      if encoding.present?
+        file = Tempfile.new('retrieve', :encoding => encoding)
+      else
+        file = Tempfile.new('retrieve')
+      end
+
       file.write(zip)
       path = file.path
       file.close
