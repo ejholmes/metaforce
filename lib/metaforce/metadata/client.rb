@@ -16,10 +16,20 @@ module Metaforce
         Hashie::Mash.new(response.body).describe_metadata_response.result
       end
 
+      def status(ids, type=nil)
+        method = :check_status
+        method = :"check_#{type}_status" if type
+        ids = [ids] unless ids.respond_to?(:each)
+        response = request(method) do |soap|
+          soap.body = { :ids => ids }
+        end
+        Hashie::Mash.new(response.body)[:"#{method}_response"].result
+      end
+
       def deploy(zip_file, options={})
         response = request(:deploy) do |soap|
           soap.body = {
-            :zip_file => zip_file,
+            :zip_file       => zip_file,
             :deploy_options => options
           }
         end

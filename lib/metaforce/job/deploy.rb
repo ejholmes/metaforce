@@ -11,6 +11,14 @@ module Metaforce
       @id = client.deploy(payload, @options)
     end
 
+    def status
+      client.status(id, :deploy)
+    end
+
+    def done?
+      status.done
+    end
+
     # Public: Base64 encodes the contents of the zip file.
     def payload
       Base64.encode64(File.open(@path, 'rb').read)

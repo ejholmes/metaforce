@@ -48,4 +48,15 @@ describe Metaforce::Metadata::Client do
       it { should be_a Hash }
     end
   end
+
+  describe '.status' do
+    context 'with a single id' do
+      before do
+        savon.expects(:check_status).with(:ids => ['1234']).returns(:done)
+      end
+
+      subject { client.status '1234' }
+      it { should be_a Hash }
+    end
+  end
 end
