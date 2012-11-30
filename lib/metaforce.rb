@@ -26,7 +26,7 @@ module Metaforce
           @services ||= Services::Client.new(@options)
         end
 
-        def deploy(path, options)
+        def deploy(path, options={})
           Job::Deploy.new(metadata, path, options)
         end
 
