@@ -1,5 +1,15 @@
 module Metaforce
   class Client
+    class << self
+      def endpoint(key)
+        define_method :endpoint do; @options[key] end
+      end
+
+      def wsdl(wsdl)
+        define_method :wsdl do; wsdl end
+      end
+    end
+
     def initialize(options={})
       raise 'Please specify a hash of options' unless options.is_a?(Hash)
       @options = options
@@ -34,8 +44,8 @@ module Metaforce
       { 'ins0:SessionHeader' => { 'ins0:sessionId' => session_id } }
     end
 
-    %w[endpoint wsdl session_id].each do |m|
-      define_method m.to_sym do; raise 'not implemented.' end
+    def session_id
+      @options[:session_id]
     end
   end
 end

@@ -1,6 +1,9 @@
 module Metaforce
   module Services
     class Client < Metaforce::Client
+      endpoint :services_url
+      wsdl Metaforce.configuration.partner_wsdl
+
       # Returns the layout metadata for the sobject.
       # If a +record_type_id+ is passed in, it will only return the layout for
       # that record type.
@@ -21,24 +24,6 @@ module Metaforce
         picklists = describe_layout(sobject, record_type_id).record_type_mappings.picklists_for_record_type
         picklists.select { |p| p.picklist_name == field }.first.picklist_values
           .select { |p| p.active }.collect { |p| [ p.label, p.value ] }
-      end
-
-    private
-
-      def endpoint
-        services_url
-      end
-
-      def wsdl
-        Metaforce.configuration.partner_wsdl
-      end
-
-      def session_id
-        @options[:session_id]
-      end
-
-      def services_url
-        @options[:services_url]
       end
     end
   end

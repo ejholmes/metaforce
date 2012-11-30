@@ -1,6 +1,9 @@
 module Metaforce
   module Metadata
     class Client < Metaforce::Client
+      endpoint :metadata_server_url
+      wsdl Metaforce.configuration.metadata_wsdl
+
       def list(*args)
         queries = { :type => args.map(&:to_s).map(&:camelize) }
         response = request(:list_metadata) do |soap|
@@ -34,24 +37,6 @@ module Metaforce
           }
         end
         Hashie::Mash.new(response.body).deploy_response.result.id
-      end
-
-    private
-
-      def endpoint
-        metadata_server_url
-      end
-
-      def wsdl
-        Metaforce.configuration.metadata_wsdl
-      end
-
-      def session_id
-        @options[:session_id]
-      end
-
-      def metadata_server_url
-        @options[:metadata_server_url]
       end
     end
   end
