@@ -61,7 +61,7 @@ module Metaforce
     end
 
     def wsdl
-      File.expand_path("../../../../wsdl/#{api_version}", __FILE__)
+      File.expand_path("../../../wsdl/#{api_version}", __FILE__)
     end
 
     def logger

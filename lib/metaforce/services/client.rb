@@ -19,9 +19,12 @@ module Metaforce
     private
 
       def client
-        @client ||= Savon::Client.new Metaforce.configuration.partner_wsdl do |wsdl|
+        @client ||= Savon.client(Metaforce.configuration.partner_wsdl) do |wsdl|
           wsdl.endpoint = services_url
-        end.tap do { |client| client.http.auth.ssl.verify_mode = :none }
+        end.tap do |client|
+          client.soap_headers = soap_headers
+          client.http.auth.ssl.verify_mode = :none
+        end
       end
 
       def services_url

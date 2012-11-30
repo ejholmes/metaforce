@@ -1,6 +1,7 @@
 require 'savon'
 
 require 'metaforce/version'
+require 'metaforce/config'
 require 'metaforce/login'
 require 'metaforce/client'
 require 'metaforce/services'
