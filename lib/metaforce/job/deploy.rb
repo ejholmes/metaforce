@@ -1,6 +1,6 @@
 module Metaforce
   class Job::Deploy < Job
-    attr_reader :id
+    status_type :deploy
 
     def initialize(client, path, options={})
       super(client)
@@ -9,14 +9,6 @@ module Metaforce
 
     def perform
       @id = client.deploy(payload, @options)
-    end
-
-    def status
-      client.status(id, :deploy)
-    end
-
-    def done?
-      status.done
     end
 
     # Public: Base64 encodes the contents of the zip file.
