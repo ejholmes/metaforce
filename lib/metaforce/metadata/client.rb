@@ -16,6 +16,16 @@ module Metaforce
         Hashie::Mash.new(response.body).describe_metadata_response.result
       end
 
+      def deploy(zip_file, options={})
+        response = request(:deploy) do |soap|
+          soap.body = {
+            :zip_file => zip_file,
+            :deploy_options => options
+          }
+        end
+        Hashie::Mash.new(response.body).deploy_response.result.id
+      end
+
     private
 
       def endpoint
