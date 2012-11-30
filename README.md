@@ -1,6 +1,7 @@
 # Metaforce [![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)](https://secure.travis-ci.org/ejholmes/metaforce)
 
-Metaforce is a Ruby gem for interacting with the Salesforce [Metadata](http://www.salesforce.com/us/developer/docs/api_meta/index.htm) and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm).
+Metaforce is a Ruby gem for interacting with the Salesforce [Metadata](http://www.salesforce.com/us/developer/docs/api_meta/index.htm)
+and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm) APIs.
 
 [Documentation](http://rubydoc.info/gems/metaforce/frames)
 
