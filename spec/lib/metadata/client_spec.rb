@@ -28,4 +28,24 @@ describe Metaforce::Metadata::Client do
       end
     end
   end
+
+  describe '.describe' do
+    context 'with no version' do
+      before do
+        savon.expects(:describe_metadata).with(nil).returns(:success)
+      end
+
+      subject { client.describe }
+      it { should be_a Hash }
+    end
+
+    context 'with a version' do
+      before do
+        savon.expects(:describe_metadata).with(:api_version => '18.0').returns(:success)
+      end
+
+      subject { client.describe('18.0') }
+      it { should be_a Hash }
+    end
+  end
 end
