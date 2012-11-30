@@ -1,6 +1,11 @@
 module Metaforce
   module Services
-    class Client
+    class Client < Metaforce::Client
+      def initialize(options={})
+        raise 'Please specify a hash of options' unless options.is_a?(Hash)
+        @options = options
+      end
+
       # Returns the layout metadata for the sobject.
       # If a +record_type_id+ is passed in, it will only return the layout for
       # that record type.
@@ -22,13 +27,17 @@ module Metaforce
         @client ||= Savon.client(Metaforce.configuration.partner_wsdl) do |wsdl|
           wsdl.endpoint = services_url
         end.tap do |client|
-          client.soap_headers = soap_headers
+          client.config.soap_header = soap_headers
           client.http.auth.ssl.verify_mode = :none
         end
       end
 
+      def session_id
+        @options[:session_id]
+      end
+
       def services_url
-        raise 'not implemented.'
+        @options[:services_url]
       end
     end
   end
