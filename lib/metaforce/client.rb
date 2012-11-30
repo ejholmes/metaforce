@@ -7,6 +7,15 @@ module Metaforce
 
   private
 
+    def client
+      @client ||= Savon.client(wsdl) do |wsdl|
+        wsdl.endpoint = endpoint
+      end.tap do |client|
+        client.config.soap_header = soap_headers
+        client.http.auth.ssl.verify_mode = :none
+      end
+    end
+
     # Performs an actual request.
     def request(*args, &block)
       begin
@@ -25,13 +34,8 @@ module Metaforce
       { 'ins0:SessionHeader' => { 'ins0:sessionId' => session_id } }
     end
 
-    def session_id
-      raise 'not implemented.'
-    end
-
-    # The underlying savon client for dealing with SOAP.
-    def client
-      raise 'not implemented.'
+    %w[endpoint wsdl session_id].each do |m|
+      define_method m.to_sym do; raise 'not implemented.' end
     end
   end
 end

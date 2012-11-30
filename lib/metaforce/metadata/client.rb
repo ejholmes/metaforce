@@ -18,13 +18,12 @@ module Metaforce
 
     private
 
-      def client
-        @client ||= Savon.client(Metaforce.configuration.metadata_wsdl) do |wsdl|
-          wsdl.endpoint = metadata_server_url
-        end.tap do |client|
-          client.config.soap_header = soap_headers
-          client.http.auth.ssl.verify_mode = :none
-        end
+      def endpoint
+        metadata_server_url
+      end
+
+      def wsdl
+        Metaforce.configuration.metadata_wsdl
       end
 
       def session_id
