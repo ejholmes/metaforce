@@ -1,4 +1,5 @@
 require 'savon'
+require 'active_support/core_ext'
 
 require 'metaforce/version'
 require 'metaforce/config'

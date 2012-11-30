@@ -1,5 +1,9 @@
 module Metaforce
   class Client
+    def initialize(options={})
+      raise 'Please specify a hash of options' unless options.is_a?(Hash)
+      @options = options
+    end
 
   private
 

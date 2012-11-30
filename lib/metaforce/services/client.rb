@@ -1,11 +1,6 @@
 module Metaforce
   module Services
     class Client < Metaforce::Client
-      def initialize(options={})
-        raise 'Please specify a hash of options' unless options.is_a?(Hash)
-        @options = options
-      end
-
       # Returns the layout metadata for the sobject.
       # If a +record_type_id+ is passed in, it will only return the layout for
       # that record type.
