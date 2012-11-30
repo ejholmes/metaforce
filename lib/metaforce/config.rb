@@ -42,6 +42,17 @@ module Metaforce
     # Set this to true if you're authenticating with a Sandbox instance.
     # Defaults to false.
     attr_accessor :host
+    # A block that gets called when the session becomes invalid and the
+    # client needs to reauthenticate. Passes in the client and the client
+    # options. The block should set the options to a hash containing a valid
+    # session_id and service urls.
+    #
+    # Example
+    #
+    #   Metaforce.configuration.authentication_handler = proc do |client, options|
+    #     options = Metaforce.login('foobar', 'whizbang')
+    #   end
+    attr_accessor :authentication_handler
 
     def initialize
       @api_version ||= '23.0'

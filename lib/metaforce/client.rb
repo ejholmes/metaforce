@@ -31,13 +31,21 @@ module Metaforce
       begin
         client.request(*args, &block)
       rescue Savon::SOAP::Fault => e
-        if e.message =~ /INVALID_SESSION_ID/
-          # Need to reauthenticate
+        if e.message =~ /INVALID_SESSION_ID/ && authentication_handler && authentication_handler.respond_to?(:call)
+          authenticate!
           client.request(*args, &block)
         else
           raise e
         end
       end
+    end
+
+    def authenticate!
+      authentication_handler.call(self, @options)
+    end
+
+    def authentication_handler
+      Metaforce.configuration.authentication_handler
     end
 
     def soap_headers
