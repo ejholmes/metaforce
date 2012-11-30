@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'savon', '~> 1.2.0'
   s.add_dependency 'activesupport'
+  s.add_dependency 'hashie'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'

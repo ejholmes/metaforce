@@ -1,4 +1,5 @@
 require 'savon'
+require 'hashie'
 require 'active_support/core_ext'
 
 require 'metaforce/version'

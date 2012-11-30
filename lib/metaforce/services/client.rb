@@ -13,7 +13,7 @@ module Metaforce
           soap.header = soap_headers
           soap.body = body
         end
-        response.body[:describe_layout_response][:result]
+        Hashie::Mash.new(response.body).describe_layout_response.result
       end
 
     private

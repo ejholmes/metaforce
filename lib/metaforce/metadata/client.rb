@@ -6,14 +6,14 @@ module Metaforce
         response = request(:list_metadata) do |soap|
           soap.body = { :queries => queries }
         end
-        response.body[:list_metadata_response][:result]
+        Hashie::Mash.new(response.body).list_metadata_response.result
       end
 
       def describe(version=nil)
         response = request(:describe_metadata) do |soap|
           soap.body = { :api_version => version } unless version.nil?
         end
-        response.body[:describe_metadata_response][:result]
+        Hashie::Mash.new(response.body).describe_metadata_response.result
       end
 
     private
