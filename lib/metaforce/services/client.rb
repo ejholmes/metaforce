@@ -16,6 +16,13 @@ module Metaforce
         Hashie::Mash.new(response.body).describe_layout_response.result
       end
 
+      # Get active picklists for a record type.
+      def picklist_values(sobject, record_type_id, field)
+        picklists = describe_layout(sobject, record_type_id).record_type_mappings.picklists_for_record_type
+        picklists.select { |p| p.picklist_name == field }.first.picklist_values
+          .select { |p| p.active }.collect { |p| [ p.label, p.value ] }
+      end
+
     private
 
       def client
