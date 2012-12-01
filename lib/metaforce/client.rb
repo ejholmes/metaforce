@@ -39,12 +39,9 @@ module Metaforce
       begin
         client.request(*args, &block)
       rescue Savon::SOAP::Fault => e
-        if e.message =~ /INVALID_SESSION_ID/ && authentication_handler
-          authenticate!
-          client.request(*args, &block)
-        else
-          raise e
-        end
+        raise e unless e.message =~ /INVALID_SESSION_ID/ && authentication_handler
+        authenticate!
+        client.request(*args, &block)
       end
     end
 
