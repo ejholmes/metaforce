@@ -14,9 +14,7 @@ module Metaforce
           :password => password
         }
       end
-      { :session_id => response.body[:login_response][:result][:session_id],
-        :metadata_server_url => response.body[:login_response][:result][:metadata_server_url],
-        :server_url => response.body[:login_response][:result][:server_url] }
+      response.body[:login_response][:result]
     end
 
   private
