@@ -62,6 +62,12 @@ describe Metaforce::Metadata::Client do
     end
 
     subject { client.deploy('foobar') }
-    it { should be_a String }
+    it { should be_a Hash }
+  end
+
+  describe '.retrieve' do
+    before do
+      savon.expects(:retrieve).returns(:in_progress)
+    end
   end
 end

@@ -71,7 +71,7 @@ module Metaforce
             :deploy_options => options
           }
         end
-        Hashie::Mash.new(response.body).deploy_response.result.id
+        Hashie::Mash.new(response.body).deploy_response.result
       end
     end
   end

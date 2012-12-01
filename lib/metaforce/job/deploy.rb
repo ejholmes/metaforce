@@ -9,7 +9,7 @@ module Metaforce
 
     # Public: Deploy to Salesforce.
     def perform
-      @id = client.deploy(payload, @options)
+      @id = client.deploy(payload, @options).id
     end
 
     # Public: Base64 encodes the contents of the zip file.
