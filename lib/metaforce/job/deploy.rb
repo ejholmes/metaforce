@@ -7,6 +7,7 @@ module Metaforce
       @path, @options = path, options
     end
 
+    # Public: Deploy to Salesforce.
     def perform
       @id = client.deploy(payload, @options)
     end

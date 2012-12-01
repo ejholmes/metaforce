@@ -3,14 +3,14 @@ module Metaforce
     autoload :Deploy,   'metaforce/job/deploy'
     autoload :Retrieve, 'metaforce/job/retrieve'
 
-    # Job id.
+    # Public: The id of the AsyncResult returned from Salesforce for
+    # this job.
     attr_reader :id
 
     class << self
+      # Internal
       def status_type(type)
-        define_method :status_type do
-          type
-        end
+        define_method :status_type do; type end
       end
     end
 
