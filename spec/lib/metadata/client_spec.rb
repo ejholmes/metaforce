@@ -55,4 +55,13 @@ describe Metaforce::Metadata::Client do
       it { should be_a Hash }
     end
   end
+
+  describe '.deploy' do
+    before do
+      savon.expects(:deploy).with(:zip_file => 'foobar', :deploy_options => {}).returns(:in_progress)
+    end
+
+    subject { client.deploy('foobar') }
+    it { should be_a String }
+  end
 end
