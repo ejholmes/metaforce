@@ -15,7 +15,7 @@ shared_examples 'a client' do
     end
 
     context 'and an authentication handler is present' do
-      before do
+      let(:authentication_handler) do
         Metaforce.configuration.authentication_handler = proc do |client, options|
           options = { session_id: 'foo' }
         end
@@ -27,7 +27,7 @@ shared_examples 'a client' do
 
       it 'calls the authentication handler and resends the request' do
         client.send(:client).should_receive(:request).once.and_return(nil)
-        Metaforce.configuration.authentication_handler.should_receive(:call).and_call_original
+        authentication_handler.should_receive(:call).and_call_original
         client.send(:request, :foo)
       end
     end
