@@ -4,8 +4,19 @@ module Metaforce
       endpoint :metadata_server_url
       wsdl Metaforce.configuration.metadata_wsdl
 
-      def list(*args)
-        queries = { :type => args.map(&:to_s).map(&:camelize) }
+      # Specify an array of component types to list.
+      #
+      # Examples
+      #
+      #   # Get a list of apex classes on the server and output the names of each
+      #   client.list_metadata('ApexClass').collect { |t| t.full_name }
+      #   #=> ["al__SObjectPaginatorListenerForTesting", "al__IndexOutOfBoundsException", ... ]
+      #
+      #   # Get a list of apex components and apex classes
+      #   client.list_metadata('CustomObject', 'ApexComponent')
+      #   #=> ["ContractContactRole", "Solution", "Invoice_Statements__c", ... ]
+      def list_metadata(*args)
+        queries = args.map(&:to_s).map(&:camelize).map { |t| {:type => t} }
         response = request(:list_metadata) do |soap|
           soap.body = { :queries => queries }
         end

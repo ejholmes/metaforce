@@ -5,29 +5,23 @@ describe Metaforce::Metadata::Client do
 
   it_behaves_like 'a client'
 
-  describe '.list' do
+  describe '.list_metadata' do
     context 'with a single symbol' do
       before do
-        savon.expects(:list_metadata).with(:queries => {:type => ['ApexClass']}).returns(:objects)
+        savon.expects(:list_metadata).with(:queries => [{:type => 'ApexClass'}]).returns(:objects)
       end
 
-      subject { client.list(:apex_class) }
+      subject { client.list_metadata(:apex_class) }
       it { should be_an Array }
     end
 
     context 'with a single string' do
       before do
-        savon.expects(:list_metadata).with(:queries => {:type => ['ApexClass']}).returns(:objects)
+        savon.expects(:list_metadata).with(:queries => [{:type => 'ApexClass'}]).returns(:objects)
       end
 
-      subject { client.list('ApexClass') }
+      subject { client.list_metadata('ApexClass') }
       it { should be_an Array }
-    end
-
-    context 'with a list of symbols' do
-      before do
-        savon.expects(:list_metadata).with(:queries => {:type => ['ApexClass', 'ApexComponent']}).returns(:objects)
-      end
     end
   end
 
