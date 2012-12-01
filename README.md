@@ -6,8 +6,19 @@ and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm) APIs.
 [Documentation](http://rubydoc.info/gems/metaforce/frames)
 
 ## Installation
+
 ```bash
 gem install metaforce
+```
+
+## Usage
+
+```
+client = Metaforce.new Metaforce.login(username: 'foo', password: 'bar', security_token: 'whizbang')
+
+client.deploy(File.expand_path('./src')).on_complete do |job|
+  puts "Finished deploying #{job.id}!"
+end
 ```
 
 ## Contributing
