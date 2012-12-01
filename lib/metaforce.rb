@@ -12,20 +12,32 @@ require 'metaforce/metadata'
 
 module Metaforce
   class << self
+    # Public: Initializes instances of the metadata and services api clients
+    # and provides helper functions for deploying and retrieving code.
     def new(options)
       Class.new do
         def initialize(options)
           @options = options
         end
 
+        # Public: Used to interact with the Metadata API.
         def metadata
           @metadata ||= Metadata::Client.new(@options)
         end
 
+        # Public: Used to interact with the Services API.
         def services
           @services ||= Services::Client.new(@options)
         end
 
+        # Public: Deploy code to Salesforce.
+        #
+        # path    - A path to a zip file, or a directory to deploy.
+        # options - Deploy options.
+        #
+        # Examples
+        #
+        #   client.deploy(File.expand_path('./src'))
         def deploy(path, options={})
           Job::Deploy.new(metadata, path, options)
         end
