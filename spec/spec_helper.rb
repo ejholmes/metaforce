@@ -2,6 +2,8 @@ require 'bundler'
 Bundler.require :default, :development
 require 'pp'
 
+Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
+
 RSpec.configure do |config|
   config.include Savon::Spec::Macros
 end

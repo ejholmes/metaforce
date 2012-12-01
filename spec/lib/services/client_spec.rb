@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Metaforce::Services::Client do
   let(:client) { described_class.new(:session_id => 'foobar', :server_url => 'https://na12-api.salesforce.com/services/Soap/u/23.0/00DU0000000Ilbh') }
 
+  it_behaves_like 'a client'
+
   describe '.describe_layout' do
     context 'without a record type id' do
       before do

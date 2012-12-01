@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Metaforce::Metadata::Client do
   let(:client) { described_class.new(:session_id => 'foobar', :metadata_server_url => 'https://na12-api.salesforce.com/services/Soap/u/23.0/00DU0000000Ilbh') }
 
+  it_behaves_like 'a client'
+
   describe '.list' do
     context 'with a single symbol' do
       before do
