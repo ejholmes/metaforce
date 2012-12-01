@@ -63,7 +63,7 @@ module Metaforce
       # zip_file - The base64 encoded contents of the zip file.
       # options  - Hash of DeployOptions.
       # 
-      # Returns the id of the AsyncResult.
+      # Returns the AsyncResult
       def deploy(zip_file, options={})
         response = request(:deploy) do |soap|
           soap.body = {
