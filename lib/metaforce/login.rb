@@ -1,7 +1,5 @@
 module Metaforce
   class Login
-    attr_reader :username
-
     def initialize(username, password, security_token=nil)
       @username, @password, @security_token = username, password, security_token
     end
@@ -28,6 +26,11 @@ module Metaforce
       @client ||= Savon.client(Metaforce.configuration.partner_wsdl) do |wsdl|
         wsdl.endpoint = Metaforce.configuration.endpoint
       end.tap { |client| client.http.auth.ssl.verify_mode = :none }
+    end
+
+    # Internal: Usernamed passed in from options.
+    def username
+      @username
     end
 
     # Internal: Password + Security Token combined.
