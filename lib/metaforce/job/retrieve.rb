@@ -4,5 +4,9 @@ module Metaforce
       super(client)
       @options = options
     end
+
+    def perform
+      super
+    end
   end
 end

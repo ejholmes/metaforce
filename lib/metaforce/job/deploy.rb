@@ -9,6 +9,7 @@ module Metaforce
 
     # Public: Deploy to Salesforce.
     def perform
+      super
       @id = client.deploy(payload, @options).id
     end
 
