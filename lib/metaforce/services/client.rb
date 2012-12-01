@@ -1,7 +1,7 @@
 module Metaforce
   module Services
     class Client < Metaforce::Client
-      endpoint :services_url
+      endpoint :server_url
       wsdl Metaforce.configuration.partner_wsdl
 
       # Returns the layout metadata for the sobject.
