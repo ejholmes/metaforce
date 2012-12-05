@@ -35,7 +35,7 @@ module Metaforce
 
     # Public: Queries the job status from the API.
     def status
-      client.status(id, status_type)
+      client.status(id)
     end
 
     # Public: Returns true if the job has completed. 
@@ -50,6 +50,10 @@ module Metaforce
 
     %w[Queued InProgress Completed Error].each do |state|
       define_method :"#{state.underscore}?" do; self.state == state end
+    end
+
+    def inspect
+      "#<#{self.class} @id=#{@id.inspect}>"
     end
 
   private
