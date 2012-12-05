@@ -29,6 +29,10 @@ module Metaforce
       @_callbacks[:on_complete] << block
     end
 
+    def on_error(&block)
+      @_callbacks[:on_error] << block
+    end
+
     # Public: Queries the job status from the API.
     def status
       client.status(id, status_type)
@@ -39,15 +43,41 @@ module Metaforce
       status.done
     end
 
+    # Public: Returns the state if the job has finished processing.
+    def state
+      done? && status.state
+    end
+
+    %w[Queued InProgress Completed Error].each do |state|
+      define_method :"#{state.underscore}?" do; self.state == state end
+    end
+
   private
 
     # Internal: Starts a heart beat in a thread, which polls the job status
     # until it has completed or timed out.
     def start_heart_beat
+      Thread.abort_on_exception = true
       @heart_beat ||= Thread.new do
+        delay = 1
         loop do
-          sleep 5
+          sleep (delay = delay * 2)
+          trigger_callbacks && Thread.stop if completed? || error?
         end
+      end
+    end
+
+    def trigger_callbacks
+      @_callbacks[callback_type].each do |block|
+        block.call(self)
+      end
+    end
+
+    def callback_type
+      if completed?
+        :on_complete
+      elsif error?
+        :on_error
       end
     end
 
