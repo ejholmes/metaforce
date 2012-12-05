@@ -16,9 +16,17 @@ gem install metaforce
 ```ruby
 client = Metaforce.new Metaforce.login(username: 'foo', password: 'bar', security_token: 'whizbang')
 
-client.deploy(File.expand_path('./src')).on_complete do |job|
+job = client.deploy(File.expand_path('./src'))
+
+job.on_complete do |job|
   puts "Finished deploying #{job.id}!"
 end
+
+job.on_error do |job|
+  puts "Something bad happened!"
+end
+
+job.perform
 ```
 
 ## Contributing
