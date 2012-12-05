@@ -2,11 +2,20 @@ require 'spec_helper'
 
 describe Metaforce::Job::Deploy do
   let(:client) { double('metadata client') }
-  let(:job) { described_class.new client, File.expand_path('../../../fixtures/payload.zip', __FILE__) }
+  let(:path) { File.expand_path('../../../fixtures/payload.zip', __FILE__) }
+  let(:job) { described_class.new client, path }
 
   describe '.payload' do
     subject { job.payload }
-    it { should be_a String }
+
+    context 'when the path is a file' do
+      it { should be_a String }
+    end
+
+    context 'when the path is a directory' do
+      let(:path) { File.expand_path('../../../fixtures', __FILE__) }
+      it { should be_a String }
+    end
   end
 
   describe '.perform' do
