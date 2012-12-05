@@ -24,12 +24,13 @@ describe Metaforce::Job::Deploy do
     end
 
     subject { job.perform }
-    it { should be_a String }
+    it { should eq job }
+    its(:id) { should eq '1234' }
   end
 
   describe '.status' do
     before do
-      client.should_receive(:status).with(job.id, :deploy).and_return(Hashie::Mash.new(done: true))
+      client.should_receive(:status).with(job.id).and_return(Hashie::Mash.new(done: true))
     end
 
     subject { job.status }
@@ -38,7 +39,7 @@ describe Metaforce::Job::Deploy do
 
   describe '.done?' do
     before do
-      client.should_receive(:status).with(job.id, :deploy).and_return(Hashie::Mash.new(done: done))
+      client.should_receive(:status).with(job.id).and_return(Hashie::Mash.new(done: done))
     end
 
     context 'when done' do

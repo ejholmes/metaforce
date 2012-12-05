@@ -22,15 +22,18 @@ module Metaforce
     # Public: Perform the job.
     def perform
       start_heart_beat
+      self
     end
 
     # Register a block to be called when the job has completed.
     def on_complete(&block)
       @_callbacks[:on_complete] << block
+      self
     end
 
     def on_error(&block)
       @_callbacks[:on_error] << block
+      self
     end
 
     # Public: Queries the job status from the API.

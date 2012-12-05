@@ -13,6 +13,7 @@ module Metaforce
     def perform
       super
       @id = client.deploy(payload, @options).id
+      self
     end
 
     # Public: Base64 encodes the contents of the zip file.
