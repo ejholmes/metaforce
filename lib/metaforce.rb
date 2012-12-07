@@ -13,7 +13,7 @@ require 'metaforce/metadata'
 module Metaforce
   class << self
     # Public: Initializes instances of the metadata and services api clients
-    # and provides helper functions for deploying and retrieving code.
+    # and provides helper methods for deploying and retrieving code.
     def new(options)
       Class.new do
         def initialize(options)
