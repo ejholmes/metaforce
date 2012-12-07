@@ -1,5 +1,3 @@
-require 'zip/zip'
-
 module Metaforce
   class Job::Deploy < Job
     status_type :deploy
@@ -13,6 +11,11 @@ module Metaforce
     def perform
       @id = client.deploy(payload, @options).id
       super
+    end
+
+    # Public: Returns true if the deploy was successful.
+    def success?
+      result.success
     end
 
     # Public: Base64 encodes the contents of the zip file.

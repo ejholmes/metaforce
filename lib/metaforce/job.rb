@@ -1,3 +1,6 @@
+require 'zip/zip'
+require 'base64'
+
 module Metaforce
   class Job
     autoload :Deploy,   'metaforce/job/deploy'

@@ -17,6 +17,11 @@ describe Metaforce do
       subject { klass.retrieve }
       it { should be_a Metaforce::Job::Retrieve }
     end
+
+    describe '.retrieve_unpackaged' do
+      subject { klass.retrieve_unpackaged }
+      it { should be_a Metaforce::Job::Retrieve }
+    end
   end
 
   describe '#login' do
