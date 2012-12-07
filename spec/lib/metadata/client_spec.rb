@@ -66,8 +66,13 @@ describe Metaforce::Metadata::Client do
   end
 
   describe '.retrieve' do
+    let(:options) { double('options') }
+
     before do
-      savon.expects(:retrieve).returns(:in_progress)
+      savon.expects(:retrieve).with(:retrieve_request => options).returns(:in_progress)
     end
+
+    subject { client.retrieve(options) }
+    it { should be_a Hash }
   end
 end

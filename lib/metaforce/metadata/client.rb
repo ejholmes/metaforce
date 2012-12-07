@@ -66,12 +66,19 @@ module Metaforce
       # Returns the AsyncResult
       def deploy(zip_file, options={})
         response = request(:deploy) do |soap|
-          soap.body = {
-            :zip_file       => zip_file,
-            :deploy_options => options
-          }
+          soap.body = { :zip_file => zip_file, :deploy_options => options }
         end
         Hashie::Mash.new(response.body).deploy_response.result
+      end
+
+      # Public: Retrieve code from Salesforce.
+      #
+      # Returns the AsyncResult
+      def retrieve(options={})
+        response = request(:retrieve) do |soap|
+          soap.body = { :retrieve_request => options }
+        end
+        Hashie::Mash.new(response.body).retrieve_response.result
       end
     end
   end
