@@ -5,6 +5,10 @@ describe Metaforce::Job::Deploy do
   let(:path) { File.expand_path('../../../fixtures/payload.zip', __FILE__) }
   let(:job) { described_class.new client, path }
 
+  before do
+    job.stub(:start_heart_beat)
+  end
+
   describe '.payload' do
     subject { job.payload }
 
