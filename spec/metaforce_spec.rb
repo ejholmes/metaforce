@@ -19,7 +19,8 @@ describe Metaforce do
     end
 
     describe '.retrieve_unpackaged' do
-      subject { klass.retrieve_unpackaged }
+      let(:manifest) { Metaforce::Manifest.new(:custom_object => ['Account']) }
+      subject { klass.retrieve_unpackaged(manifest) }
       it { should be_a Metaforce::Job::Retrieve }
     end
   end
