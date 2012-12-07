@@ -6,6 +6,11 @@ Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
 
 RSpec.configure do |config|
   config.include Savon::Spec::Macros
+
+  config.before do
+    # Stub out the heart beat so we don't get weird test failures.
+    Metaforce::Job.any_instance.stub(:start_heart_beat)
+  end
 end
 
 RSpec::Matchers.define :set_default do |option|
