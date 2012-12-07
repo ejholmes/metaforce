@@ -11,6 +11,8 @@ require 'metaforce/services'
 require 'metaforce/metadata'
 
 module Metaforce
+  autoload :Manifest, 'metaforce/manifest'
+
   class << self
     # Public: Initializes instances of the metadata and services api clients
     # and provides helper methods for deploying and retrieving code.
