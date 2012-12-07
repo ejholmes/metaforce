@@ -63,7 +63,7 @@ module Metaforce
       Savon.configure do |config|
         config.log = log
       end
-      HTTPI.log = false
+      HTTPI.log = log
     end
 
     def partner_wsdl
