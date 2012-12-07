@@ -59,6 +59,13 @@ module Metaforce
       @host        ||= 'login.salesforce.com'
     end
 
+    def log=(log)
+      Savon.configure do |config|
+        config.log = log
+      end
+      HTTPI.log = false
+    end
+
     def partner_wsdl
       File.join(wsdl, 'partner.xml')
     end
