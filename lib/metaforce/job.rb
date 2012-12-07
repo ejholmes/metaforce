@@ -41,6 +41,11 @@ module Metaforce
       client.status(id)
     end
 
+    # Public: Returns the DeployResult or RetrieveResult
+    def result
+      client.status(id, status_type)
+    end
+
     # Public: Returns true if the job has completed. 
     def done?
       status.done

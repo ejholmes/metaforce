@@ -37,6 +37,15 @@ describe Metaforce::Job::Deploy do
     its(:done) { should be_true }
   end
 
+  describe '.result' do
+    before do
+      client.should_receive(:status).with(job.id, :deploy).and_return(Hashie::Mash.new(success: true))
+    end
+
+    subject { job.result }
+    its(:success) { should be_true }
+  end
+
   describe '.done?' do
     before do
       client.should_receive(:status).with(job.id).and_return(Hashie::Mash.new(done: done))
