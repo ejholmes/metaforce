@@ -3,16 +3,10 @@ require 'spec_helper'
 describe Metaforce do
   describe '#new' do
     let(:klass) { described_class.new(session_id: 'foobar') }
+    subject { klass }
 
-    describe '.metadata' do
-      subject { klass.metadata }
-      it { should be_a Metaforce::Metadata::Client }
-    end
-
-    describe '.services' do
-      subject { klass.services }
-      it { should be_a Metaforce::Services::Client }
-    end
+    its(:metadata) { should be_a Metaforce::Metadata::Client }
+    its(:services) { should be_a Metaforce::Services::Client }
 
     describe '.deploy' do
       subject { klass.deploy File.expand_path('../../path/to/zip') }
