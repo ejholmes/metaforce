@@ -81,21 +81,6 @@ module Metaforce
       xml_builder.to_xml
     end
 
-    # Public: Returns the underlying hash structure
-    #
-    #   {
-    #     :apex_class => [
-    #       "TestController",
-    #       "TestClass"
-    #     ],
-    #     :apex_component => [
-    #       "SiteLogin"
-    #     ]
-    #   }
-    def to_hash
-      self
-    end
-
     # Public: Converts the manifest into a format that can be used by the
     # metadata api.
     def to_package
