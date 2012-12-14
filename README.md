@@ -21,7 +21,9 @@ To initialize a new client, you call `Metaforce.new` with a hash that specifies
 the `:username`, `:password`, and `:security_token`.
 
 ```ruby
-client = Metaforce.new :username => 'username', :password => 'password', :security_token => 'security token'
+client = Metaforce.new :username => 'username',
+  :password => 'password',
+  :security_token => 'security token'
 ```
 
 #### Reauthentication
