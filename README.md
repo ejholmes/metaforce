@@ -13,9 +13,20 @@ gem install metaforce
 
 ## Usage
 
-```ruby
-client = Metaforce.new Metaforce.login('username', 'password', 'security token')
+### Initialization
 
+```ruby
+credentials = Metaforce.login('username', 'password', 'security token')
+# => {:metadata_server_url => "https://na11-api.salesforce.com/services/Soap/m/23.0/00DG0000000gD6D",
+#     :server_url => "https://na11-api.salesforce.com/services/Soap/u/23.0/00DG0000000gD6D",
+#     :session_id => "00DG0000000gD6D...", ... }
+
+client = Metaforce.new credentials
+```
+
+### client.deploy(path, options={})
+
+```ruby
 job = client.deploy(File.expand_path('./src'))
 
 job.on_complete do |job|
