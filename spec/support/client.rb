@@ -1,7 +1,6 @@
 shared_examples 'a client' do
   describe 'when the session id expires' do
-    let(:response)  { HTTPI::Response.new(403, {}, '') }
-    let(:exception) { Savon::SOAP::Fault.new(response) }
+    let(:exception) { Savon::SOAP::Fault.new(HTTPI::Response.new(403, {}, '')) }
 
     before do
       client.send(:client).should_receive(:request).once.and_raise(exception)
