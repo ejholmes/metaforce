@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'active_support/core_ext'
 
 module Metaforce
-  class Manifest
+  class Manifest < Hash
 
     # Public: Initializes a new instance of a manifest (package.xml) file.
     #
@@ -37,11 +37,11 @@ module Metaforce
     #  </Package>
     #
     def initialize(components={})
-      @components = Hash.new { |h,k| h[k] = [] }
+      self.replace Hash.new { |h,k| h[k] = [] }
       if components.is_a?(Hash)
-        @components.merge!(components)
+        self.merge!(components)
       elsif components.is_a?(String)
-        parse(components)
+        self.parse(components)
       end
     end
 
@@ -66,8 +66,8 @@ module Metaforce
     #  </Package>
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
-        xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
-          @components.each do |key, members|
+        xml.Package('xmlns' => 'http://soap.sforce.com/2006/04/metadata') {
+          self.each do |key, members|
             xml.types {
               members.each do |member|
                 xml.members member
@@ -93,13 +93,13 @@ module Metaforce
     #     ]
     #   }
     def to_hash
-      @components
+      self
     end
 
     # Public: Converts the manifest into a format that can be used by the
     # metadata api.
     def to_package
-      @components.map do |type, members|
+      self.map do |type, members|
         { :members => members, :name => type.to_s.camelize }
       end
     end
@@ -111,7 +111,7 @@ module Metaforce
         name = type.xpath('name').first.content
         key = name.underscore.to_sym
         type.xpath('members').each do |member|
-          @components[key] << member.content
+          self[key] << member.content
         end
       end
       self
