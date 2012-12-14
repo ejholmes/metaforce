@@ -1,1 +1,0 @@
-require 'metaforce/services/client'

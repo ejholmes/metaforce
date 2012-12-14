@@ -7,8 +7,8 @@ require 'metaforce/config'
 require 'metaforce/login'
 require 'metaforce/job'
 require 'metaforce/client'
-require 'metaforce/services'
-require 'metaforce/metadata'
+require 'metaforce/services/client'
+require 'metaforce/metadata/client'
 
 module Metaforce
   autoload :Manifest, 'metaforce/manifest'
