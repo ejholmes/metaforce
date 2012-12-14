@@ -34,24 +34,21 @@ client = Metaforce.new credentials
 
 ### Reauthentication
 
-The `session_id` will eventually expire. In these cases, Metaforce will invoke
+The session\_id will eventually expire. In these cases, Metaforce will invoke
 the `Metaforce.configuration.authentication_handler` with two arguments: the
-client and the options hash. Your `authentication_handler` lambda should set
-the `session_id` of the options hash to a valid `session_id`.
+client and the options hash. Your authentication\_handler lambda should set
+the session\_id of the options hash to a valid session\_id.
 
-**Reauthenticating with `Metaforce.login`**
 
 ```ruby
+# Reauthenticating with Metaforce.login
 Metaforce.configure do |config|
   config.authentication_handler = lambda { |client, options|
     options = Metaforce.login 'username', 'password', 'security token'
   }
 end
-```
 
-**Reauthentication with Restforce**
-
-```ruby
+# Reauthentication with Restforce
 Metaforce.configure do |config|
   config.authentication_handler = lambda { |client, options|
     options[:session_id] = restforce_client.authenticate!.access_token
