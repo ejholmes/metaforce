@@ -50,6 +50,8 @@ Metaforce.configure do |config|
 end
 ```
 
+* * *
+
 ### client.deploy(path, options={})
 
 Takes a path (can be a path to a directory, or a zip file), and a set of
