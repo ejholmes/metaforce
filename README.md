@@ -72,6 +72,25 @@ end
 job.perform
 ```
 
+* * *
+
+### client.retrieve\_unpackaged(manifest, options={})
+
+Takes a manifest (`Metaforce::Manifest` or a path to a package.xml file) and a
+set of [RetrieveOptions](http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm)
+and returns a `Metaforce::Job::Retrieve`.
+
+```ruby
+manifest = Metaforce::Manifest.new(:custom_object => ['Account'])
+job = client.retrieve_unpackaged manifest
+
+job.on_complete do |job|
+  job.save_to('./tmp')
+end
+
+job.perform
+```
+
 ## Contributing
 
 If you'd like to contribute code, please fork the repository and implement your
