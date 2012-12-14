@@ -26,12 +26,12 @@ describe Metaforce do
   end
 
   describe '#login' do
-    let(:args) { ['foo', 'foobar', 'whizbang'] }
+    let(:args) { {:username => 'foo', :password => 'foobar', :security_token => 'whizbang'} }
 
     it 'proxies the login call' do
-      Metaforce::Login.should_receive(:new).with(*args).and_call_original
+      Metaforce::Login.should_receive(:new).with('foo', 'foobar', 'whizbang').and_call_original
       Metaforce::Login.any_instance.should_receive(:login)
-      described_class.login *args
+      described_class.login args
     end
   end
 end

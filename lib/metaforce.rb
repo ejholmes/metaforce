@@ -67,8 +67,8 @@ module Metaforce
     end
 
     # Performs a login and retrurns the session
-    def login(*args)
-      Login.new(*args).login
+    def login(options={})
+      Login.new(options.delete(:username), options.delete(:password), options.delete(:security_token)).login
     end
   end
 end

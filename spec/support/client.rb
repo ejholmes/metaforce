@@ -9,25 +9,27 @@ shared_examples 'a client' do
     end
 
     context 'and no authentication handler is present' do
+      before do
+        client.stub(:authentication_handler).and_return(nil)
+      end
+
       it 'raises the exception' do
         expect { client.send(:request, :foo) }.to raise_error(exception)
       end
     end
 
     context 'and an authentication handler is present' do
-      let(:authentication_handler) do
-        Metaforce.configuration.authentication_handler = proc do |client, options|
-          options = { session_id: 'foo' }
-        end
+      let(:handler) do
+        proc { |client, options| options = { session_id: 'foo' } }
       end
 
-      after do
-        Metaforce.configuration.authentication_handler = nil
+      before do
+        client.stub(:authentication_handler).and_return(handler)
       end
 
       it 'calls the authentication handler and resends the request' do
         client.send(:client).should_receive(:request).once.and_return(nil)
-        authentication_handler.should_receive(:call).and_call_original
+        handler.should_receive(:call).and_call_original
         client.send(:request, :foo)
       end
     end

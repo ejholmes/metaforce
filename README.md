@@ -15,24 +15,16 @@ gem install metaforce
 
 ### Initialization
 
-### OAuth token
-
-### Username and Password
+#### Username and Password
 
 To initialize a new client, you call `Metaforce.new` with a hash that specifies
-the `session_id`, `server_url`, and `metadata_server_url`. This can be obtained
-through `Metaforce.login`, which takes a username, password and security token.
+the `:username`, `:password`, and `:security_token`.
 
 ```ruby
-credentials = Metaforce.login('username', 'password', 'security token')
-# => {:metadata_server_url => "https://na11-api.salesforce.com/services/Soap/m/23.0/00DG0000000gD6D",
-#     :server_url => "https://na11-api.salesforce.com/services/Soap/u/23.0/00DG0000000gD6D",
-#     :session_id => "00DG0000000gD6D...", ... }
-
-client = Metaforce.new credentials
+client = Metaforce.new :username => 'username', :password => 'password', :security_token => 'security token'
 ```
 
-### Reauthentication
+#### Reauthentication
 
 The session\_id will eventually expire. In these cases, Metaforce will invoke
 the `Metaforce.configuration.authentication_handler` with two arguments: the
@@ -41,10 +33,10 @@ the session\_id of the options hash to a valid session\_id.
 
 
 ```ruby
-# Reauthenticating with Metaforce.login
+# Default authentication_handler:
 Metaforce.configure do |config|
   config.authentication_handler = lambda { |client, options|
-    options = Metaforce.login 'username', 'password', 'security token'
+    options.merge(Metaforce.login options)
   }
 end
 

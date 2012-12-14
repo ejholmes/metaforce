@@ -46,17 +46,20 @@ module Metaforce
     # client needs to reauthenticate. Passes in the client and the client
     # options. The block should set the options to a hash containing a valid
     # session_id and service urls.
-    #
-    # Example
-    #
-    #   Metaforce.configuration.authentication_handler = proc do |client, options|
-    #     options = Metaforce.login('foobar', 'whizbang')
-    #   end
     attr_accessor :authentication_handler
 
-    def initialize
+    def api_version
       @api_version ||= '23.0'
-      @host        ||= 'login.salesforce.com'
+    end
+
+    def host
+      @host ||= 'login.salesforce.com'
+    end
+
+    def authentication_handler
+      @authentication_handler ||= lambda { |client, options|
+        options.merge!(Metaforce.login(options))
+      }
     end
 
     def log=(log)
