@@ -49,7 +49,7 @@ module Metaforce
     attr_accessor :authentication_handler
 
     def api_version
-      @api_version ||= '23.0'
+      @api_version ||= '26.0'
     end
 
     def host
