@@ -52,7 +52,7 @@ end
 
 * * *
 
-### client.deploy(path, options={})
+### deploy(path, options={})
 
 Takes a path (can be a path to a directory, or a zip file), and a set of
 [DeployOptions](http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_deploy.htm#deploy_options)
@@ -74,7 +74,7 @@ job.perform
 
 * * *
 
-### client.retrieve\_unpackaged(manifest, options={})
+### retrieve\_unpackaged(manifest, options={})
 
 Takes a manifest (`Metaforce::Manifest` or a path to a package.xml file) and a
 set of [RetrieveOptions](http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieve_request.htm)
