@@ -24,4 +24,14 @@ describe Metaforce::Services::Client do
       it { should be_a Hash }
     end
   end
+
+  describe '.send_email' do
+    before do
+      savon.expects(:send_email).with(:messages => { :to_addresses => "foo@bar.com", :subject => "foo", :plain_text_body => "bar" },
+                                      :attributes! => { "ins0:messages" => { "xsi:type" => "ins0:SingleEmailMessage" } }).returns(:success)
+    end
+
+    subject { client.send_email(:to_addresses => 'foo@bar.com', subject: 'foo', plain_text_body: 'bar') }
+    it { should be_a Hash}
+  end
 end
