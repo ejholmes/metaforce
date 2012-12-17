@@ -1,6 +1,5 @@
 module Metaforce
   class Job::Retrieve < Job
-    status_type :retrieve
 
     def initialize(client, options={})
       super(client)
@@ -10,6 +9,11 @@ module Metaforce
     def perform
       @id = client.retrieve(@options).id
       super
+    end
+
+    # Public: Returns the DeployResult or RetrieveResult
+    def result
+      client.status(id, :retrieve)
     end
 
     # Public: Unzips the returned zip file to the location.

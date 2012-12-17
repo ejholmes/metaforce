@@ -10,13 +10,6 @@ module Metaforce
     # this job.
     attr_reader :id
 
-    class << self
-      # Internal
-      def status_type(type)
-        define_method :status_type do; type end
-      end
-    end
-
     def initialize(client)
       @_callbacks = Hash.new { |h,k| h[k] = [] }
       @client = client
@@ -42,11 +35,6 @@ module Metaforce
     # Public: Queries the job status from the API.
     def status
       client.status(id)
-    end
-
-    # Public: Returns the DeployResult or RetrieveResult
-    def result
-      client.status(id, status_type)
     end
 
     # Public: Returns true if the job has completed. 

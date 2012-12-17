@@ -1,6 +1,5 @@
 module Metaforce
   class Job::Deploy < Job
-    status_type :deploy
 
     def initialize(client, path, options={})
       super(client)
@@ -11,6 +10,11 @@ module Metaforce
     def perform
       @id = client.deploy(payload, @options).id
       super
+    end
+
+    # Public: Returns the DeployResult or RetrieveResult
+    def result
+      client.status(id, :deploy)
     end
 
     # Public: Returns true if the deploy was successful.
