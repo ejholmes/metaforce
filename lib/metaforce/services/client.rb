@@ -18,13 +18,12 @@ module Metaforce
       #
       # Returns the result.
       def send_email(options={})
-        response = request(:send_email) do |soap|
+        request :send_email do |soap|
           soap.body = {
             :messages => options,
             :attributes! => { 'ins0:messages' => { 'xsi:type' => 'ins0:SingleEmailMessage' } }
           }
         end
-        Hashie::Mash.new(response.body).send_email_response.result
       end
 
       # Public: Retrieves layout information for the specified sobject.
@@ -38,11 +37,10 @@ module Metaforce
       #
       # Returns the layout metadata for the sobject.
       def describe_layout(sobject, record_type_id=nil)
-        response = request(:describe_layout) do |soap|
+        request :describe_layout do |soap|
           soap.body = { 'sObjectType' => sobject }
           soap.body.merge!('recordTypeID' => record_type_id) if record_type_id
         end
-        Hashie::Mash.new(response.body).describe_layout_response.result
       end
 
       # Public: Get active picklists for a record type.

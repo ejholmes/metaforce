@@ -78,7 +78,7 @@ describe Metaforce::Metadata::Client do
 
   describe '.create' do
     before do
-      savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
+      savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
     end
 
     subject { client.create(:apex_component, :full_name => 'component', :label => 'test', :content => 'foobar') }
@@ -88,7 +88,7 @@ describe Metaforce::Metadata::Client do
   describe '.delete' do
     context 'with a single name' do
       before do
-        savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
+        savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
       end
 
       subject { client.delete(:apex_component, 'component') }
@@ -97,7 +97,7 @@ describe Metaforce::Metadata::Client do
 
     context 'with multiple' do
       before do
-        savon.expects(:delete).with(:metadata => [{:full_name => 'component1'}, {:full_name => 'component2'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}).returns(:in_progress)
+        savon.expects(:delete).with(:metadata => [{:full_name => 'component1'}, {:full_name => 'component2'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
       end
 
       subject { client.delete(:apex_component, 'component1', 'component2') }
@@ -107,7 +107,7 @@ describe Metaforce::Metadata::Client do
 
   describe '.update' do
     before do
-      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
+      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}}).returns(:in_progress)
     end
 
     subject { client.update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
