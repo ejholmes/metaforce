@@ -5,6 +5,7 @@ module Metaforce
   class Job
     autoload :Deploy,   'metaforce/job/deploy'
     autoload :Retrieve, 'metaforce/job/retrieve'
+    autoload :CRUD,     'metaforce/job/crud'
 
     # Public: The id of the AsyncResult returned from Salesforce for
     # this job.

@@ -55,7 +55,7 @@ module Metaforce
       private
 
         def attributes!(type)
-          {:attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }}
+          {:attributes! => { 'ins0:metadata' => { 'xsi:type' => "ins0:#{type}" } }}
         end
 
         # Internal: Prepare metadata by base64 encoding any content keys.
