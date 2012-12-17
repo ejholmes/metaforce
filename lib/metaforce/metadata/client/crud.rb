@@ -12,11 +12,28 @@ module Metaforce
           type = type.to_s.camelize
           response = request(:create) do |soap|
             soap.body = {
-              :metadata => metadata,
+              :metadata => prepare(metadata),
               :attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }
             }
           end
           Hashie::Mash.new(response.body).create_response.result
+        end
+
+        # Public: Delete metadata
+        #
+        # Examples
+        #
+        #   client.delete(:apex_component, 'Component')
+        def delete(type, *args)
+          type = type.to_s.camelize
+          metadata = args.map { |full_name| {:full_name => full_name} }
+          response = request(:delete) do |soap|
+            soap.body = {
+              :metadata => metadata,
+              :attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }
+            }
+          end
+          Hashie::Mash.new(response.body).delete_response.result
         end
 
         # Public: Update metadata
@@ -36,6 +53,20 @@ module Metaforce
             }
           end
           Hashie::Mash.new(response.body).update_response.result
+        end
+
+      private
+
+        # Internal: Prepare metadata by base64 encoding any content keys.
+        def prepare(metadata)
+          metadata = [metadata] unless metadata.is_a? Array
+          metadata.each { |m| encode_content(m) }
+          metadata
+        end
+
+        # Internal: Base64 encodes any :content keys.
+        def encode_content(metadata)
+          metadata[:content] = Base64.encode64(metadata[:content]) if metadata.has_key?(:content)
         end
         
       end
