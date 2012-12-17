@@ -38,10 +38,9 @@ module Metaforce
       #
       # Returns the layout metadata for the sobject.
       def describe_layout(sobject, record_type_id=nil)
-        body = { 'sObjectType' => sobject }
-        body['recordTypeID'] = record_type_id if record_type_id
         response = request(:describe_layout) do |soap|
-          soap.body = body
+          soap.body = { 'sObjectType' => sobject }
+          soap.body.merge!('recordTypeID' => record_type_id) if record_type_id
         end
         Hashie::Mash.new(response.body).describe_layout_response.result
       end
