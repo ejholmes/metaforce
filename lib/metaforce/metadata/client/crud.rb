@@ -12,9 +12,8 @@ module Metaforce
           type = type.to_s.camelize
           response = request(:create) do |soap|
             soap.body = {
-              :metadata => prepare(metadata),
-              :attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }
-            }
+              :metadata => prepare(metadata)
+            }.merge(attributes!(type))
           end
           Hashie::Mash.new(response.body).create_response.result
         end
@@ -29,9 +28,8 @@ module Metaforce
           metadata = args.map { |full_name| {:full_name => full_name} }
           response = request(:delete) do |soap|
             soap.body = {
-              :metadata => metadata,
-              :attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }
-            }
+              :metadata => metadata
+            }.merge(attributes!(type))
           end
           Hashie::Mash.new(response.body).delete_response.result
         end
@@ -47,15 +45,18 @@ module Metaforce
             soap.body = {
               :metadata => {
                 :current_name => current_name,
-                :metadata => metadata,
-                :attributes! => { :metadata => { 'xsi:type' => "wsdl:#{type}" } }
-              }
+                :metadata => prepare(metadata)
+              }.merge(attributes!(type))
             }
           end
           Hashie::Mash.new(response.body).update_response.result
         end
 
       private
+
+        def attributes!(type)
+          {:attributes! => { 'ins0:metadata' => { 'xsi:type' => "wsdl:#{type}" } }}
+        end
 
         # Internal: Prepare metadata by base64 encoding any content keys.
         def prepare(metadata)

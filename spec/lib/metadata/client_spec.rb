@@ -104,22 +104,16 @@ describe Metaforce::Metadata::Client do
       it { should be_a Hash }
     end
   end
+
+  describe '.update' do
+    before do
+      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
+    end
+
+    subject { client.update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
+    it { should be_a Hash }
+  end
 end
 
 
 
-  #describe ".update" do
-    #it "returns a transaction" do
-      #savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:api_version => '23.0', :description => '', :label => 'test', :content => '', :full_name => 'component'}], :attributes! => {:metadata => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
-      #savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-      #response = client.update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => '')
-      #response.should be_a(Metaforce::Transaction)
-    #end
-
-    #it "responds to method missing" do
-      #savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:api_version => '23.0', :description => '', :label => 'test', :content => '', :full_name => 'component'}], :attributes! => {:metadata => {'xsi:type' => 'wsdl:ApexComponent'}}}).returns(:in_progress)
-      #savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-      #response = client.update_apex_component('old_component', :full_name => 'component', :label => 'test', :content => '')
-      #response.should be_a(Metaforce::Transaction)
-    #end
-  #end
