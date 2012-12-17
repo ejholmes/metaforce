@@ -1,5 +1,5 @@
 module Metaforce
-  class Client
+  class AbstractClient
     class << self
       # Internal
       def endpoint(key)

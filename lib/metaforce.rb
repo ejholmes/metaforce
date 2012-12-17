@@ -6,7 +6,7 @@ require 'metaforce/version'
 require 'metaforce/config'
 require 'metaforce/login'
 require 'metaforce/job'
-require 'metaforce/client'
+require 'metaforce/abstract_client'
 require 'metaforce/services/client'
 require 'metaforce/metadata/client'
 

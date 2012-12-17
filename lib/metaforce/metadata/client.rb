@@ -1,6 +1,6 @@
 module Metaforce
   module Metadata
-    class Client < Metaforce::Client
+    class Client < Metaforce::AbstractClient
       require 'metaforce/metadata/client/file'
       require 'metaforce/metadata/client/crud'
 
