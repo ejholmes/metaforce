@@ -91,7 +91,6 @@ module Metaforce
       @_callbacks[callback_type].each do |block|
         block.call(self)
       end
-      true
     end
 
     def callback_type
