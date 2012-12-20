@@ -57,6 +57,7 @@ module Metaforce
     end
 
   private
+    attr_reader :client
 
     # Internal: Starts a heart beat in a thread, which polls the job status
     # until it has completed or timed out.
@@ -83,11 +84,6 @@ module Metaforce
       elsif error?
         :on_error
       end
-    end
-
-    # Internal: The Metaforce::Metadata::Client instance.
-    def client
-      @client
     end
 
   end
