@@ -30,11 +30,24 @@ describe Metaforce::Job::Deploy do
   end
 
   describe '.result' do
+    let(:response) { Hashie::Mash.new(success: true) }
+
     before do
-      client.should_receive(:status).with(job.id, :deploy).and_return(Hashie::Mash.new(success: true))
+      client.should_receive(:status).with(job.id, :deploy).and_return(response)
     end
 
     subject { job.result }
-    its(:success) { should be_true }
+    it { should eq response }
+  end
+
+  describe '.success?' do
+    let(:response) { Hashie::Mash.new(success: true) }
+
+    before do
+      client.should_receive(:status).with(job.id, :deploy).and_return(response)
+    end
+
+    subject { job.success? }
+    it { should be_true }
   end
 end
