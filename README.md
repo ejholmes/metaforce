@@ -93,7 +93,7 @@ and returns a `Metaforce::Job::Retrieve`.
 manifest = Metaforce::Manifest.new(:custom_object => ['Account'])
 job = client.retrieve_unpackaged manifest
 
-job.save_to('./tmp')
+job.extract_to('./tmp')
 
 job.perform
 ```

@@ -16,15 +16,14 @@ module Metaforce
       client.status(id, :retrieve)
     end
 
-    # Public: Unzips the returned zip file to the location.
-    def save_to(destination)
-      return queue_save_to(destination) unless @id
-      file = Tempfile.new('retrieve')
-      file.write(zip_file)
-      path = file.path
-      file.close
+    def zip_file
+      Base64.decode64(result.zip_file)
+    end
 
-      Zip::ZipFile.open(path) do |zip|
+    # Public: Unzips the returned zip file to the location.
+    def extract_to(destination)
+      return on_complete { |job| job.extract_to(destination) } unless @id
+      Zip::ZipFile.open(file) do |zip|
         zip.each do |f|
           path = File.join(destination, f.name)
           FileUtils.mkdir_p(File.dirname(path))
@@ -34,13 +33,15 @@ module Metaforce
       self
     end
 
-    def queue_save_to(destination)
-      on_complete { |job| job.save_to(destination) }
-      self
+  private
+
+    def tmp_zip_file
+      file = Tempfile.new('retrieve')
+      file.write(zip_file)
+      path = file.path
+      file.close
+      path
     end
 
-    def zip_file
-      Base64.decode64(result.zip_file)
-    end
   end
 end
