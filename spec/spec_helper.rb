@@ -7,9 +7,8 @@ Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
 RSpec.configure do |config|
   config.include Savon::Spec::Macros
 
-  config.before do
-    # Stub out the heart beat so we don't get weird test failures.
-    Metaforce::Job.any_instance.stub(:start_heart_beat)
+  config.before(:suite) do
+    Metaforce::Job.mock!
   end
 end
 

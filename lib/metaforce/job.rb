@@ -56,6 +56,21 @@ module Metaforce
       "#<#{self.class} @id=#{@id.inspect}>"
     end
 
+    class << self
+
+      # Disable threading in tests.
+      def mock!
+        self.class_eval do
+          def start_heart_beat
+            loop do
+              trigger_callbacks && break if completed? || error?
+            end
+          end
+        end
+      end
+
+    end
+
   private
     attr_reader :client
 
@@ -76,6 +91,7 @@ module Metaforce
       @_callbacks[callback_type].each do |block|
         block.call(self)
       end
+      true
     end
 
     def callback_type
