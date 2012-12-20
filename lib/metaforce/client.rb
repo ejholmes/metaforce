@@ -13,5 +13,15 @@ module Metaforce
     def services
       @services ||= Metaforce::Services::Client.new(@options)
     end
+
+    def method_missing(method, *args, &block)
+      if metadata.respond_to? method, false
+        metadata.send(method, *args, &block)
+      elsif services.respond_to? method, false
+        services.send(method, *args, &block)
+      else
+        super
+      end
+    end
   end
 end

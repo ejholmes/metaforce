@@ -5,8 +5,7 @@ describe Metaforce do
     let(:klass) { described_class.new(session_id: 'foobar') }
     subject { klass }
 
-    its(:metadata) { should be_a Metaforce::Metadata::Client }
-    its(:services) { should be_a Metaforce::Services::Client }
+    it { should be_a Metaforce::Client }
   end
 
   describe '#login' do
