@@ -23,7 +23,7 @@ module Metaforce
     # Public: Unzips the returned zip file to the location.
     def extract_to(destination)
       return on_complete { |job| job.extract_to(destination) } unless @id
-      Zip::ZipFile.open(file) do |zip|
+      Zip::ZipFile.open(tmp_zip_file) do |zip|
         zip.each do |f|
           path = File.join(destination, f.name)
           FileUtils.mkdir_p(File.dirname(path))
@@ -36,11 +36,13 @@ module Metaforce
   private
 
     def tmp_zip_file
-      file = Tempfile.new('retrieve')
-      file.write(zip_file)
-      path = file.path
-      file.close
-      path
+      @tmp_zip_file ||= begin
+        file = Tempfile.new('retrieve')
+        file.write(zip_file)
+        path = file.path
+        file.close
+        path
+      end
     end
 
   end
