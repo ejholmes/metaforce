@@ -1,4 +1,6 @@
-# Metaforce [![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)](https://secure.travis-ci.org/ejholmes/metaforce)
+# Metaforce
+
+[![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)](https://secure.travis-ci.org/ejholmes/metaforce) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/ejholmes/metaforce) [![Dependency Status](https://gemnasium.com/ejholmes/metaforce.png)](https://gemnasium.com/ejholmes/metaforce)
 
 Metaforce is a Ruby gem for interacting with the Salesforce [Metadata](http://www.salesforce.com/us/developer/docs/api_meta/index.htm)
 and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm) APIs.
@@ -49,6 +51,13 @@ Metaforce.configure do |config|
   }
 end
 ```
+
+#### Asynchronous Tasks
+
+Some calls to the SOAP API's are performed asynchronously (such as deployments),
+meaning the response needs to be polled for. Any call to the SOAP API's that
+are performed asynchronously will return a Metaforce::Job object, which can be used to
+subscribe to `on_complete` and `on_error` callbacks.
 
 * * *
 
