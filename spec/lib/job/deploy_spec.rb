@@ -29,15 +29,6 @@ describe Metaforce::Job::Deploy do
     its(:id) { should eq '1234' }
   end
 
-  describe '.status' do
-    before do
-      client.should_receive(:status).with(job.id).and_return(Hashie::Mash.new(done: true))
-    end
-
-    subject { job.status }
-    its(:done) { should be_true }
-  end
-
   describe '.result' do
     before do
       client.should_receive(:status).with(job.id, :deploy).and_return(Hashie::Mash.new(success: true))
@@ -45,23 +36,5 @@ describe Metaforce::Job::Deploy do
 
     subject { job.result }
     its(:success) { should be_true }
-  end
-
-  describe '.done?' do
-    before do
-      client.should_receive(:status).with(job.id).and_return(Hashie::Mash.new(done: done))
-    end
-
-    context 'when done' do
-      let(:done) { true }
-      subject { job.done? }
-      it { should be_true }
-    end
-
-    context 'when not done' do
-      let(:done) { false }
-      subject { job.done? }
-      it { should be_false }
-    end
   end
 end
