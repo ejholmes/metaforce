@@ -7,22 +7,6 @@ describe Metaforce do
 
     its(:metadata) { should be_a Metaforce::Metadata::Client }
     its(:services) { should be_a Metaforce::Services::Client }
-
-    describe '.deploy' do
-      subject { klass.deploy File.expand_path('../../path/to/zip') }
-      it { should be_a Metaforce::Job::Deploy }
-    end
-
-    describe '.retrieve' do
-      subject { klass.retrieve }
-      it { should be_a Metaforce::Job::Retrieve }
-    end
-
-    describe '.retrieve_unpackaged' do
-      let(:manifest) { Metaforce::Manifest.new(:custom_object => ['Account']) }
-      subject { klass.retrieve_unpackaged(manifest) }
-      it { should be_a Metaforce::Job::Retrieve }
-    end
   end
 
   describe '#login' do

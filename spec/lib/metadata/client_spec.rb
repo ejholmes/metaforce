@@ -56,42 +56,58 @@ describe Metaforce::Metadata::Client do
     end
   end
 
-  describe '.deploy' do
+  describe '._deploy' do
     before do
       savon.expects(:deploy).with(:zip_file => 'foobar', :deploy_options => {}).returns(:in_progress)
     end
 
-    subject { client.deploy('foobar') }
+    subject { client._deploy('foobar') }
     it { should be_a Hash }
   end
 
-  describe '.retrieve' do
+  describe '.deploy' do
+    subject { client.deploy File.expand_path('../../path/to/zip') }
+    it { should be_a Metaforce::Job::Deploy }
+  end
+
+  describe '._retrieve' do
     let(:options) { double('options') }
 
     before do
       savon.expects(:retrieve).with(:retrieve_request => options).returns(:in_progress)
     end
 
-    subject { client.retrieve(options) }
+    subject { client._retrieve(options) }
     it { should be_a Hash }
   end
 
-  describe '.create' do
+  describe '.retrieve' do
+    subject { client.retrieve }
+    it { should be_a Metaforce::Job::Retrieve }
+  end
+
+  describe '.retrieve_unpackaged' do
+    let(:manifest) { Metaforce::Manifest.new(:custom_object => ['Account']) }
+    subject { client.retrieve_unpackaged(manifest) }
+    it { should be_a Metaforce::Job::Retrieve }
+  end
+
+  describe '._create' do
     before do
       savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
     end
 
-    subject { client.create(:apex_component, :full_name => 'component', :label => 'test', :content => 'foobar') }
+    subject { client._create(:apex_component, :full_name => 'component', :label => 'test', :content => 'foobar') }
     it { should be_a Hash }
   end
 
-  describe '.delete' do
+  describe '._delete' do
     context 'with a single name' do
       before do
         savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
       end
 
-      subject { client.delete(:apex_component, 'component') }
+      subject { client._delete(:apex_component, 'component') }
       it { should be_a Hash }
     end
 
@@ -100,17 +116,17 @@ describe Metaforce::Metadata::Client do
         savon.expects(:delete).with(:metadata => [{:full_name => 'component1'}, {:full_name => 'component2'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
       end
 
-      subject { client.delete(:apex_component, 'component1', 'component2') }
+      subject { client._delete(:apex_component, 'component1', 'component2') }
       it { should be_a Hash }
     end
   end
 
-  describe '.update' do
+  describe '._update' do
     before do
       savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}}).returns(:in_progress)
     end
 
-    subject { client.update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
+    subject { client._update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
     it { should be_a Hash }
   end
 end

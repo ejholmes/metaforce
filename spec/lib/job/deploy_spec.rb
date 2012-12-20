@@ -20,7 +20,7 @@ describe Metaforce::Job::Deploy do
 
   describe '.perform' do
     before do
-      client.should_receive(:deploy).with(job.payload, {}).and_return(Hashie::Mash.new(id: '1234'))
+      client.should_receive(:_deploy).with(job.payload, {}).and_return(Hashie::Mash.new(id: '1234'))
     end
 
     subject { job.perform }

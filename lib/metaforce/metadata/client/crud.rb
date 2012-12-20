@@ -7,8 +7,8 @@ module Metaforce
         #
         # Examples
         #
-        #   client.create(:apex_page, :full_name => 'TestPage')
-        def create(type, metadata={})
+        #   client._create(:apex_page, :full_name => 'TestPage')
+        def _create(type, metadata={})
           type = type.to_s.camelize
           request :create do |soap|
             soap.body = {
@@ -21,8 +21,8 @@ module Metaforce
         #
         # Examples
         #
-        #   client.delete(:apex_component, 'Component')
-        def delete(type, *args)
+        #   client._delete(:apex_component, 'Component')
+        def _delete(type, *args)
           type = type.to_s.camelize
           metadata = args.map { |full_name| {:full_name => full_name} }
           request :delete do |soap|
@@ -36,8 +36,8 @@ module Metaforce
         #
         # Examples
         #
-        #   client.update(:apex_page, 'OldPage', :full_name => 'NewPage')
-        def update(type, current_name, metadata={})
+        #   client._update(:apex_page, 'OldPage', :full_name => 'NewPage')
+        def _update(type, current_name, metadata={})
           type = type.to_s.camelize
           request :update do |soap|
             soap.body = {
@@ -47,6 +47,18 @@ module Metaforce
               }.merge(attributes!(type))
             }
           end
+        end
+
+        def create(*args)
+          Job::CRUD.new(self, :_create, args)
+        end
+
+        def update(*args)
+          Job::CRUD.new(self, :_update, args)
+        end
+
+        def delete(*args)
+          Job::CRUD.new(self, :_delete, args)
         end
 
       private

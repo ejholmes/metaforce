@@ -60,7 +60,7 @@ module Metaforce
         # options  - Hash of DeployOptions.
         # 
         # Returns the AsyncResult
-        def deploy(zip_file, options={})
+        def _deploy(zip_file, options={})
           request :deploy do |soap|
             soap.body = { :zip_file => zip_file, :deploy_options => options }
           end
@@ -69,10 +69,42 @@ module Metaforce
         # Public: Retrieve code from Salesforce.
         #
         # Returns the AsyncResult
-        def retrieve(options={})
+        def _retrieve(options={})
           request :retrieve do |soap|
             soap.body = { :retrieve_request => options }
           end
+        end
+
+        # Public: Deploy code to Salesforce.
+        #
+        # path    - A path to a zip file, or a directory to deploy.
+        # options - Deploy options.
+        #
+        # Examples
+        #
+        #   client.deploy(File.expand_path('./src'))
+        def deploy(path, options={})
+          Job::Deploy.new(self, path, options)
+        end
+
+        def retrieve(options={})
+          Job::Retrieve.new(self, options)
+        end
+
+        # Public: Retrieves files specified in the manifest file (A package.xml
+        # file).
+        def retrieve_unpackaged(manifest, options={})
+          package = if manifest.is_a?(Metaforce::Manifest)
+            manifest
+          elsif manifest.is_a?(String)
+            Metaforce::Manifest.new(File.open(manifest).read)
+          end
+          options = {
+            :api_version    => Metaforce.configuration.api_version,
+            :single_package => true,
+            :unpackaged     => { :types => package.to_package }
+          }.merge(options)
+          retrieve(options)
         end
 
       end

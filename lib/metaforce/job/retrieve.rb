@@ -7,7 +7,7 @@ module Metaforce
     end
 
     def perform
-      @id = client.retrieve(@options).id
+      @id = client._retrieve(@options).id
       super
     end
 
