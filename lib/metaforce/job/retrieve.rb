@@ -18,6 +18,7 @@ module Metaforce
 
     # Public: Unzips the returned zip file to the location.
     def save_to(destination)
+      return queue_save_to(destination) unless @id
       file = Tempfile.new('retrieve')
       file.write(zip_file)
       path = file.path
@@ -30,6 +31,11 @@ module Metaforce
           zip.extract(f, path) { true }
         end
       end
+      self
+    end
+
+    def queue_save_to(destination)
+      on_complete { |job| job.save_to(destination) }
       self
     end
 
