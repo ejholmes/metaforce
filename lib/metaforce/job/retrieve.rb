@@ -11,7 +11,7 @@ module Metaforce
       super
     end
 
-    # Public: Returns the DeployResult or RetrieveResult
+    # Public: Returns the RetrieveResult.
     def result
       client.status(id, :retrieve)
     end
