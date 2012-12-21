@@ -7,7 +7,7 @@ module Metaforce
         #
         # Examples
         #
-        #   client._create(:apex_page, :full_name => 'TestPage')
+        #   client._create(:apex_page, :full_name => 'TestPage', label: 'Test page', :content => '<apex:page>foobar</apex:page>')
         def _create(type, metadata={})
           type = type.to_s.camelize
           request :create do |soap|
@@ -43,8 +43,9 @@ module Metaforce
             soap.body = {
               :metadata => {
                 :current_name => current_name,
-                :metadata => prepare(metadata)
-              }.merge(attributes!(type))
+                :metadata => prepare(metadata),
+                :attributes! => { :metadata => { 'xsi:type' => "ins0:#{type}" } }
+              }
             }
           end
         end
