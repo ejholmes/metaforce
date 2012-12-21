@@ -128,6 +128,18 @@ client.delete(:apex_page, 'Foobar')
 #=> #<Metaforce::Job::CRUD @id='1234'>
 ```
 
+### send\_email(options={})
+
+Sends a [SingleEmailMessage](http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_sendemail.htm) using Salesforce.
+
+```ruby
+client.send_email(
+  to_addresses: ['foo@bar.com'],
+  subject: 'Hello World',
+  plain_text_body: 'Hello World'
+)
+```
+
 ## Contributing
 
 If you'd like to contribute code, please fork the repository and implement your
