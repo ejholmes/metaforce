@@ -137,7 +137,7 @@ module Metaforce
     class << self
 
       # Internal: Disable threading in tests.
-      def mock!
+      def disable_threading!
         self.class_eval do
           def start_heart_beat
             loop do

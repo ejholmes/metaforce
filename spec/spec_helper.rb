@@ -8,7 +8,7 @@ RSpec.configure do |config|
   config.include Savon::Spec::Macros
 
   config.before(:suite) do
-    Metaforce::Job.mock!
+    Metaforce::Job.disable_threading!
   end
 end
 
