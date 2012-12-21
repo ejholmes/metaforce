@@ -11,19 +11,12 @@ client = Metaforce.new :username => ENV['USER'],
 Metaforce::Job.disable_threading!
 
 # Test sending an email.
-print 'send email to: '
+print 'send email to: '; email = STDIN.gets.chomp
 client.send_email(
-  to_addresses: [STDIN.gets.chomp],
+  to_addresses: [email],
   subject: 'Test',
   plain_text_body: 'Test'
-)
-
-# Test deployment.
-client.deploy('../spec/fixtures/payload.zip')
-  .on_complete { |job| puts "Deploy Completed: #{job.id}. #{job.status.inspect}"}
-  .on_error    { |job| puts "Deploy Failed: #{job.id}."}
-  .on_poll     { |job| puts "Deploy: Polled status for #{job.id}."}
-  .perform
+) if email
 
 # Test retrieve.
 manifest = Metaforce::Manifest.new(:custom_object => ['Account'])
@@ -31,6 +24,13 @@ client.retrieve_unpackaged(manifest)
   .on_complete { |job| puts "Retrieve Completed: #{job.id}."}
   .on_error    { |job| puts "Retrieve Failed: #{job.id}."}
   .extract_to('./tmp')
+  .perform
+
+# Test deployment.
+client.deploy('./tmp')
+  .on_complete { |job| puts "Deploy Completed: #{job.id}. #{job.result}"}
+  .on_error    { |job| puts "Deploy Failed: #{job.id}."}
+  .on_poll     { |job| puts "Deploy: Polled status for #{job.id}."}
   .perform
 
 # Test delete.
