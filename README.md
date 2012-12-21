@@ -57,7 +57,9 @@ end
 Some calls to the SOAP API's are performed asynchronously (such as deployments),
 meaning the response needs to be polled for. Any call to the SOAP API's that
 are performed asynchronously will return a Metaforce::Job object, which can be used to
-subscribe to `on_complete` and `on_error` callbacks.
+subscribe to `on_complete` and `on_error` callbacks. The Metaforce::Job class
+will poll the status of the asynchronous job in a thread until it completes or
+fails.
 
 * * *
 
