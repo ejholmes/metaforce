@@ -82,7 +82,7 @@ module Metaforce
     #
     # Returns the AsyncResult (http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_asyncresult.htm).
     def status
-      client.status(id)
+      @status ||= client.status(id)
     end
 
     # Public: Returns true if the job has completed. 
@@ -139,6 +139,7 @@ module Metaforce
         self.class_eval do
           def start_heart_beat
             loop do
+              @status = nil
               trigger_poll_callbacks
               trigger_callbacks && break if completed? || error?
             end
@@ -158,6 +159,7 @@ module Metaforce
       @heart_beat ||= Thread.new do
         delay = 1
         loop do
+          @status = nil
           sleep (delay = delay * 2)
           trigger_poll_callbacks
           trigger_callbacks && Thread.stop if completed? || error?
