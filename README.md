@@ -125,6 +125,37 @@ client.send_email(
 )
 ```
 
+## Commandline
+
+Metaforce also comes with a handy command line utility that can deploy and retrieve
+code from Salesforce. It also allows you to watch a directory and deploy when
+anything changes.
+
+When you deploy, it will also run all tests and provide you with a report,
+similar to rspec.
+
+```bash
+$ metaforce deploy ./src
+Deploying: ./src
+```
+
+```bash
+$ metaforce watch ./src
+Watching: ./src
+```
+
+```bash
+$ metaforce retrieve ./src/package.xml ./src
+Retrieving: ./src
+```
+
+### .metaforce.yml
+
+The metaforce command will pull it's configuration from a `.metaforce.yml`
+file, if present. You can provide options for multiple environments, then use
+the `-e` swtich on the command line to use an environment. See the
+[examples](examples) directory for an example.
+
 ## Contributing
 
 1. Fork it

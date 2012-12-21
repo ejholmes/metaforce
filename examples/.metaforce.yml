@@ -1,0 +1,10 @@
+# This is purely an example.
+---
+production:
+  username: foo@bar.com
+  password: foobarpassword
+  security_token: adwk2udj29
+developer:
+  username: foodev@bar.com
+  password: foobardevpassword
+  security_token: jiejw2udj29

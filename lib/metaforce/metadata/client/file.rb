@@ -97,7 +97,7 @@ module Metaforce
           package = if manifest.is_a?(Metaforce::Manifest)
             manifest
           elsif manifest.is_a?(String)
-            Metaforce::Manifest.new(File.open(manifest).read)
+            Metaforce::Manifest.new(::File.open(manifest).read)
           end
           options = {
             :api_version    => Metaforce.configuration.api_version,
