@@ -1,14 +1,17 @@
 require 'bundler'
 Bundler.require :default, :development
 require 'pp'
+require 'rspec/mocks'
 
 Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
 
 RSpec.configure do |config|
+  config.mock_with :rspec
   config.include Savon::Spec::Macros
 
-  config.before(:suite) do
+  config.before(:each) do
     Metaforce::Job.disable_threading!
+    Metaforce::Job.any_instance.stub(:wait)
   end
 end
 

@@ -3,6 +3,9 @@ require 'base64'
 
 module Metaforce
   class Job
+    DELAY_START = 1
+    DELAY_MULTIPLIER = 2
+
     autoload :Deploy,   'metaforce/job/deploy'
     autoload :Retrieve, 'metaforce/job/retrieve'
     autoload :CRUD,     'metaforce/job/crud'
@@ -145,8 +148,10 @@ module Metaforce
       def disable_threading!
         self.class_eval do
           def start_heart_beat
+            delay = DELAY_START
             loop do
               @status = nil
+              wait (delay = delay * DELAY_MULTIPLIER)
               trigger_poll_callbacks
               trigger_callbacks && break if completed? || error?
             end
@@ -164,10 +169,10 @@ module Metaforce
     def start_heart_beat
       Thread.abort_on_exception = true
       @heart_beat ||= Thread.new do
-        delay = 1
+        delay = DELAY_START
         loop do
           @status = nil
-          sleep (delay = delay * 2)
+          wait (delay = delay * DELAY_MULTIPLIER)
           trigger_poll_callbacks
           trigger_callbacks && Thread.stop if completed? || error?
         end
@@ -178,6 +183,10 @@ module Metaforce
       @_callbacks[:on_poll].each do |block|
         block.call(self)
       end
+    end
+
+    def wait(duration)
+      sleep duration
     end
 
     def trigger_callbacks
