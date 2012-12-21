@@ -39,6 +39,13 @@ module Metaforce
       self
     end
 
+    # Public: Utility method to determine if .perform has been called yet.
+    #
+    # Returns true if @id is set, false otherwise.
+    def started?
+      !!@id
+    end
+
     # Public: Register a block to be called when an event occurs.
     #
     # Yields the job.

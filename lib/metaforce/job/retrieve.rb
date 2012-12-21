@@ -63,7 +63,7 @@ module Metaforce
     #
     # Returns self.
     def extract_to(destination)
-      return on_complete { |job| job.extract_to(destination) } unless @id
+      return on_complete { |job| job.extract_to(destination) } unless started?
       Zip::ZipFile.open(tmp_zip_file) do |zip|
         zip.each do |f|
           path = File.join(destination, f.name)

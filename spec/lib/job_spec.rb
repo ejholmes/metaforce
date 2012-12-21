@@ -11,6 +11,22 @@ describe Metaforce::Job do
     end
   end
 
+  describe '.started?' do
+    subject { job.started? }
+
+    context 'when .perform has been called and an @id has been set' do
+      before do
+        job.instance_variable_set(:@id, '1234')
+      end
+
+      it { should be_true }
+    end
+
+    context 'when .perform has not been called and no @id has been set' do
+      it { should be_false }
+    end
+  end
+
   describe '.on_complete' do
     it 'allows the user to register an on_complete callback' do
       client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
