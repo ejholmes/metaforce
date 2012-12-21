@@ -54,6 +54,8 @@ module Metaforce
 
     # Public: Unzips the returned zip file to the location.
     #
+    # destination - Path to extract the contents to.
+    #
     # Examples
     #
     #   job.extract_to('./path')
