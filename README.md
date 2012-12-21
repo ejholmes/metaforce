@@ -40,7 +40,7 @@ the session\_id of the options hash to a valid session\_id.
 # Default authentication_handler:
 Metaforce.configure do |config|
   config.authentication_handler = lambda { |client, options|
-    options.merge(Metaforce.login options)
+    options.merge!(Metaforce.login(options))
   }
 end
 
