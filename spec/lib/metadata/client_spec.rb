@@ -123,7 +123,7 @@ describe Metaforce::Metadata::Client do
 
   describe '._update' do
     before do
-      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}}).returns(:in_progress)
+      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {:metadata => {'xsi:type' => 'ins0:ApexComponent'}}}).returns(:in_progress)
     end
 
     subject { client._update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
