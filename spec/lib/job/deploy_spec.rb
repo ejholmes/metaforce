@@ -5,28 +5,29 @@ describe Metaforce::Job::Deploy do
   let(:path) { File.expand_path('../../../fixtures/payload.zip', __FILE__) }
   let(:job) { described_class.new client, path }
 
-  describe '.payload' do
-    subject { job.payload }
+  describe '.perform' do
+    subject { job.perform }
 
     context 'when the path is a file' do
-      it { should be_a String }
+      before do
+        client.should_receive(:_deploy).with(/^UEsDBA.*/, {}).and_return(Hashie::Mash.new(id: '1234'))
+        client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+      end
+
+      it { should eq job }
+      its(:id) { should eq '1234' }
     end
 
     context 'when the path is a directory' do
+      before do
+        client.should_receive(:_deploy).with(/.*1stwAAAJI.*/, {}).and_return(Hashie::Mash.new(id: '1234'))
+        client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+      end
+
       let(:path) { File.expand_path('../../../fixtures', __FILE__) }
-      it { should be_a String }
+      it { should eq job }
+      its(:id) { should eq '1234' }
     end
-  end
-
-  describe '.perform' do
-    before do
-      client.should_receive(:_deploy).with(job.payload, {}).and_return(Hashie::Mash.new(id: '1234'))
-      client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
-    end
-
-    subject { job.perform }
-    it { should eq job }
-    its(:id) { should eq '1234' }
   end
 
   describe '.result' do

@@ -52,7 +52,9 @@ module Metaforce
       result.success
     end
 
-    # Public: Base64 encodes the contents of the zip file.
+  private
+
+    # Internal: Base64 encodes the contents of the zip file.
     #
     # Examples
     #
@@ -63,8 +65,6 @@ module Metaforce
     def payload
       Base64.encode64(File.open(file, 'rb').read)
     end
-
-  private
 
     # Internal: Returns the path to the zip file.
     def file
