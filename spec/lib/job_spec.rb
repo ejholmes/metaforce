@@ -67,7 +67,7 @@ describe Metaforce::Job do
 
     context 'when done' do
       before do
-        client.should_receive(:status).twice.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+        client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: 'Completed'))
       end
 
       it { should eq 'Completed' }
@@ -85,7 +85,7 @@ describe Metaforce::Job do
   %w[Queued InProgress Completed Error].each do |state|
     describe ".#{state.underscore}?" do
       before do
-        client.should_receive(:status).twice.and_return(Hashie::Mash.new(done: true, state: state))
+        client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: state))
       end
 
       subject { job.send(:"#{state.underscore}?") }

@@ -104,9 +104,9 @@ module Metaforce
     #   job.state
     #   # => 'Completed'
     #
-    # Returns the state if the job is done, false otherwise.
+    # Returns the state of the job.
     def state
-      done? && status.state
+      status.state
     end
 
     # Public: Check if the job is in a given state.
