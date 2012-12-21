@@ -91,6 +91,7 @@ client.retrieve_unpackaged(manifest)
 #=> #<Metaforce::Job::Retrieve @id='1234'>
 ```
 
+* * *
 
 ### create(type, metadata={})
 
@@ -103,6 +104,8 @@ client.create(:apex_page, full_name: 'Foobar', content: 'Hello World!')
   .perform
 #=> #<Metaforce::Job::CRUD @id='1234'>
 ```
+
+* * *
 
 ### update(type, current\_name metadata={})
 
@@ -117,6 +120,8 @@ client.update(:apex_page, 'Foobar', content: 'Hello World! Some new content!')
 #=> #<Metaforce::Job::CRUD @id='1234'>
 ```
 
+* * *
+
 ### delete(type, \*args)
 
 Takes a Symbol type, and the `full_name` of a resource and returns a `Metaforce::Job::CRUD`.
@@ -127,6 +132,8 @@ client.delete(:apex_page, 'Foobar')
   .perform
 #=> #<Metaforce::Job::CRUD @id='1234'>
 ```
+
+* * *
 
 ### send\_email(options={})
 
