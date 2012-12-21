@@ -37,7 +37,7 @@ module Metaforce
     #
     # Returns the DeployResult (http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_deployresult.htm).
     def result
-      client.status(id, :deploy)
+      @result ||= client.status(id, :deploy)
     end
 
     # Public: Returns true if the deploy was successful.
