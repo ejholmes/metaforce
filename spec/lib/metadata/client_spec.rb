@@ -1,230 +1,135 @@
-require "spec_helper"
-require "tempfile"
+require 'spec_helper'
 
 describe Metaforce::Metadata::Client do
+  let(:client) { described_class.new(:session_id => 'foobar', :metadata_server_url => 'https://na12-api.salesforce.com/services/Soap/u/23.0/00DU0000000Ilbh') }
 
-  before(:each) do
-    savon.expects(:login).with(:username => 'valid', :password => 'password').returns(:success)
-  end
+  it_behaves_like 'a client'
 
-  let(:client) do
-    Metaforce::Metadata::Client.new(:username => 'valid', :password => 'password')
-  end
-  
-  describe ".list" do
-
-    it "returns an array" do
-      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:objects)
-      client.list(:type => "ApexClass").should be_an(Array)
-    end
-
-    it "returns an empty array when no results are returned" do
-      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
-      client.list(:type => "ApexClass").should be_an(Array)
-    end
-
-    it "accepts a symbol" do
-      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
-      client.list(:apex_class).should be_an(Array)
-    end
-
-    it "accepts a string" do
-      savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
-      client.list("ApexClass").should be_an(Array)
-    end
-
-  end
-
-  it "should respond to dynamically defined list methods" do
-    savon.expects(:describe_metadata).returns(:success)
-    savon.expects(:list_metadata).with(:queries => [ :type => "ApexClass"]).returns(:no_result)
-    client.list_apex_class.should be_an(Array)
-
-    expect { client.list_undefined_type }.to raise_error(NoMethodError)
-  end
-
-  describe ".describe" do
-    context "when given valid information" do
-
-      it "returns a hash" do
-        savon.expects(:describe_metadata).returns(:success)
-        client.describe.should be_a(Hash)
+  describe '.list_metadata' do
+    context 'with a single symbol' do
+      before do
+        savon.expects(:list_metadata).with(:queries => [{:type => 'ApexClass'}]).returns(:objects)
       end
 
-      it "caches the response" do
-        savon.expects(:describe_metadata).returns(:success)
-        client.describe.should be_a(Hash)
-        expect { client.describe }.to_not raise_error
+      subject { client.list_metadata(:apex_class) }
+      it { should be_an Array }
+    end
+
+    context 'with a single string' do
+      before do
+        savon.expects(:list_metadata).with(:queries => [{:type => 'ApexClass'}]).returns(:objects)
       end
 
+      subject { client.list_metadata('ApexClass') }
+      it { should be_an Array }
     end
   end
 
-  describe ".metadata_objects" do
-    it "returns the :metadata_objects key from the describe call" do
-      savon.expects(:describe_metadata).returns(:success)
-      client.metadata_objects.should be_a(Array)
+  describe '.describe' do
+    context 'with no version' do
+      before do
+        savon.expects(:describe_metadata).with(nil).returns(:success)
+      end
+
+      subject { client.describe }
+      it { should be_a Hash }
+    end
+
+    context 'with a version' do
+      before do
+        savon.expects(:describe_metadata).with(:api_version => '18.0').returns(:success)
+      end
+
+      subject { client.describe('18.0') }
+      it { should be_a Hash }
     end
   end
 
-  describe ".describe!" do
-    context "when given valid information" do
-
-      it "returns a hash" do
-        savon.expects(:describe_metadata).returns(:success)
-        client.describe!.should be_a(Hash)
+  describe '.status' do
+    context 'with a single id' do
+      before do
+        savon.expects(:check_status).with(:ids => ['1234']).returns(:done)
       end
 
-      it "doesn't cache the response" do
-        savon.expects(:describe_metadata).returns(:success)
-        client.describe!.should be_a(Hash)
-        savon.expects(:describe_metadata).returns(:success)
-        expect { client.describe! }.to_not raise_error
-      end
-
+      subject { client.status '1234' }
+      it { should be_a Hash }
     end
   end
 
-  describe ".status" do
-    context "when given an invalid id" do
-
-      it "raises an" do
-        expect { client.status("badId") }.to raise_error
-      end
-
+  describe '._deploy' do
+    before do
+      savon.expects(:deploy).with(:zip_file => 'foobar', :deploy_options => {}).returns(:in_progress)
     end
-    context "when given an id of a result that has completed" do
 
-      it "returns a hash and the :done key contains true" do
-        savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-        status = client.status("04sU0000000WNWoIAO")
-        status.should be_a(Hash)
-        status[:done].should eq(true)
-      end
+    subject { client._deploy('foobar') }
+    it { should be_a Hash }
+  end
 
+  describe '.deploy' do
+    subject { client.deploy File.expand_path('../../path/to/zip') }
+    it { should be_a Metaforce::Job::Deploy }
+  end
+
+  describe '._retrieve' do
+    let(:options) { double('options') }
+
+    before do
+      savon.expects(:retrieve).with(:retrieve_request => options).returns(:in_progress)
     end
-    context "when given an id of a result that has not completed" do
 
-      it "returns a hash and the :done key contains false" do
-        savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAo" ]).returns(:not_done)
-        status = client.status("04sU0000000WNWoIAo")
-        status.should be_a(Hash)
-        status[:done].should eq(false)
-      end
+    subject { client._retrieve(options) }
+    it { should be_a Hash }
+  end
 
+  describe '.retrieve' do
+    subject { client.retrieve }
+    it { should be_a Metaforce::Job::Retrieve }
+  end
+
+  describe '.retrieve_unpackaged' do
+    let(:manifest) { Metaforce::Manifest.new(:custom_object => ['Account']) }
+    subject { client.retrieve_unpackaged(manifest) }
+    it { should be_a Metaforce::Job::Retrieve }
+  end
+
+  describe '._create' do
+    before do
+      savon.expects(:create).with(:metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
     end
-    context "when given and id of a deploy that has completed" do
 
-      it "returns a hash" do
-        savon.expects(:check_deploy_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-        status = client.status("04sU0000000WNWoIAO", :deploy)
-        status.should be_a(Hash)
+    subject { client._create(:apex_component, :full_name => 'component', :label => 'test', :content => 'foobar') }
+    it { should be_a Hash }
+  end
+
+  describe '._delete' do
+    context 'with a single name' do
+      before do
+        savon.expects(:delete).with(:metadata => [{:full_name => 'component'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
       end
 
+      subject { client._delete(:apex_component, 'component') }
+      it { should be_a Hash }
+    end
+
+    context 'with multiple' do
+      before do
+        savon.expects(:delete).with(:metadata => [{:full_name => 'component1'}, {:full_name => 'component2'}], :attributes! => {'ins0:metadata' => {'xsi:type' => 'ins0:ApexComponent'}}).returns(:in_progress)
+      end
+
+      subject { client._delete(:apex_component, 'component1', 'component2') }
+      it { should be_a Hash }
     end
   end
 
-  describe ".done?" do
-    context "when given an id of a result that has completed" do
-
-      it "returns true" do
-        savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAO" ]).returns(:done)
-        client.done?("04sU0000000WNWoIAO").should eq(true)
-      end
-
-    end
-    context "when given an id of a result that has not completed" do
-
-      it "returns false" do
-        savon.expects(:check_status).with(:ids => [ "04sU0000000WNWoIAo" ]).returns(:not_done)
-        client.done?("04sU0000000WNWoIAo").should eq(false)
-      end
-
-    end
-  end
-
-  describe ".deploy" do
-
-    before(:each) do
-      Metaforce::Metadata::Client.any_instance.stubs(:create_deploy_file).returns('')
-    end
-    
-    context "when given a directory to deploy" do
-
-      it "deploys the directory and returns a transaction" do
-        savon.expects(:deploy).with(:zip_file => '', :deploy_options => {}).returns(:in_progress)
-        savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-        deployment = client.deploy(File.expand_path('../../../fixtures/sample', __FILE__))
-        deployment.should be_a(Metaforce::Transaction)
-        deployment.id.should eq("04sU0000000WNWoIAO")
-      end
-
+  describe '._update' do
+    before do
+      savon.expects(:update).with(:metadata => {:current_name => 'old_component', :metadata => [{:full_name => 'component', :label => 'test', :content => "Zm9vYmFy\n"}], :attributes! => {:metadata => {'xsi:type' => 'ins0:ApexComponent'}}}).returns(:in_progress)
     end
 
-    it "allows deploy options to be configured via a hash" do
-      savon.expects(:deploy).with(:zip_file => '', :deploy_options => { :run_all_tests => true }).returns(:in_progress)
-      savon.expects(:check_status).with(:ids => ['04sU0000000WNWoIAO']).returns(:done);
-      expect {
-        client.deploy('', :options => { :run_all_tests => true })
-      }.to_not raise_error
-    end
-
-  end
-
-  describe ".retrieve" do
-
-    let(:manifest) do
-      Metaforce::Manifest.new(File.open(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__)).read)
-    end
-
-    describe ".retrieve_unpackaged" do
-
-      context "when given a manifest file" do
-        before(:each) do
-          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
-          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
-          savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
-        end
-
-        it "returns a valid retrieve result" do
-          retrieval = client.retrieve_unpackaged(manifest)
-          retrieval.done?
-          result = retrieval.result
-          result.should be_a(Hash)
-        end
-
-      end
-
-      context "when given the path to a manifest file" do
-        before(:each) do
-          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package } }).returns(:in_progress)
-          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done)
-          savon.expects(:check_retrieve_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:success)
-        end
-
-        it "returns a valid retrieve result" do
-          retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__))
-          retrieval.done?
-          result = retrieval.result
-          result.should be_a(Hash)
-        end
-
-      end
-
-      context "when given extra retrieve options" do
-        before(:each) do
-          savon.expects(:retrieve).with(:retrieve_request => { :api_version => Metaforce.configuration.api_version, :single_package => true, :unpackaged => { :types => manifest.to_package }, :extra => true }).returns(:in_progress)
-          savon.expects(:check_status).with(:ids => ['04sU0000000WkdIIAS']).returns(:done);
-        end
-
-        it "merges the options" do
-          expect {
-            retrieval = client.retrieve_unpackaged(File.expand_path('../../../fixtures/sample/src/package.xml', __FILE__), :options => { :extra => true })
-          }.to_not raise_error
-        end
-
-      end
-    end
-
+    subject { client._update(:apex_component, 'old_component', :full_name => 'component', :label => 'test', :content => 'foobar') }
+    it { should be_a Hash }
   end
 end
+
+
+

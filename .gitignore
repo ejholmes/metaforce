@@ -2,6 +2,7 @@
 .bundle
 Gemfile.lock
 pkg/*
+examples/tmp
 deploy.zip
 retrieve.zip
 test.rb

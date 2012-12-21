@@ -1,18 +1,10 @@
+#!/usr/bin/env rake
 require "bundler/gem_tasks"
 
-task :default => :spec
+task :default => [:spec]
 
-desc "Run rspec specs"
-task :spec do
-  sh "bundle exec rspec spec"
-end
-
-desc "Start an irb session"
-task :console do
-  sh "irb -I lib -r metaforce"
-end
-
-desc "Build and publish gem on rubygems.org"
-task :publish do
-  sh "gem build metaforce.gemspec && gem push metaforce-*.gem"
+require 'rspec/core/rake_task'
+desc "Run specs"
+RSpec::Core::RakeTask.new do |t|
+  t.pattern = 'spec/**/*_spec.rb'
 end

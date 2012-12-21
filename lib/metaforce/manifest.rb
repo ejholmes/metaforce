@@ -1,11 +1,11 @@
 require 'nokogiri'
-require 'metaforce/types'
+require 'active_support/core_ext'
 
 module Metaforce
-  class Manifest
+  class Manifest < Hash
 
-    # Initializes a new instance of a manifest (package.xml) file.
-    # 
+    # Public: Initializes a new instance of a manifest (package.xml) file.
+    #
     # It can either take a hash:
     #   {
     #     :apex_class => [
@@ -35,71 +35,17 @@ module Metaforce
     #    </types>
     #    <version>23.0</version>
     #  </Package>
-    # 
+    #
     def initialize(components={})
-      # Map component type => folder
+      self.replace Hash.new { |h,k| h[k] = [] }
       if components.is_a?(Hash)
-        @components = components
+        self.merge!(components)
       elsif components.is_a?(String)
-        @components = {}
         self.parse(components)
       end
     end
 
-    # Adds components to the package
-    #
-    #  manifest.add :apex_class, 'SomeClass'
-    def add(type, members=nil)
-      unless members.nil?
-        @components[type] = [] if @components[type].nil?
-        members = [members] if members.is_a?(String)
-        members.each do |member|
-          member = member.gsub(/.*\//, '').gsub(/\..*/, '');
-          @components[type].push(member)
-        end
-      end
-      self
-    end
-
-    # Removes components from the package
-    #
-    #  manifest.remove :apex_class, 'SomeClass'
-    def remove(type, members=nil)
-      unless members.nil?
-        members = [members] if members.is_a?(String)
-        members.each do |member|
-          member = member.gsub(/.*\//, '').gsub(/\..*/, '');
-          @components[type].delete(member)
-        end
-      end
-      if @components[type].empty?
-        @components.delete(type)
-      end
-      self
-    end
-
-    # Filters the components based on a list of files
-    #
-    #  manifest.only(['classes/SomeClass'])
-    def only(files)
-      components = @components
-      @components = {}
-      files.each do |file|
-        parts = file.split('/').last(2)
-        folder = parts[0]
-        file = parts[1].gsub(/.*\//, '').gsub(/\..*/, '')
-        components.each_key do |type|
-          if Metaforce::Metadata::Types.folder(type) =~ /#{folder}/i
-            unless components[type].index(file).nil?
-              self.add(type, file);
-            end
-          end
-        end
-      end
-      self
-    end
-
-    # Returns a string containing a package.xml file
+    # Public: Returns a string containing a package.xml file
     #
     #  <?xml version="1.0"?>
     #  <Package xmlns="http://soap.sforce.com/2006/04/metadata">
@@ -120,13 +66,13 @@ module Metaforce
     #  </Package>
     def to_xml
       xml_builder = Nokogiri::XML::Builder.new do |xml|
-        xml.Package("xmlns" => "http://soap.sforce.com/2006/04/metadata") {
-          @components.each do |key, members|
+        xml.Package('xmlns' => 'http://soap.sforce.com/2006/04/metadata') {
+          self.each do |key, members|
             xml.types {
               members.each do |member|
                 xml.members member
               end
-              xml.name Metaforce::Metadata::Types.name(key)
+              xml.name key.to_s.camelize
             }
           end
           xml.version Metaforce.configuration.api_version
@@ -135,43 +81,22 @@ module Metaforce
       xml_builder.to_xml
     end
 
-    # Returns the underlying hash structure
-    #
-    #   {
-    #     :apex_class => [
-    #       "TestController",
-    #       "TestClass"
-    #     ],
-    #     :apex_component => [
-    #       "SiteLogin"
-    #     ]
-    #   }
-    def to_hash
-      @components
-    end
-
-    # Used internall my Metaforce::Metadata::Client
+    # Public: Converts the manifest into a format that can be used by the
+    # metadata api.
     def to_package
-      components = []
-      @components.each do |type, members|
-        name = Metaforce::Metadata::Types.name(type)
-        components.push :members => members, :name => name
+      self.map do |type, members|
+        { :members => members, :name => type.to_s.camelize }
       end
-      components
     end
 
-    # Parses a package.xml file
+    # Public: Parses a package.xml file
     def parse(file)
       document = Nokogiri::XML(file).remove_namespaces!
       document.xpath('//types').each do |type|
         name = type.xpath('name').first.content
-        key = Metaforce::Metadata::Types.key(name);
+        key = name.underscore.to_sym
         type.xpath('members').each do |member|
-          if @components[key].is_a?(Array)
-            @components[key].push(member.content)
-          else
-            @components[key] = [member.content]
-          end
+          self[key] << member.content
         end
       end
       self

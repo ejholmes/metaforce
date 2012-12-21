@@ -41,26 +41,48 @@ module Metaforce
     attr_accessor :security_token
     # Set this to true if you're authenticating with a Sandbox instance.
     # Defaults to false.
-    attr_accessor :test
-    # Causes Metaforce::Transaction.result to loop until the transaction is
-    # complete. Defaults to true.
-    #
-    # If you want to do custom polling, set this to false.
-    #
-    # == Example
-    #
-    #   Metaforce.configuration.wait_until_done = false;
-    #
-    #   deploy = client.deploy File.expand_path("myeclipseproj")
-    #   begin; while !deploy.done?
-    #   deploy.result
-    attr_accessor :wait_until_done
+    attr_accessor :host
+    # A block that gets called when the session becomes invalid and the
+    # client needs to reauthenticate. Passes in the client and the client
+    # options. The block should set the options to a hash containing a valid
+    # session_id and service urls.
+    attr_accessor :authentication_handler
 
-    def initialize
-      HTTPI.log        = false
-      @api_version     = "23.0"
-      @test            = false
-      @wait_until_done = true
+    def api_version
+      @api_version ||= '26.0'
+    end
+
+    def host
+      @host ||= 'login.salesforce.com'
+    end
+
+    def authentication_handler
+      @authentication_handler ||= lambda { |client, options|
+        options.merge!(Metaforce.login(options))
+      }
+    end
+
+    def log=(log)
+      Savon.configure do |config|
+        config.log = log
+      end
+      HTTPI.log = log
+    end
+
+    def partner_wsdl
+      File.join(wsdl, 'partner.xml')
+    end
+
+    def metadata_wsdl
+      File.join(wsdl, 'metadata.xml')
+    end
+
+    def endpoint
+      "https://#{host}/services/Soap/u/#{api_version}"
+    end
+
+    def wsdl
+      File.expand_path("../../../wsdl/#{api_version}", __FILE__)
     end
 
     def logger
