@@ -1,3 +1,3 @@
 module Metaforce
-  VERSION = '0.6.0a'
+  VERSION = '1.0.0a'
 end
