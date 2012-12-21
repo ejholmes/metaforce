@@ -68,17 +68,11 @@ Takes a path (can be a path to a directory, or a zip file), and a set of
 and returns a `Metaforce::Job::Deploy`.
 
 ```ruby
-job = client.deploy(File.expand_path('./src'))
-
-job.on_complete do |job|
-  puts "Finished deploying #{job.id}!"
-end
-
-job.on_error do |job|
-  puts "Something bad happened!"
-end
-
-job.perform
+client.deploy(File.expand_path('./src'))
+  .on_complete { |job| puts "Finished deploy #{job.id}!" }
+  .on_error    { |job| puts "Something bad happened!" }
+  .perform
+#=> #<Metaforce::Job::Deploy @id='1234'>
 ```
 
 * * *
@@ -91,11 +85,47 @@ and returns a `Metaforce::Job::Retrieve`.
 
 ```ruby
 manifest = Metaforce::Manifest.new(:custom_object => ['Account'])
-job = client.retrieve_unpackaged manifest
+client.retrieve_unpackaged(manifest)
+  .extract_to('./tmp')
+  .perform
+#=> #<Metaforce::Job::Retrieve @id='1234'>
+```
 
-job.extract_to('./tmp')
 
-job.perform
+### create(type, metadata={})
+
+Takes a Symbol type and a Hash of [Metadata Attributes](http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_types_list.htm)
+and returns a `Metaforce::Job::CRUD`.
+
+```ruby
+client.create(:apex_page, full_name: 'Foobar', content: 'Hello World!')
+  .on_complete { |job| puts "ApexPage created." }
+  .perform
+#=> #<Metaforce::Job::CRUD @id='1234'>
+```
+
+### update(type, current\_name metadata={})
+
+Takes a Symbol type, the current `full_name` of the resource, and a Hash of
+[Metadata Attributes](http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_types_list.htm)
+and returns a `Metaforce::Job::CRUD`.
+
+```ruby
+client.update(:apex_page, 'Foobar', content: 'Hello World! Some new content!')
+  .on_complete { |job| puts "ApexPage updated." }
+  .perform
+#=> #<Metaforce::Job::CRUD @id='1234'>
+```
+
+### delete(type, \*args)
+
+Takes a Symbol type, and the `full_name` of a resource and returns a `Metaforce::Job::CRUD`.
+
+```ruby
+client.delete(:apex_page, 'Foobar')
+  .on_complete { |job| puts "ApexPage deleted." }
+  .perform
+#=> #<Metaforce::Job::CRUD @id='1234'>
 ```
 
 ## Contributing
