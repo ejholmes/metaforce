@@ -39,11 +39,11 @@ module Metaforce
       self
     end
 
-    # Public: Register a block to be called when the job has completed.
+    # Public: Register a block to be called when an event occurs.
     #
     # Yields the job.
     #
-    # &block - Proc or Lambda to be run when the job completes.
+    # &block - Proc or Lambda to be run when the event is triggered.
     #
     # Examples
     #
@@ -51,28 +51,26 @@ module Metaforce
     #     puts "Job ##{job.id} completed!"
     #   end
     #
-    # Returns self.
-    def on_complete(&block)
-      @_callbacks[:on_complete] << block
-      self
-    end
-
-    # Public: Register a block to be called when if the job fails.
-    #
-    # Yields the job.
-    #
-    # &block - Proc or Lambda to be run when the job fails.
-    #
-    # Examples
-    #
     #   job.on_error do |job|
-    #     puts "Job ##{job.id} failed!"
+    #     puts "Job failed!"
+    #   end
+    #
+    #   job.on_poll do |job|
+    #     puts "Polled status for #{job.id}"
     #   end
     #
     # Returns self.
-    def on_error(&block)
-      @_callbacks[:on_error] << block
-      self
+    #
+    # Signature
+    #
+    #   on_complete(&block)
+    #   on_error(&block)
+    #   on_poll(&block)
+    %w[complete error poll].each do |type|
+      define_method :"on_#{type}" do |&block|
+        @_callbacks[:"on_#{type}"] << block
+        self
+      end
     end
 
     # Public: Queries the job status from the API.
@@ -141,6 +139,7 @@ module Metaforce
         self.class_eval do
           def start_heart_beat
             loop do
+              trigger_poll_callbacks
               trigger_callbacks && break if completed? || error?
             end
           end
@@ -160,8 +159,15 @@ module Metaforce
         delay = 1
         loop do
           sleep (delay = delay * 2)
+          trigger_poll_callbacks
           trigger_callbacks && Thread.stop if completed? || error?
         end
+      end
+    end
+
+    def trigger_poll_callbacks
+      @_callbacks[:on_poll].each do |block|
+        block.call(self)
       end
     end
 

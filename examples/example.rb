@@ -22,6 +22,7 @@ client.send_email(
 client.deploy('../spec/fixtures/payload.zip')
   .on_complete { |job| puts "Deploy Completed: #{job.id}."}
   .on_error    { |job| puts "Deploy Failed: #{job.id}."}
+  .on_poll     { |job| puts "Deploy: Polled status for #{job.id}."}
   .perform
 
 # Test retrieve.
