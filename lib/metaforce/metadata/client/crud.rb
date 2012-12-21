@@ -36,7 +36,7 @@ module Metaforce
         #
         # Examples
         #
-        #   client._update(:apex_page, 'OldPage', :full_name => 'NewPage')
+        #   client._update(:apex_page, 'OldPage', :full_name => 'TestPage', :label => 'Test page', :content => '<apex:page>hello world</apex:page>')
         def _update(type, current_name, metadata={})
           type = type.to_s.camelize
           request :update do |soap|
