@@ -28,30 +28,6 @@ client = Metaforce.new :username => 'username',
   :security_token => 'security token'
 ```
 
-#### Reauthentication
-
-The session\_id will eventually expire. In these cases, Metaforce will invoke
-the `Metaforce.configuration.authentication_handler` with two arguments: the
-client and the options hash. Your authentication\_handler lambda should set
-the session\_id of the options hash to a valid session\_id.
-
-
-```ruby
-# Default authentication_handler:
-Metaforce.configure do |config|
-  config.authentication_handler = lambda { |client, options|
-    options.merge!(Metaforce.login(options))
-  }
-end
-
-# Reauthentication with Restforce
-Metaforce.configure do |config|
-  config.authentication_handler = lambda { |client, options|
-    options[:session_id] = restforce_client.authenticate!.access_token
-  }
-end
-```
-
 #### Asynchronous Tasks
 
 Some calls to the SOAP API's are performed asynchronously (such as deployments),
