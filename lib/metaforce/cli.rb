@@ -73,6 +73,7 @@ module Metaforce
 
     def watch(path)
       say "Watching: #{path}"
+      @watching = true
       Listen.to(path) { deploy path }
     end
 
@@ -82,6 +83,14 @@ module Metaforce
       reporter = "Metaforce::Reporters::#{type.to_s.camelize}Reporter".constantize.new(results)
       reporter.report
       exit 1 if reporter.issues?
+    end
+
+    def exit(status)
+      super(status) if not watching?
+    end
+
+    def watching?
+      !!@watching
     end
 
     def error
