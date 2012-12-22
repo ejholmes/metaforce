@@ -37,7 +37,7 @@ module Metaforce
     #
     # Returns the RetrieveResult (http://www.salesforce.com/us/developer/docs/api_meta/Content/meta_retrieveresult.htm).
     def result
-      client.status(id, :retrieve)
+      @result ||= client.status(id, :retrieve)
     end
 
     # Public: Decodes the content of the returned zip file.
