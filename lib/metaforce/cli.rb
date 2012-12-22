@@ -39,7 +39,7 @@ module Metaforce
       say "Deploying: #{path} ", :cyan
       say "#{options[:deploy_options].inspect}"
       client(options).deploy(path, options[:deploy_options].symbolize_keys!)
-        .on_complete { |job| Metaforce::Reporters::DeployReporter.new(job.result).report }
+        .on_complete { |job| report job.result, :deploy }
         .on_error(&error)
         .on_poll(&polling)
         .perform
@@ -59,7 +59,7 @@ module Metaforce
       say "#{options[:retrieve_options].inspect}"
       client(options).retrieve_unpackaged(manifest, options[:retrieve_options].symbolize_keys!)
         .extract_to(path)
-        .on_complete { |job| Metaforce::Reporters::RetrieveReporter.new(job.result).report }
+        .on_complete { |job| report(job.result, :retrieve) }
         .on_complete { |job| say "Extracted: #{path}", :green }
         .on_error(&error)
         .on_poll(&polling)
@@ -77,6 +77,12 @@ module Metaforce
     end
 
   private
+
+    def report(results, type)
+      reporter = "Metaforce::Reporters::#{type.to_s.camelize}Reporter".constantize.new(results)
+      reporter.report
+      exit 1 if reporter.issues?
+    end
 
     def error
       proc { |job| say "Error: #{job.result.inspect}" }

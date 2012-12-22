@@ -50,4 +50,30 @@ describe Metaforce::Reporters::BaseReporter do
       end
     end
   end
+
+  describe '.problems?' do
+    subject { reporter.problems? }
+
+    context 'when there are no problems' do
+      it { should be_false }
+    end
+
+    context 'when there are problems' do
+      let(:results) { Hashie::Mash.new(success: true, messages: { problem: 'Problem', file_name: 'path/file', line_number: '10' }) }
+      it { should be_true }
+    end
+  end
+
+  describe '.issues?' do
+    subject { reporter.issues? }
+
+    context 'when there are no problems' do
+      it { should be_false }
+    end
+
+    context 'when there are problems' do
+      let(:results) { Hashie::Mash.new(success: true, messages: { problem: 'Problem', file_name: 'path/file', line_number: '10' }) }
+      it { should be_true }
+    end
+  end
 end

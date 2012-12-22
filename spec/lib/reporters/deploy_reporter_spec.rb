@@ -39,10 +39,11 @@ describe Metaforce::Reporters::DeployReporter do
   end
 
   describe '.report_failed_tests' do
-    let(:results) { Hashie::Mash.new(success: true, run_test_result: { failures: failures }) }
+    let(:results) { Hashie::Mash.new(success: true, run_test_result: { num_failures: num_failures, failures: failures }) }
 
     context 'when there are no failed tests' do
       let(:failures) { nil }
+      let(:num_failures) { '0' }
 
       it 'does not report any failed tests' do
         reporter.should_receive(:say).never
@@ -54,6 +55,7 @@ describe Metaforce::Reporters::DeployReporter do
     context 'when there are failed tests' do
       context 'passed as an object' do
         let(:failures) { { stack_trace: 'stack trace', message: 'message' } }
+        let(:num_failures) { '1' }
 
         it 'prints each failed tests' do
           reporter.should_receive(:say)
@@ -66,6 +68,7 @@ describe Metaforce::Reporters::DeployReporter do
       
       context 'passed as an array' do
         let(:failures) { [{ stack_trace: 'stack trace', message: 'message' }, { stack_trace: 'stack trace 2', message: 'message 2' }] }
+        let(:num_failures) { '2' }
 
         it 'prints each failed tests' do
           reporter.should_receive(:say)
@@ -101,6 +104,21 @@ describe Metaforce::Reporters::DeployReporter do
         reporter.should_receive(:say).with("10 tests, 0 failures", :green)
         reporter.report_test_results
       end
+    end
+  end
+
+  describe '.failures?' do
+    let(:results) { Hashie::Mash.new(success: true, run_test_result: { total_time: '20', num_tests_run: '10', num_failures: num_failures }) }
+    subject { reporter.failures? }
+
+    context 'when there are failures' do
+      let(:num_failures) { '5' }
+      it { should be_true }
+    end
+
+    context 'when there are no failures' do
+      let(:num_failures) { '0' }
+      it { should be_false }
     end
   end
 end

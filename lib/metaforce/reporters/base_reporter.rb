@@ -12,7 +12,7 @@ module Metaforce
       end
 
       def report_problems
-        return unless problems.any?
+        return unless problems?
         say
         say "Problems:", :red
         say
@@ -31,6 +31,14 @@ module Metaforce
 
       def long_padding
         '     '
+      end
+
+      def problems?
+        problems.any?
+      end
+
+      def issues?
+        problems?
       end
 
     private

@@ -11,7 +11,7 @@ module Metaforce
       end
 
       def report_failed_tests
-        return unless failures.any?
+        return unless failures?
         say
         say "Failures:", :red
         say
@@ -21,13 +21,21 @@ module Metaforce
       def report_test_results
         say
         say "Finished in #{total_time} seconds"
-        say "#{num_tests} tests, #{num_failures} failures", num_failures > 0 ? :red : :green
+        say "#{num_tests} tests, #{num_failures} failures", failures? ? :red : :green
       end
 
       def failed(failure)
         say "#{short_padding}#{failure.stack_trace}:", :red
         say "#{long_padding}#{failure.message}"
         say
+      end
+
+      def failures?
+        num_failures > 0
+      end
+
+      def issues?
+        problems? || failures?
       end
 
     private
