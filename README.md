@@ -125,7 +125,7 @@ client.send_email(
 )
 ```
 
-## Commandline
+## Command-line
 
 Metaforce also comes with a handy command line utility that can deploy and retrieve
 code from Salesforce. It also allows you to watch a directory and deploy when
