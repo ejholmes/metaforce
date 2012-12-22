@@ -22,6 +22,7 @@ module Metaforce
       end
 
       def deploy_options
+        method_option :files, :aliases => '-f', :type => :array, :desc => 'Paths to files to deploy'
         method_option :deploy_options, :aliases => '-o', :type => :hash, :default => { :run_all_tests => true }, :desc => 'Deploy Options'
       end
 
@@ -30,7 +31,7 @@ module Metaforce
       end
     end
 
-    desc 'deploy <path>', 'Deploy <path> to the target organization.'
+    desc 'deploy <path>', 'Deploy <path> to the target organization, or a single.'
 
     credential_options
     deploy_options
@@ -38,14 +39,18 @@ module Metaforce
     def deploy(path)
       say "Deploying: #{path} ", :cyan
       say "#{options[:deploy_options].inspect}"
-      client(options).deploy(path, options[:deploy_options].symbolize_keys!)
+      if files = options[:files]
+        client(options).deploy_files(path, files, options[:deploy_options])
+      else
+        client(options).deploy(path, options[:deploy_options].symbolize_keys!)
+      end
         .on_complete { |job| report job.result, :deploy }
         .on_error(&error)
         .on_poll(&polling)
         .perform
     end
 
-    desc 'retrieve <manifest> <path>', 'Retrieve the components specified in <manifest> (package.xml) to <path>.'
+    desc 'retrieve [manifest] <path>', 'Retrieve the components specified in [manifest] (package.xml) to <path>.'
 
     credential_options
     retrieve_options
