@@ -145,8 +145,11 @@ Watching: ./src
 ```
 
 ```bash
-$ metaforce retrieve ./src/package.xml ./src
-Retrieving: ./src
+$ metaforce retrieve ./src
+Retrieving: ./src/package.xml
+
+$ metaforce retrieve ./src/package.xml ./other-location
+Retrieving: ./src/package.xml
 ```
 
 ### .metaforce.yml

@@ -50,7 +50,11 @@ module Metaforce
     credential_options
     retrieve_options
 
-    def retrieve(manifest, path)
+    def retrieve(manifest, path=nil)
+      unless path
+        path = manifest
+        manifest = File.join(path, 'package.xml')
+      end
       say "Retrieving: #{manifest} ", :cyan
       say "#{options[:retrieve_options].inspect}"
       client(options).retrieve_unpackaged(manifest, options[:retrieve_options].symbolize_keys!)
