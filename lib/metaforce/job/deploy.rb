@@ -1,5 +1,6 @@
 module Metaforce
   class Job::Deploy < Job
+    autoload :File, 'metaforce/job/deploy/file'
 
     # Public: Instantiate a new deploy job.
     #
@@ -63,21 +64,21 @@ module Metaforce
     #
     # Returns the content of the zip file encoded to base64.
     def payload
-      Base64.encode64(File.open(file, 'rb').read)
+      Base64.encode64(::File.open(file, 'rb').read)
     end
 
     # Internal: Returns the path to the zip file.
     def file
-      File.file?(@path) ? @path : zip_file
+      ::File.file?(@path) ? @path : zip_file
     end
 
     # Internal: Creates a zip file with the contents of the directory.
     def zip_file
       path = Dir.mktmpdir
-      File.join(path, 'deploy.zip').tap do |path|
+      ::File.join(path, 'deploy.zip').tap do |path|
         Zip::ZipFile.open(path, Zip::ZipFile::CREATE) do |zip|
           Dir["#{@path}/**/**"].each do |file|
-            zip.add(file.sub("#{File.dirname(@path)}/", ''), file)
+            zip.add(file.sub("#{::File.dirname(@path)}/", ''), file)
           end
         end
       end

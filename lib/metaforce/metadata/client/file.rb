@@ -87,6 +87,22 @@ module Metaforce
           Job::Deploy.new(self, path, options)
         end
 
+        # Public: Deploy a single or multiple files to Salesforce.
+        #
+        # path    - A path to a zip file, or a directory to deploy.
+        # files   - Path to the file to deploy.
+        # options - Deploy options.
+        #
+        # Examples
+        #
+        #   client.deploy(File.expand_path('./src'))
+        def deploy_files(path, files, options={})
+          options = {
+            :allow_missing_files => true
+          }.merge(options)
+          Job::Deploy::File.new(self, path, files, options)
+        end
+
         def retrieve(options={})
           Job::Retrieve.new(self, options)
         end
