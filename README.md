@@ -125,6 +125,10 @@ client.send_email(
 )
 ```
 
+If you're using Rails, checkout out the [metaforce-delivery\_method](https://github.com/ejholmes/metaforce-delivery_method)
+gem, which allows you to use Salesforce as the delivery mechanism for sending
+emails.
+
 ## Command-line
 
 Metaforce also comes with a handy command line utility that can deploy and retrieve
