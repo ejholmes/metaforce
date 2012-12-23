@@ -44,11 +44,7 @@ module Metaforce
     private
 
       def messages
-        @messages ||= begin
-          messages = @results.messages || []
-          messages = [messages] unless messages.is_a?(Array)
-          messages
-        end
+        @messages ||= Array[@results.messages].compact.flatten
       end
 
       def problems

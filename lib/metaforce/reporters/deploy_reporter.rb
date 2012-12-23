@@ -49,11 +49,7 @@ module Metaforce
       end
 
       def failures
-        @failures ||= begin
-          failures = test_results.failures || []
-          failures = [failures] unless failures.is_a?(Array)
-          failures
-        end
+        @failures ||= Array[test_results.failures].compact.flatten
       end
 
       def total_time

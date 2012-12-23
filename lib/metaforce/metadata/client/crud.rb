@@ -70,7 +70,7 @@ module Metaforce
 
         # Internal: Prepare metadata by base64 encoding any content keys.
         def prepare(metadata)
-          metadata = [metadata] unless metadata.is_a? Array
+          metadata = Array[metadata].compact.flatten
           metadata.each { |m| encode_content(m) }
           metadata
         end
