@@ -16,7 +16,7 @@ module Metaforce
         method_option :username, :aliases => '-u', :desc => 'Username.'
         method_option :password, :aliases => '-p', :desc => 'Password.'
         method_option :security_token, :aliases => '-t', :desc => 'Security Token.'
-        method_option :environment, :aliases => '-e', :default => 'production', :desc => 'Environment to use from config file (if present).'
+        method_option :environment, :aliases => '-e', :default => 'default', :desc => 'Environment to use from config file (if present).'
         method_option :host, :aliases => '-h', :desc => 'Salesforce host to connect to.'
       end
 
