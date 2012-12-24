@@ -37,7 +37,7 @@ module Metaforce
     def deploy(path)
       say "Deploying: #{path} ", :cyan
       say "#{options[:deploy_options].inspect}"
-      client(options).deploy(path, options[:deploy_options].symbolize_keys!)
+      client.deploy(path, options[:deploy_options].symbolize_keys!)
         .on_complete { |job| report job.result, :deploy }
         .on_error(&error)
         .on_poll(&polling)
@@ -56,7 +56,7 @@ module Metaforce
       end
       say "Retrieving: #{manifest} ", :cyan
       say "#{options[:retrieve_options].inspect}"
-      client(options).retrieve_unpackaged(manifest, options[:retrieve_options].symbolize_keys!)
+      client.retrieve_unpackaged(manifest, options[:retrieve_options].symbolize_keys!)
         .extract_to(path)
         .on_complete { |job| report(job.result, :retrieve) }
         .on_complete { |job| say "Extracted: #{path}", :green }
@@ -100,8 +100,8 @@ module Metaforce
       proc { |job| say 'Polling ...', :cyan }
     end
 
-    def client(options)
-      credentials = Thor::CoreExt::HashWithIndifferentAccess.new(config ? config[options[:environment]] : {})
+    def client
+      credentials = Thor::CoreExt::HashWithIndifferentAccess.new(environment_config)
       credentials.merge!(options.slice(:username, :password, :security_token, :host))
       credentials.tap do |credentials|
         credentials[:username] ||= ask('username:')
@@ -110,6 +110,10 @@ module Metaforce
       end
       Metaforce.configuration.host = credentials[:host]
       Metaforce.new credentials
+    end
+
+    def environment_config
+      (config && config[options[:environment]]) ? config[options[:environment]] : {}
     end
 
     def config
