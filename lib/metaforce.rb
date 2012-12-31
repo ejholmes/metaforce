@@ -23,7 +23,10 @@ module Metaforce
 
     # Performs a login and retrurns the session
     def login(options={})
-      Login.new(options.delete(:username), options.delete(:password), options.delete(:security_token)).login
+      username       = options.fetch(:username, ENV['SALESFORCE_USERNAME'])
+      password       = options.fetch(:password, ENV['SALESFORCE_PASSWORD'])
+      security_token = options.fetch(:security_token, ENV['SALESFORCE_SECURITY_TOKEN'])
+      Login.new(username, password, security_token).login
     end
   end
 end

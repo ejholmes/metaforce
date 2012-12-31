@@ -28,6 +28,19 @@ client = Metaforce.new :username => 'username',
   :security_token => 'security token'
 ```
 
+Or you can specify the username, password and security token with environment
+variables:
+
+```bash
+export SALESFORCE_USERNAME="username"
+export SALESFORCE_PASSWORD="password"
+export SALESFORCE_SECURITY_TOKEN="security token"
+```
+
+```ruby
+client = Metaforce.new
+```
+
 #### Asynchronous Tasks
 
 Some calls to the SOAP API's are performed asynchronously (such as deployments),
