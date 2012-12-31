@@ -1,6 +1,6 @@
 module Metaforce
   class Client
-    def initialize(options)
+    def initialize(options = {})
       @options = options
     end
 
