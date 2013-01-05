@@ -47,6 +47,14 @@ module Metaforce
     # options. The block should set the options to a hash containing a valid
     # session_id and service urls.
     attr_accessor :authentication_handler
+    # Enables or disables threading when polling for job status. If disabled,
+    # calling .perform on a job will block until completion and all callbacks
+    # have run. (default: true).
+    attr_accessor :threading
+
+    def initialize
+      @threading = false
+    end
 
     def api_version
       @api_version ||= '26.0'

@@ -10,8 +10,8 @@ RSpec.configure do |config|
   config.include Savon::Spec::Macros
 
   config.before(:each) do
-    Metaforce::Job.disable_threading!
-    Metaforce::Job.any_instance.stub(:wait)
+    Metaforce.configuration.threading = false
+    Metaforce::Job.any_instance.stub(:sleep)
   end
 end
 

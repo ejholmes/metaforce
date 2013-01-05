@@ -142,23 +142,11 @@ module Metaforce
       "#<#{self.class} @id=#{@id.inspect}>"
     end
 
-    class << self
-
-      # Internal: Disable threading in tests.
-      def disable_threading!
-        self.class_eval do
-          def start_heart_beat
-            delay = DELAY_START
-            loop do
-              @status = nil
-              wait (delay = delay * DELAY_MULTIPLIER)
-              trigger(:on_poll)
-              trigger(callback_type) && break if completed? || error?
-            end
-          end
-        end
-      end
-
+    def self.disable_threading!
+      ActiveSupport::Deprecation.warn <<-WARNING.strip_heredoc
+        Metaforce::Job.disable_threading! is deprecated. Use Metaforce.configuration.threading = false instead.
+      WARNING
+      Metaforce.configuration.threading = false
     end
 
   private
@@ -167,16 +155,30 @@ module Metaforce
     # Internal: Starts a heart beat in a thread, which polls the job status
     # until it has completed or timed out.
     def start_heart_beat
-      Thread.abort_on_exception = true
-      @heart_beat ||= Thread.new do
+      if threading?
+        Thread.abort_on_exception = true
+        @heart_beat ||= Thread.new &run_loop
+      else
+        run_loop.call
+      end
+    end
+
+    # Internal: Starts the run loop, and blocks until the job has completed or
+    # failed.
+    def run_loop
+      proc {
         delay = DELAY_START
         loop do
           @status = nil
-          wait (delay = delay * DELAY_MULTIPLIER)
-          trigger(:on_poll)
-          trigger(callback_type) && Thread.stop if completed? || error?
+          sleep (delay = delay * DELAY_MULTIPLIER)
+          trigger :on_poll
+          if completed? || error?
+            trigger callback_type
+            Thread.stop if threading?
+            break
+          end
         end
-      end
+      }
     end
 
     def trigger(type)
@@ -185,16 +187,16 @@ module Metaforce
       end
     end
 
-    def wait(duration)
-      sleep duration
-    end
-
     def callback_type
       if completed?
         :on_complete
       elsif error?
         :on_error
       end
+    end
+
+    def threading?
+      Metaforce.configuration.threading
     end
 
   end

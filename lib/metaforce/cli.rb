@@ -2,8 +2,10 @@ require 'listen'
 require 'thor'
 require 'metaforce/reporters'
 
-Metaforce.configuration.log = false
-Metaforce::Job.disable_threading!
+Metaforce.configure do |config|
+  config.log = false
+  config.threading = false
+end
 
 module Metaforce
   class CLI < Thor
