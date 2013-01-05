@@ -152,8 +152,8 @@ module Metaforce
             loop do
               @status = nil
               wait (delay = delay * DELAY_MULTIPLIER)
-              trigger_poll_callbacks
-              trigger_callbacks && break if completed? || error?
+              trigger(:on_poll)
+              trigger(callback_type) && break if completed? || error?
             end
           end
         end
@@ -173,26 +173,20 @@ module Metaforce
         loop do
           @status = nil
           wait (delay = delay * DELAY_MULTIPLIER)
-          trigger_poll_callbacks
-          trigger_callbacks && Thread.stop if completed? || error?
+          trigger(:on_poll)
+          trigger(callback_type) && Thread.stop if completed? || error?
         end
       end
     end
 
-    def trigger_poll_callbacks
-      @_callbacks[:on_poll].each do |block|
+    def trigger(type)
+      @_callbacks[type].each do |block|
         block.call(self)
       end
     end
 
     def wait(duration)
       sleep duration
-    end
-
-    def trigger_callbacks
-      @_callbacks[callback_type].each do |block|
-        block.call(self)
-      end
     end
 
     def callback_type
