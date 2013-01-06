@@ -9,9 +9,17 @@ and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm) APIs.
 
 ## Installation
 
-```bash
-gem install metaforce
-```
+Add this line to your application's Gemfile:
+
+    gem 'metaforce'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install metaforce
 
 ## Usage
 
