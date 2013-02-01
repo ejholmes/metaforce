@@ -9,6 +9,10 @@ module Metaforce
 
       endpoint :metadata_server_url
       wsdl Metaforce.configuration.metadata_wsdl
+
+      def inspect
+        "#<#{self.class} @options=#{@options.inspect}>"
+      end
     end
   end
 end

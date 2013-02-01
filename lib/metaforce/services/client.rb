@@ -60,6 +60,10 @@ module Metaforce
           .select { |p| p.picklist_name == field }.first.picklist_values
           .select { |p| p.active }.collect { |p| [ p.label, p.value ] }
       end
+
+      def inspect
+        "#<#{self.class} @options=#{@options.inspect}>"
+      end
     end
   end
 end

@@ -14,6 +14,10 @@ module Metaforce
       @services ||= Metaforce::Services::Client.new(@options)
     end
 
+    def inspect
+      "#<#{self.class} @options=#{@options.inspect}>"
+    end
+
     def method_missing(method, *args, &block)
       if metadata.respond_to? method, false
         metadata.send(method, *args, &block)
