@@ -28,6 +28,7 @@ EOL
   s.add_dependency 'thor', '~> 0.16.0'
   s.add_dependency 'listen', '~> 0.6.0'
   s.add_dependency 'rb-fsevent', '~> 0.9.1'
+  s.add_dependency 'file-temp', '>= 1.2.1'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'

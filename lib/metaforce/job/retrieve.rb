@@ -1,3 +1,5 @@
+require 'file/temp'
+
 module Metaforce
   class Job::Retrieve < Job
 
@@ -64,12 +66,18 @@ module Metaforce
     # Returns self.
     def extract_to(destination)
       return on_complete { |job| job.extract_to(destination) } unless started?
-      Zip::ZipFile.open(tmp_zip_file) do |zip|
-        zip.each do |f|
-          path = File.join(destination, f.name)
-          FileUtils.mkdir_p(File.dirname(path))
-          zip.extract(f, path) { true }
+
+      begin
+        tmp_zip_path = tmp_zip_file
+        Zip::ZipFile.open(tmp_zip_path) do |zip|
+          zip.each do |f|
+            path = File.join(destination, f.name)
+            FileUtils.mkdir_p(File.dirname(path))
+            zip.extract(f, path) { true }
+          end
         end
+      ensure
+        FileUtils.remove_file(tmp_zip_path)
       end
       self
     end
@@ -80,10 +88,11 @@ module Metaforce
     # be extracted.
     def tmp_zip_file
       @tmp_zip_file ||= begin
-        file = Tempfile.new('retrieve')
+        file = File::Temp.new(false, "metaforce-retrieve-XXXXXX")
         file.write(zip_file)
         path = file.path
         file.close
+
         path
       end
     end
