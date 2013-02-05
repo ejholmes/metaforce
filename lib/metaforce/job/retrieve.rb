@@ -81,6 +81,7 @@ module Metaforce
     def tmp_zip_file
       @tmp_zip_file ||= begin
         file = Tempfile.new('retrieve')
+        file.binmode
         file.write(zip_file)
         path = file.path
         file.close
