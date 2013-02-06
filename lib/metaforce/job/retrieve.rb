@@ -64,28 +64,37 @@ module Metaforce
     # Returns self.
     def extract_to(destination)
       return on_complete { |job| job.extract_to(destination) } unless started?
-      Zip::ZipFile.open(tmp_zip_file) do |zip|
-        zip.each do |f|
-          path = File.join(destination, f.name)
-          FileUtils.mkdir_p(File.dirname(path))
-          zip.extract(f, path) { true }
-        end
+      with_tmp_zip_file do |file|
+        unzip(file, destination)
       end
       self
     end
 
   private
 
+    # Internal: Unzips source to destination.
+    def unzip(source, destination)
+      Zip::ZipFile.open(source) do |zip|
+        zip.each do |f|
+          path = File.join(destination, f.name)
+          FileUtils.mkdir_p(File.dirname(path))
+          zip.extract(f, path) { true }
+        end
+      end
+    end
+
     # Internal: Writes the zip file content to a temporary location so it can
     # be extracted.
-    def tmp_zip_file
-      @tmp_zip_file ||= begin
-        file = Tempfile.new('retrieve')
+    def with_tmp_zip_file
+      file = Tempfile.new('retrieve')
+      begin
         file.binmode
         file.write(zip_file)
-        path = file.path
+        file.rewind
+        yield file
+      ensure
         file.close
-        path
+        file.unlink
       end
     end
 
