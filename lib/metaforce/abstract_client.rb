@@ -38,15 +38,15 @@ module Metaforce
     def request(*args, &block)
       begin
         authenticate! unless session_id
-        _request(*args, &block)
+        perform_request(*args, &block)
       rescue Savon::SOAP::Fault => e
         raise e unless e.message =~ /INVALID_SESSION_ID/ && authentication_handler
         authenticate!
-        _request(*args, &block)
+        perform_request(*args, &block)
       end
     end
 
-    def _request(*args, &block)
+    def perform_request(*args, &block)
       response = client.request(*args, &block)
       Hashie::Mash.new(response.body)[:"#{args[0]}_response"].result
     end
