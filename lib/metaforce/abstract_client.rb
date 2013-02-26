@@ -36,13 +36,17 @@ module Metaforce
     # attempt to reauthenticate by called the reauthentication handler if
     # present.
     def request(*args, &block)
+      authenticate! unless session_id
+      retries = authentication_retries
       begin
-        authenticate! unless session_id
         perform_request(*args, &block)
       rescue Savon::SOAP::Fault => e
-        raise e unless e.message =~ /INVALID_SESSION_ID/ && authentication_handler
-        authenticate!
-        perform_request(*args, &block)
+        if e.message =~ /INVALID_SESSION_ID/ && authentication_handler && retries > 0
+          authenticate!
+          retries -= 1
+          retry
+        end
+        raise
       end
     end
 
@@ -60,6 +64,10 @@ module Metaforce
     # A proc object that gets called when the client needs to reauthenticate.
     def authentication_handler
       Metaforce.configuration.authentication_handler
+    end
+
+    def authentication_retries
+      3
     end
 
     # Internal: Soap headers to set for authenticate.
