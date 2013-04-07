@@ -1,6 +1,6 @@
 # Metaforce
 
-[![travis-ci](https://secure.travis-ci.org/ejholmes/metaforce.png)](https://secure.travis-ci.org/ejholmes/metaforce) [![Code Climate](https://codeclimate.com/github/ejholmes/metaforce.png)](https://codeclimate.com/github/ejholmes/metaforce) [![Dependency Status](https://gemnasium.com/ejholmes/metaforce.png)](https://gemnasium.com/ejholmes/metaforce)
+[![Build Status](https://travis-ci.org/ejholmes/metaforce.png?branch=master)](https://travis-ci.org/ejholmes/metaforce) [![Code Climate](https://codeclimate.com/github/ejholmes/metaforce.png)](https://codeclimate.com/github/ejholmes/metaforce) [![Dependency Status](https://gemnasium.com/ejholmes/metaforce.png)](https://gemnasium.com/ejholmes/metaforce)
 
 Metaforce is a Ruby gem for interacting with the Salesforce [Metadata](http://www.salesforce.com/us/developer/docs/api_meta/index.htm)
 and [Services](http://www.salesforce.com/us/developer/docs/api/index.htm) APIs.
