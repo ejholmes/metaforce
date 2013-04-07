@@ -19,7 +19,7 @@ shared_examples 'a client' do
 
     context 'and an authentication handler is present' do
       let(:handler) do
-        proc { |client, options| options = { session_id: 'foo' } }
+        proc { |client, options| { :session_id => 'foo' }  }
       end
 
       before do
@@ -32,6 +32,7 @@ shared_examples 'a client' do
         client.send(:client).should_receive(:request).once.and_return(response)
         handler.should_receive(:call).and_call_original
         client.send(:request, :foo)
+        expect(client.send(:client).config.soap_header).to eq("ins0:SessionHeader"=>{"ins0:sessionId"=>"foo"})
       end
     end
   end

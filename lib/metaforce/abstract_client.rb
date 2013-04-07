@@ -58,7 +58,9 @@ module Metaforce
     # Internal Calls the authentication handler, which should set @options to a new
     # hash.
     def authenticate!
-      authentication_handler.call(self, @options)
+      options = authentication_handler.call(self, @options)
+      @options.merge!(options)
+      client.config.soap_header = soap_headers
     end
 
     # A proc object that gets called when the client needs to reauthenticate.

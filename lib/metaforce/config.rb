@@ -66,7 +66,7 @@ module Metaforce
 
     def authentication_handler
       @authentication_handler ||= lambda { |client, options|
-        options.merge!(Metaforce.login(options))
+        Metaforce.login(options)
       }
     end
 
