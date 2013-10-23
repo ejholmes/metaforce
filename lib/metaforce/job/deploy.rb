@@ -75,7 +75,7 @@ module Metaforce
     def zip_file
       path = Dir.mktmpdir
       File.join(path, 'deploy.zip').tap do |path|
-        Zip::ZipFile.open(path, Zip::ZipFile::CREATE) do |zip|
+        Zip::File.open(path, Zip::File::CREATE) do |zip|
           Dir["#{@path}/**/**"].each do |file|
             zip.add(file.sub("#{File.dirname(@path)}/", ''), file)
           end
