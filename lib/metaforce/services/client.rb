@@ -64,6 +64,21 @@ module Metaforce
       def inspect
         "#<#{self.class} @options=#{@options.inspect}>"
       end
+
+      # Public: Retrieves the current system timestamp 
+      #         (Coordinated Universal Time (UTC) time zone) from the API.
+      # 
+      # Example: client.services.send(:get_server_timestamp)
+      def get_server_timestamp
+        request :get_server_timestamp
+      end
+
+      # Public: Retrieves personal information for the user associated 
+      #         with the current session.
+      # Example: client.services.send(:get_user_info)
+      def get_user_info
+        request :get_user_info
+      end
     end
   end
 end
