@@ -50,7 +50,6 @@ module Metaforce
           end
         end
 
-
         # Adds one or more new metadata components to your organization 
         # synchronously.
         #
@@ -94,6 +93,22 @@ module Metaforce
             soap.body = {
                 :metadata => prepare(metadata),
             }.merge(attributes!(type))
+          end
+        end
+
+        # Deletes one or more metadata components from your organization 
+        # synchronously.
+        #
+        # Available in API version 30.0 and later.
+        #
+        # Example: metadataResponse = client.delete_metadata(:custom_object, ["Test__c"]) 
+        def delete_metadata(type, fullNames)
+          type = type.to_s.camelize
+          request :delete_metadata do |soap|
+            soap.body = {
+                :type => type,
+                :full_names => fullNames, 
+            }
           end
         end
 
