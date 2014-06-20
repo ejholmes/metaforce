@@ -50,16 +50,18 @@ module Metaforce
           end
         end
 
-        # Updates one or more metadata components in your organization 
+
+        # Adds one or more new metadata components to your organization 
         # synchronously.
         #
         # Available in API version 30.0 and later.
         #
-        def update_metadata(type, metadata={})
+        # Example: metadataResponse = client.create_metadata(:custom_object, :full_name => 'Test__c', :label => 'Test Object', :plural_label => 'Test Objects', :name_field => [:type => 'Text', :label => 'Test Name'], :deployment_status => 'Deployed', :sharing_model => 'ReadWrite') 
+        def create_metadata(type, metadata={})
           type = type.to_s.camelize
-          request :update_metadata do |soap|
+          request :create_metadata do |soap|
             soap.body = {
-                :metadata => prepare(metadata),
+              :metadata => prepare(metadata)
             }.merge(attributes!(type))
           end
         end
@@ -77,6 +79,21 @@ module Metaforce
                 :type => type,
                 :full_names => fullNames, 
             }
+          end
+        end
+
+        # Updates one or more metadata components in your organization 
+        # synchronously.
+        #
+        # Available in API version 30.0 and later.
+        #
+        # Example: metadataResponse = client.update_metadata(:profile, :fieldPermissions => [:field => 'Contact.'+get_namespace+'Test__c', :editable => true, :readable => true], :fullName => 'Admin')
+        def update_metadata(type, metadata={})
+          type = type.to_s.camelize
+          request :update_metadata do |soap|
+            soap.body = {
+                :metadata => prepare(metadata),
+            }.merge(attributes!(type))
           end
         end
 
