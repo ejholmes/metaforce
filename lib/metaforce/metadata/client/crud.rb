@@ -55,12 +55,28 @@ module Metaforce
         #
         # Available in API version 30.0 and later.
         #
-        def update_metadata(type, metadata={} )
+        def update_metadata(type, metadata={})
           type = type.to_s.camelize
           request :update_metadata do |soap|
             soap.body = {
                 :metadata => prepare(metadata),
             }.merge(attributes!(type))
+          end
+        end
+
+        # Returns one or more metadata components from your organization 
+        # synchronously.
+        #
+        # Available in API version 30.0 and later.
+        #
+        # Example: metadataResponse = client.read_metadata(:custom_object, ["Test__c"])
+        def read_metadata(type, fullNames)
+          type = type.to_s.camelize
+          request :read_metadata do |soap|
+            soap.body = {
+                :type => type,
+                :full_names => fullNames, 
+            }
           end
         end
 
