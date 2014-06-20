@@ -112,6 +112,22 @@ module Metaforce
           end
         end
 
+        # Renames a metadata component in your organization synchronously.
+        #
+        # Available in API version 30.0 and later.
+        #
+        # Example: metadataResponse = client.rename_metadata(:custom_object, 'Test__c', 'TestTest__c')
+        def rename_metadata(type, oldFullName, newFullName)
+          type = type.to_s.camelize
+          request :rename_metadata do |soap|
+            soap.body = {
+                :type => type,
+                :old_full_name => oldFullName, 
+                :new_full_name => newFullName, 
+            }
+          end
+        end
+
         def create(*args)
           Job::CRUD.new(self, :_create, args)
         end
