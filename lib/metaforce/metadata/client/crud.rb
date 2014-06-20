@@ -50,6 +50,20 @@ module Metaforce
           end
         end
 
+        # Updates one or more metadata components in your organization 
+        # synchronously.
+        #
+        # Available in API version 30.0 and later.
+        #
+        def update_metadata(type, metadata={} )
+          type = type.to_s.camelize
+          request :update_metadata do |soap|
+            soap.body = {
+                :metadata => prepare(metadata),
+            }.merge(attributes!(type))
+          end
+        end
+
         def create(*args)
           Job::CRUD.new(self, :_create, args)
         end
