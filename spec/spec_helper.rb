@@ -2,6 +2,7 @@ require 'bundler'
 Bundler.require :default, :development
 require 'pp'
 require 'rspec/mocks'
+require 'rspec/its'
 
 Dir['./spec/support/**/*.rb'].sort.each {|f| require f}
 

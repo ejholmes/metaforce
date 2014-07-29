@@ -11,7 +11,7 @@ describe Metaforce::Job::Deploy do
     context 'when the path is a file' do
       before do
         client.should_receive(:_deploy).with(/^UEsDBA.*/, {}).and_return(Hashie::Mash.new(id: '1234'))
-        client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+        client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: 'Completed'))
       end
 
       it { should eq job }
@@ -21,7 +21,7 @@ describe Metaforce::Job::Deploy do
     context 'when the path is a directory' do
       before do
         client.should_receive(:_deploy).with(/.*1stwAAAJI.*/, {}).and_return(Hashie::Mash.new(id: '1234'))
-        client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+        client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: 'Completed'))
       end
 
       let(:path) { File.expand_path('../../../fixtures', __FILE__) }
@@ -49,6 +49,6 @@ describe Metaforce::Job::Deploy do
     end
 
     subject { job.success? }
-    it { should be_true }
+    it { should be_truthy }
   end
 end

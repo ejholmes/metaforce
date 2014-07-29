@@ -19,33 +19,33 @@ describe Metaforce::Job do
         job.instance_variable_set(:@id, '1234')
       end
 
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context 'when .perform has not been called and no @id has been set' do
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
   describe '.on_complete' do
     it 'allows the user to register an on_complete callback' do
-      client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Completed'))
+      client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: 'Completed'))
       called = false
       block = lambda { |job| called = true }
       job.on_complete &block
       job.perform
-      expect(called).to be_true
+      expect(called).to be_truthy
     end
   end
 
   describe '.on_error' do
     it 'allows the user to register an on_error callback' do
-      client.should_receive(:status).any_number_of_times.and_return(Hashie::Mash.new(done: true, state: 'Error'))
+      client.should_receive(:status).and_return(Hashie::Mash.new(done: true, state: 'Error'))
       called = false
       block = lambda { |job| called = true }
       job.on_error &block
       job.perform
-      expect(called).to be_true
+      expect(called).to be_truthy
     end
   end
 
@@ -66,7 +66,7 @@ describe Metaforce::Job do
         client.should_receive(:status).and_return(Hashie::Mash.new(done: true))
       end
 
-      it { should be_true }
+      it { should be_truthy }
     end
 
     context 'when not done' do
@@ -74,7 +74,7 @@ describe Metaforce::Job do
         client.should_receive(:status).and_return(Hashie::Mash.new(done: false))
       end
 
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
@@ -94,7 +94,7 @@ describe Metaforce::Job do
         client.should_receive(:status).once.and_return(Hashie::Mash.new(done: false))
       end
 
-      it { should be_false }
+      it { should be_falsey }
     end
   end
 
@@ -105,7 +105,7 @@ describe Metaforce::Job do
       end
 
       subject { job.send(:"#{state.underscore}?") }
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 end
