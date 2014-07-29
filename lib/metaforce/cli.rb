@@ -107,11 +107,7 @@ module Metaforce
       credentials.merge!(options.slice(:username, :password, :security_token, :host))
       credentials.tap do |credentials|
         credentials[:username] ||= ask('username:')
-        if credentials[:password].nil?
-          print("password: ")
-          credentials[:password] = STDIN.noecho(&:gets).chomp
-          puts();
-        end
+        credentials[:password] ||= ask('password:')
         credentials[:security_token] ||= ask('security token:')
       end
       Metaforce.configuration.host = credentials[:host]

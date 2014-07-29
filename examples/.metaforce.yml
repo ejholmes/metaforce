@@ -1,6 +1,4 @@
 # This is purely an example.
-# It is a good practice to leave passwords empty in this file and manually type it when prompted.
-# Your password will NOT be shown in console while typing.
 ---
 production:
   username: foo@bar.com
