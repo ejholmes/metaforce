@@ -13,8 +13,8 @@ describe Metaforce do
 
     context 'when environment variables are not defined' do
       it 'proxies the login call' do
-        Metaforce::Login.should_receive(:new).with('foo', 'foobar', 'whizbang').and_call_original
-        Metaforce::Login.any_instance.should_receive(:login)
+        expect(Metaforce::Login).to receive(:new).with('foo', 'foobar', 'whizbang').and_call_original
+        expect_any_instance_of(Metaforce::Login).to receive(:login)
         described_class.login args
       end
     end
@@ -33,8 +33,8 @@ describe Metaforce do
       end
 
       it 'proxies the login call' do
-        Metaforce::Login.should_receive(:new).with('foo', 'foobar', 'whizbang').and_call_original
-        Metaforce::Login.any_instance.should_receive(:login)
+        expect(Metaforce::Login).to receive(:new).with('foo', 'foobar', 'whizbang').and_call_original
+        expect_any_instance_of(Metaforce::Login).to receive(:login)
         described_class.login
       end
     end
