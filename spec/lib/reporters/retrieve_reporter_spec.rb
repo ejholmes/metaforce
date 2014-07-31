@@ -7,7 +7,7 @@ describe Metaforce::Reporters::RetrieveReporter do
 
   describe '.report' do
     it 'reports the problems' do
-      reporter.should_receive(:report_problems)
+      expect(reporter).to receive(:report_problems)
       reporter.report
     end
   end

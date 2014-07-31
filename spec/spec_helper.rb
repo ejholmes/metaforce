@@ -23,10 +23,10 @@ RSpec::Matchers.define :set_default do |option|
 
   match do |configuration|
     @actual = configuration.send(option.to_sym)
-    @actual.should eq @value
+    expect(@actual).to eq @value
   end
 
-  failure_message_for_should do |configuration|
+  failure_message do |configuration|
     "Expected #{option} to be set to #{@value.inspect}, got #{@actual.inspect}"
   end
 end

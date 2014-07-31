@@ -10,9 +10,9 @@ describe Metaforce::Reporters::BaseReporter do
       let(:problem) { Hashie::Mash.new(file_name: 'path/file', line_number: '10', problem: 'Foobar') }
 
       it 'prints the problem' do
-        reporter.should_receive(:say).with('  path/file:10', :red)
-        reporter.should_receive(:say).with('     Foobar')
-        reporter.should_receive(:say).with( no_args )
+        expect(reporter).to receive(:say).with('  path/file:10', :red)
+        expect(reporter).to receive(:say).with('     Foobar')
+        expect(reporter).to receive(:say).with( no_args )
         reporter.problem(problem)
       end
     end
@@ -21,9 +21,9 @@ describe Metaforce::Reporters::BaseReporter do
       let(:problem) { Hashie::Mash.new(file_name: 'path/file', problem: 'Foobar') }
 
       it 'prints the problem' do
-        reporter.should_receive(:say).with('  path/file:', :red)
-        reporter.should_receive(:say).with('     Foobar')
-        reporter.should_receive(:say).with( no_args )
+        expect(reporter).to receive(:say).with('  path/file:', :red)
+        expect(reporter).to receive(:say).with('     Foobar')
+        expect(reporter).to receive(:say).with( no_args )
         reporter.problem(problem)
       end
     end
@@ -32,8 +32,8 @@ describe Metaforce::Reporters::BaseReporter do
   describe '.report_problems' do
     context 'when there are no problems' do
       it 'does not report any problems' do
-        reporter.should_receive(:say).never
-        reporter.should_receive(:problem).never
+        expect(reporter).to receive(:say).never
+        expect(reporter).to receive(:problem).never
         reporter.report_problems
       end
     end
@@ -42,10 +42,10 @@ describe Metaforce::Reporters::BaseReporter do
       let(:results) { Hashie::Mash.new(success: true, messages: { problem: 'Problem', file_name: 'path/file', line_number: '10' }) }
 
       it 'prints each problem' do
-        reporter.should_receive(:say)
-        reporter.should_receive(:say).with('Problems:', :red)
-        reporter.should_receive(:say)
-        reporter.should_receive(:problem)
+        expect(reporter).to receive(:say)
+        expect(reporter).to receive(:say).with('Problems:', :red)
+        expect(reporter).to receive(:say)
+        expect(reporter).to receive(:problem)
         reporter.report_problems
       end
     end
