@@ -12,7 +12,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     Metaforce.configuration.threading = false
-    Metaforce::Job.any_instance.stub(:sleep)
+    allow_any_instance_of(Metaforce::Job).to(receive(:sleep))
   end
 end
 
