@@ -49,6 +49,30 @@ export SALESFORCE_SECURITY_TOKEN="security token"
 client = Metaforce.new
 ```
 
+#### OAuth with Rails
+
+When using OAuth for authentication, you can also call `Metaforce.new`
+with a hash that provides values for `:session_id`, `:server_url`,
+and `:metadata_server_url`.
+
+```ruby
+client = Metaforce.new(
+  session_id: session[:token],
+  server_url: session[:instance_url],
+  metadata_server_url: session[:metadata_url]
+)
+```
+
+Below is an example showing where to find the correct values for each
+key, using the auth hash produced by 
+[`omniauth-salesforce`](https://github.com/realdoug/omniauth-salesforce).
+
+```ruby
+session[:token] = auth_hash[:credentials][:token]
+session[:instance_url] = auth_hash[:credentials][:instance_url]
+session[:metadata_url] = auth_hash[:info][:urls][:metadata].sub('{version}', '32.0') # API version 32.0
+```
+
 #### Asynchronous Tasks
 
 Some calls to the SOAP API's are performed asynchronously (such as deployments),
