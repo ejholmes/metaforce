@@ -21,6 +21,15 @@ module Metaforce
           end
         end
 
+        def read_metadata(type, fullNames)
+          request :read_metadata do |soap|
+            soap.body = {
+                :type => type,
+                :fullNames => fullNames
+            }
+          end
+        end
+
         # Public: Describe the organization's metadata.
         #
         # version - API version (default: latest).
