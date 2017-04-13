@@ -10,9 +10,11 @@ module Metaforce
         #   client._create(:apex_page, :full_name => 'TestPage', label: 'Test page', :content => '<apex:page>foobar</apex:page>')
         def _create(type, metadata={})
           type = type.to_s.camelize
-          request :create,  message: {
+          request :create do |soap|
+            soap.body = {
                 :metadata => prepare(metadata)
             }.merge(attributes!(type))
+          end
         end
 
         # Public: Delete metadata
@@ -23,9 +25,11 @@ module Metaforce
         def _delete(type, *args)
           type = type.to_s.camelize
           metadata = args.map { |full_name| {:full_name => full_name} }
-          request :delete,  message:  {
+          request :delete do |soap|
+            soap.body = {
                 :metadata => metadata
             }.merge(attributes!(type))
+          end
         end
 
         # Public: Update metadata
@@ -35,9 +39,11 @@ module Metaforce
         #   client._update(:apex_page, 'OldPage', :full_name => 'TestPage', :label => 'Test page', :content => '<apex:page>hello world</apex:page>')
         def _update(type, current_name, metadata={})
           type = type.to_s.camelize
-          request :update_metadata,  message: {
+          request :update_metadata do |soap|
+            soap.body = {
                 :metadata => metadata
             }.merge(attributes!(type))
+          end
         end
 
         def create(*args)
