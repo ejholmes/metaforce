@@ -12,7 +12,7 @@ module Metaforce
           type = type.to_s.camelize
           request :create do |soap|
             soap.body = {
-              :metadata => prepare(metadata)
+                :metadata => prepare(metadata)
             }.merge(attributes!(type))
           end
         end
@@ -27,7 +27,7 @@ module Metaforce
           metadata = args.map { |full_name| {:full_name => full_name} }
           request :delete do |soap|
             soap.body = {
-              :metadata => metadata
+                :metadata => metadata
             }.merge(attributes!(type))
           end
         end
@@ -39,14 +39,10 @@ module Metaforce
         #   client._update(:apex_page, 'OldPage', :full_name => 'TestPage', :label => 'Test page', :content => '<apex:page>hello world</apex:page>')
         def _update(type, current_name, metadata={})
           type = type.to_s.camelize
-          request :update do |soap|
+          request :update_metadata do |soap|
             soap.body = {
-              :metadata => {
-                :current_name => current_name,
-                :metadata => prepare(metadata),
-                :attributes! => { :metadata => { 'xsi:type' => "ins0:#{type}" } }
-              }
-            }
+                :metadata => metadata
+            }.merge(attributes!(type))
           end
         end
 
@@ -62,7 +58,7 @@ module Metaforce
           Job::CRUD.new(self, :_delete, args)
         end
 
-      private
+        private
 
         def attributes!(type)
           {:attributes! => { 'ins0:metadata' => { 'xsi:type' => "ins0:#{type}" } }}
@@ -79,7 +75,7 @@ module Metaforce
         def encode_content(metadata)
           metadata[:content] = Base64.encode64(metadata[:content]) if metadata.has_key?(:content)
         end
-        
+
       end
     end
   end
