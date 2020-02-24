@@ -22,7 +22,7 @@ EOL
   s.require_paths = ['lib']
 
   s.add_dependency 'savon', '~> 1.2.0'
-  s.add_dependency 'rubyzip', '~> 0.9.9'
+  s.add_dependency 'rubyzip', '~> 1.3.0'
   s.add_dependency 'activesupport'
   s.add_dependency 'hashie', '~> 1.2.0'
   s.add_dependency 'thor', '~> 0.19.4'
