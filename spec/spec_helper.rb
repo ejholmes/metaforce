@@ -35,3 +35,11 @@ Savon.configure do |config|
 end
 
 Savon::Spec::Fixture.path = File.join(File.dirname(__FILE__), 'fixtures/requests')
+
+def capture(stdout)
+  $stdout = StringIO.new
+  yield
+  $stdout.string
+ensure
+  $stdout = STDOUT
+end
