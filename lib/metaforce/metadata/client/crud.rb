@@ -139,7 +139,6 @@ module Metaforce
         def encode_content(metadata)
           metadata[:content] = Base64.encode64(metadata[:content]) if metadata.has_key?(:content)
         end
-        
       end
     end
   end

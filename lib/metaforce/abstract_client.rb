@@ -25,7 +25,6 @@ module Metaforce
     # Internal: The Savon client to send SOAP requests with.
     def client
       @client ||= Savon.client(
-        #soap_savon_version: v2,
         wsdl: wsdl,
         endpoint: endpoint,
         soap_header: soap_headers,
