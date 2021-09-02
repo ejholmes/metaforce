@@ -18,12 +18,10 @@ module Metaforce
       #
       # Returns the result.
       def send_email(options={})
-        request :send_email do |soap|
-          soap.body = {
-            :messages => options,
-            :attributes! => { 'ins0:messages' => { 'xsi:type' => 'ins0:SingleEmailMessage' } }
-          }
-        end
+        call(:send_email, message: {
+          messages:    options,
+          attributes!: { 'ins0:messages' => { 'xsi:type' => 'ins0:SingleEmailMessage' } }
+        })
       end
 
       # Public: Retrieves layout information for the specified sobject.
@@ -37,10 +35,9 @@ module Metaforce
       #
       # Returns the layout metadata for the sobject.
       def describe_layout(sobject, record_type_id=nil)
-        request :describe_layout do |soap|
-          soap.body = { 'sObjectType' => sobject }
-          soap.body.merge!('recordTypeID' => record_type_id) if record_type_id
-        end
+        message = { 'sObjectType' => sobject }
+        message = message.merge('recordTypeID' => record_type_id) if record_type_id
+        call(:describe_layout, message: message)
       end
 
       # Public: Get active picklists for a record type.
@@ -70,14 +67,14 @@ module Metaforce
       # 
       # Example: client.services.send(:get_server_timestamp)
       def get_server_timestamp
-        request :get_server_timestamp
+        call :get_server_timestamp
       end
 
       # Public: Retrieves personal information for the user associated 
       #         with the current session.
       # Example: client.services.send(:get_user_info)
       def get_user_info
-        request :get_user_info
+        call :get_user_info
       end
     end
   end

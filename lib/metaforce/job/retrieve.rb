@@ -74,7 +74,7 @@ module Metaforce
 
     # Internal: Unzips source to destination.
     def unzip(source, destination)
-      Zip::ZipFile.open(source) do |zip|
+      Zip::File.open(source) do |zip|
         zip.each do |f|
           path = File.join(destination, f.name)
           FileUtils.mkdir_p(File.dirname(path))

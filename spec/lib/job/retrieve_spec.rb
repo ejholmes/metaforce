@@ -22,7 +22,7 @@ describe Metaforce::Job::Retrieve do
       client.should_receive(:status).with(job.id, :retrieve).and_return(response)
     end
 
-    subject { job.zip_file }
-    it { should eq "~\x8A\e" }
+    subject { job.zip_file.bytes }
+    it { should eq [126, 138, 27] }
   end
 end
