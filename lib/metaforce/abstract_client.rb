@@ -29,7 +29,9 @@ module Metaforce
         endpoint: endpoint,
         soap_header: soap_headers,
         ssl_verify_mode: :none,
-        namespace_identifier: :ins0
+        namespace_identifier: :ins0,
+        log: true,
+        log_level: :debug
       )
     end
 
