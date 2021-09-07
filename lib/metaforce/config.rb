@@ -57,7 +57,7 @@ module Metaforce
     end
 
     def api_version
-      @api_version ||= '26.0'
+      @api_version ||= '50.0'
     end
 
     def host
